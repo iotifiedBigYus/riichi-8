@@ -9,7 +9,7 @@ end
 
 function _draw()
 	cls(1)
-
-	?hand.tiles[1].number
-	is_complete(hand)
+	print_hand(test_hand())
+	print_hand(test_hand2())
+	print_hand(sort_hand(test_hand2()))
 end
