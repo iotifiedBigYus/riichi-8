@@ -5,10 +5,13 @@ __lua__
 -- sam westerlund
 -- 29.5.2026
 
+#include src/shanten_calculator/shanten.lua
+#include src/shanten_calculator/analysis.lua
+#include src/shanten_calculator/meld_finder.lua
+#include src/shanten_calculator/hand.lua
 #include src/constants.lua
 #include src/hand.lua
 #include src/main.lua
-
 __gfx__
 00000000f777f0008999800097709770f777f000f777f000f777f000f777f000f777f000f777f000f777f0000000000000000000000000000000000000000000
 00000000777770009999900097709770755570007755700075757000755770007777700077777000777770000000000000000000000000000000000000000000

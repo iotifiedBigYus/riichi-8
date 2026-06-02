@@ -6,8 +6,17 @@
 	],
 	"settings": {
 		"cSpell.words": [
+			"chiitoitsu",
+			"horz",
+			"ipairs",
+			"kokushi",
+			"printh",
 			"rectfill",
-			"horz"
+			"shanten",
+			"srand",
+			"tenpai",
+			"tonum",
+			"tostr"
 		]
 	},
 }
