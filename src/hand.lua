@@ -183,6 +183,18 @@ function test_discards2()
 end
 
 
+function test_discards3()
+	local tiles = {}
+	for i = 1,37 do
+		add(tiles,i)
+	end
+	return {
+		riichi = 8,
+		tiles = tiles
+	}
+end
+
+
 function draw_discards(discards, i_player)
 	if not i_player then i_player = 1 end
 
@@ -252,6 +264,28 @@ function draw_discards(discards, i_player)
 end
 
 
+function draw_discards2(discards, i_player)
+	i_player = i_player or 1
+
+	if i_player == 1 then
+		local ry = flr((discards.riichi-1)/6)
+		print("ry "..ry)
+		for i,t in ipairs(discards.tiles) do
+			local ty = flr((i-1)/6)
+			local x,y = X_P1_DISCARDS+(i-1)%6*6, Y_P1_DISCARDS+ty*8
+			if ry == ty and i > discards.riichi then
+				x+=2
+			elseif discards.riichi == i then
+				y+=1
+			end
+			draw_tile2(
+				t,x,y,discards.riichi == i
+			)
+		end
+	end
+end
+
+
 function draw_tile(tile, x, y, horz)
 	local w,h = 6,8
 	if (horz) w,h = h,w
@@ -313,5 +347,5 @@ function get_tile_color(tile)
 	if tile <= 9 or tile == 35 then return COLOR_MAN end
 	if tile <= 18 or tile == 36 then return COLOR_PIN end
 	if tile <= 27 or tile == 37 then return COLOR_SOU end
-	return nil
+	return 0
 end

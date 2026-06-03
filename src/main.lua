@@ -10,7 +10,7 @@ end
 
 function _draw()
 	cls(1)
-	draw_discards(test_discards())
+	--draw_discards(test_discards())
 	draw_discards(test_discards(),2)
 	draw_discards(test_discards(),3)
 	draw_discards(test_discards(),4)
@@ -20,7 +20,9 @@ function _draw()
 	print_hand(sort_hand(test_hand2()))
 	print(analysis.is_terminal_or_honor(11))
 
-	draw_tile2(1, 10, 10)
+	draw_tile2(19, 10, 10)
+
+	draw_discards2(test_discards3())
 
 	function a()
 		return 1,2
