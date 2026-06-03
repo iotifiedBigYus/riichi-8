@@ -266,10 +266,9 @@ end
 
 function draw_discards2(discards, i_player)
 	i_player = i_player or 1
+	local ry = flr((discards.riichi-1)/6)
 
 	if i_player == 1 then
-		local ry = flr((discards.riichi-1)/6)
-		print("ry "..ry)
 		for i,t in ipairs(discards.tiles) do
 			local ty = flr((i-1)/6)
 			local x,y = X_P1_DISCARDS+(i-1)%6*6, Y_P1_DISCARDS+ty*8
@@ -280,6 +279,47 @@ function draw_discards2(discards, i_player)
 			end
 			draw_tile2(
 				t,x,y,discards.riichi == i
+			)
+		end
+	elseif i_player == 2 then
+		for i,t in ipairs(discards.tiles) do
+			local ty = flr((i-1)/6)
+			local x,y = X_P2_DISCARDS+ty*8, Y_P2_DISCARDS-(i-1)%6*6-6
+			if ry == ty and i > discards.riichi then
+				y-=2
+			elseif discards.riichi == i then
+				x+=1
+				y-=2
+			end
+			draw_tile2(
+				t,x,y,discards.riichi != i
+			)
+		end
+	elseif i_player == 3 then
+		for i,t in ipairs(discards.tiles) do
+			local ty = flr((i-1)/6)
+			local x,y = X_P3_DISCARDS-(i-1)%6*6-6, Y_P3_DISCARDS-ty*8-8
+			if ry == ty and i > discards.riichi then
+				x-=2
+			elseif discards.riichi == i then
+				x-=2
+				y+=1
+			end
+			draw_tile2(
+				t,x,y,discards.riichi == i
+			)
+		end
+	elseif i_player == 4 then
+		for i,t in ipairs(discards.tiles) do
+			local ty = flr((i-1)/6)
+			local x,y = X_P4_DISCARDS-ty*8-8, Y_P4_DISCARDS+(i-1)%6*6
+			if ry == ty and i > discards.riichi then
+				y+=2
+			elseif discards.riichi == i then
+				x+=1
+			end
+			draw_tile2(
+				t,x,y,discards.riichi != i
 			)
 		end
 	end
