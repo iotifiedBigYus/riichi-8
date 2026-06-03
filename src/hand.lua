@@ -294,20 +294,18 @@ function draw_tile2(tile, x, y, horz)
 		x, y, x+w, y+h,
 		get_tile_color(tile)
 	)
-	rect(x,y,x+w,y+h,0) -- outline
 	local n
 	if tile <= 27 then
 		local i = horz and SPR_TILE_NUMBERS_HORZ or SPR_TILE_NUMBERS_VERT
-		n = i+tile%9
+		n = i+(tile-1)%9+1
 	elseif tile <= 34 then
 		local i = horz and SPR_TILE_HONORS_HORZ or SPR_TILE_HONORS_VERT
-		n = i+tile
+		n = i+tile-27
 	else
 		n = horz and SPR_TILE_NUMBERS_HORZ or SPR_TILE_NUMBERS_VERT
 	end
-	spr(
-		n, x+1, y+1
-	)
+	spr(n, x+1, y+1)
+	rect(x,y,x+w,y+h,0) -- outline
 end
 
 
