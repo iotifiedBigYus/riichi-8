@@ -283,3 +283,37 @@ function draw_tile(tile, x, y, horz)
 		)
 	end
 end
+
+
+function draw_tile2(tile, x, y, horz)
+	local w,h = 6,8
+	if (horz) w,h = h,w
+
+	-- backfill
+	rectfill(
+		x, y, x+w, y+h,
+		get_tile_color(tile)
+	)
+	rect(x,y,x+w,y+h,0) -- outline
+	local n
+	if tile <= 27 then
+		local i = horz and SPR_TILE_NUMBERS_HORZ or SPR_TILE_NUMBERS_VERT
+		n = i+tile%9
+	elseif tile <= 34 then
+		local i = horz and SPR_TILE_HONORS_HORZ or SPR_TILE_HONORS_VERT
+		n = i+tile
+	else
+		n = horz and SPR_TILE_NUMBERS_HORZ or SPR_TILE_NUMBERS_VERT
+	end
+	spr(
+		n, x+1, y+1
+	)
+end
+
+
+function get_tile_color(tile)
+	if tile <= 9 or tile == 35 then return COLOR_MAN end
+	if tile <= 18 or tile == 36 then return COLOR_PIN end
+	if tile <= 27 or tile == 37 then return COLOR_SOU end
+	return nil
+end

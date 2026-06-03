@@ -20,7 +20,7 @@ function _draw()
 	print_hand(sort_hand(test_hand2()))
 	print(analysis.is_terminal_or_honor(11))
 
-	print(meld_finder.find(test_tiles34()))
+	draw_tile2(1, 10, 10)
 
 	function a()
 		return 1,2
@@ -29,7 +29,4 @@ function _draw()
 	function b()
 		return 1 - a()
 	end
-	hand.print(hand.parse(hand.encode(hand1)))
-	hand.print(hand1)
-	hand.print("\#0"..shanten.calculate(hand1))
 end
