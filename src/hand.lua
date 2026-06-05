@@ -247,3 +247,42 @@ function get_tile_color(tile)
 	if tile <= 27 or tile == 37 then return COLOR_SOU end
 	return 0
 end
+
+
+function draw_large_tile(tile, x, y)
+	local w,h = 8,12
+
+	-- backfill
+	rectfill(
+		x, y, x+w, y+h,
+		get_tile_color(tile)
+	)
+	local n
+	if tile <= 27 then
+		n = SPR_TILE_LARGE_NUMBERS+1+(tile-1)%9
+	elseif tile <= 34 then
+		n = SPR_TILE_LARGE_HONORS-27+tile
+	else
+		n = SPR_TILE_LARGE_NUMBERS
+	end
+	spr(n, x+1, y+1, 1, 1.5)
+	rect(x,y,x+w,y+h,0) -- outline
+end
+
+
+function draw_all_large_tiles()
+	for i = 1,37 do
+		draw_large_tile(i,(i-1)%16*8,flr((i-1)/16)*12)
+	end
+end
+
+
+function draw_hand(hand)
+	local n = 0
+	for t in all(hand.tiles) do
+
+	end
+	for i,t in ipairs(hand.tiles) do
+
+	end
+end

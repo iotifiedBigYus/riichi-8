@@ -21,11 +21,5 @@ function _draw()
 	draw_discards(test_discards3(),3)
 	draw_discards(test_discards3(),4)
 
-	function a()
-		return 1,2
-	end
-		
-	function b()
-		return 1 - a()
-	end
+	draw_all_large_tiles()
 end
