@@ -64,30 +64,45 @@ end
 
 
 function test_player_hand()
-	local dt = {tile = 14, x = 0x71, y = 114}
+	local dt = {tile = 35, x = 0x71, y = 114}
 	return {
 		is_closed = false,
 		drawn_tile = 14,
-		i_selected_obj = 8,
+		i_selected_obj = 14,
 		selected_obj = dt,
-		tiles = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 
 		tile_objs = {
-			{tile =  1, x = 0x07, y = 116},
-			{tile =  2, x = 0x0F, y = 116},
-			{tile =  3, x = 0x17, y = 116},
-			{tile =  4, x = 0x1F, y = 116},
-			{tile =  5, x = 0x27, y = 116},
-			{tile =  6, x = 0x2F, y = 116},
-			{tile =  7, x = 0x37, y = 116},
-			{tile =  8, x = 0x3F, y = 116},
-			{tile =  9, x = 0x47, y = 116},
-			{tile = 10, x = 0x4F, y = 116},
-			{tile = 11, x = 0x57, y = 116},
-			{tile = 12, x = 0x5F, y = 116},
-			{tile = 13, x = 0x67, y = 116},
+			{tile = 1, x = 0x07, y = 116},
+			{tile = 9, x = 0x0F, y = 116},
+			{tile = 10, x = 0x17, y = 116},
+			{tile = 18, x = 0x1F, y = 116},
+			{tile = 19, x = 0x27, y = 116},
+			{tile = 27, x = 0x2F, y = 116},
+			{tile = 28, x = 0x37, y = 116},
+			{tile = 29, x = 0x3F, y = 116},
+			{tile = 30, x = 0x47, y = 116},
+			{tile = 31, x = 0x4F, y = 116},
+			{tile = 32, x = 0x57, y = 116},
+			{tile = 33, x = 0x5F, y = 116},
+			{tile = 34, x = 0x67, y = 116},
 			dt
 		},
+
+		meld_objs = {
+			{tile = 3, type  = "bottom sequence", origin = "left"},
+			{tile = 3, type  = "middle sequence", origin = "left"},
+			{tile = 3, type  = "top sequence",    origin = "left"},
+			{tile = 36, type = "triplet",         origin = "left"},
+			{tile = 36, type = "triplet",         origin = "middle"},
+			{tile = 36, type = "triplet",         origin = "right"},
+			{tile = 37, type = "open quad",       origin = "left"},
+			{tile = 37, type = "open quad",       origin = "middle"},
+			{tile = 37, type = "open quad",       origin = "right"},
+			{tile = 37, type = "added quad",      origin = "left"},
+			{tile = 37, type = "added quad",      origin = "middle"},
+			{tile = 37, type = "added quad",      origin = "right"},
+			{tile = 37, type = "concealed quad"},
+		}
 	}
 end
 
@@ -105,13 +120,18 @@ function update_player(player)
 end
 
 
-function update_player_hand(player_hand)
-	assert(player_hand)
+function update_player_hand(hand)
+	assert(hand)
 	--⬆️, ⬇️, ⬅️, ➡️, 
 	if btnp(⬅️) then
-		switch_selected_tile(player_hand, (player_hand.i_selected_obj-2)%#player_hand.tile_objs+1)
+		switch_selected_tile(hand, (hand.i_selected_obj-2)%#hand.tile_objs+1)
 	elseif btnp(➡️) then
-		switch_selected_tile(player_hand, (player_hand.i_selected_obj  )%#player_hand.tile_objs+1)
+		switch_selected_tile(hand, (hand.i_selected_obj  )%#hand.tile_objs+1)
+	end
+
+	local ox = 63 - #hand.tile_objs*4
+	for i,to in ipairs(hand.tile_objs) do
+		to.x = ox + (i-1)*8
 	end
 end
 
@@ -134,6 +154,7 @@ function draw_player_hand(player_hand)
 	assert(player_hand)
 	print(player_hand.i_selected_obj)
 	draw_player_tiles(player_hand.tile_objs)
+	draw_melds(player_hand.meld_objs,1)
 end
 
 
@@ -142,6 +163,88 @@ function draw_player_tiles(tile_objs)
 		draw_large_tile(to.tile, to.x, to.y)
 	end
 end
+
+
+function draw_melds(meld_objs, i_player)
+	-- TODO: token optimize
+	for i,mo in ipairs(meld_objs) do
+		local y = Y_P1_MELDS-8*i
+		if mo.type == "bottom sequence" do
+			-- assumed to have origin "left"
+			draw_tile(mo.tile,   X_P1_MELDS-20, y+2, true)
+			draw_tile(mo.tile+1, X_P1_MELDS-12, y)
+			draw_tile(mo.tile+2, X_P1_MELDS- 6, y)
+		elseif mo.type == "middle sequence" do
+			-- assumed to have origin "left"
+			draw_tile(mo.tile,   X_P1_MELDS-20, y+2, true)
+			draw_tile(mo.tile-1, X_P1_MELDS-12, y)
+			draw_tile(mo.tile+1, X_P1_MELDS- 6, y)
+		elseif mo.type == "top sequence" do
+			-- assumed to have origin "left"
+			draw_tile(mo.tile,   X_P1_MELDS-20, y+2, true)
+			draw_tile(mo.tile-2, X_P1_MELDS-12, y)
+			draw_tile(mo.tile-1, X_P1_MELDS- 6, y)
+		elseif mo.type == "triplet" do
+			if mo.origin == "left" do
+				draw_tile(mo.tile, X_P1_MELDS-20, y+2, true)
+				draw_tile(mo.tile, X_P1_MELDS-12, y)
+				draw_tile(mo.tile, X_P1_MELDS- 6, y)
+			elseif mo.origin == "middle" do
+				draw_tile(mo.tile, X_P1_MELDS-20, y)
+				draw_tile(mo.tile, X_P1_MELDS-14, y+2, true)
+				draw_tile(mo.tile, X_P1_MELDS- 6, y)
+			elseif mo.origin == "right" do
+				draw_tile(mo.tile, X_P1_MELDS-20, y)
+				draw_tile(mo.tile, X_P1_MELDS-14, y)
+				draw_tile(mo.tile, X_P1_MELDS- 8, y+2, true)
+			else
+				print("trplt", X_P1_MELDS-19, y+1, 7)
+			end
+		elseif mo.type == "open quad" do
+			if mo.origin == "left" do
+				draw_tile(mo.tile, X_P1_MELDS-26, y+2, true)
+				draw_tile(mo.tile, X_P1_MELDS-18, y)
+				draw_tile(mo.tile, X_P1_MELDS-12, y)
+				draw_tile(mo.tile, X_P1_MELDS- 6, y)
+			elseif mo.origin == "middle" do
+				draw_tile(mo.tile, X_P1_MELDS-26, y)
+				draw_tile(mo.tile, X_P1_MELDS-20, y+2, true)
+				draw_tile(mo.tile, X_P1_MELDS-12, y)
+				draw_tile(mo.tile, X_P1_MELDS- 6, y)
+			elseif mo.origin == "right" do
+				draw_tile(mo.tile, X_P1_MELDS-26, y)
+				draw_tile(mo.tile, X_P1_MELDS-20, y)
+				draw_tile(mo.tile, X_P1_MELDS-14, y)
+				draw_tile(mo.tile, X_P1_MELDS- 8, y+2, true)
+			else
+				print("oquad", X_P1_MELDS-19, y+1, 7)
+			end
+		elseif mo.type == "added quad" do
+			if mo.origin == "left" do
+				draw_quad_stack(X_P1_MELDS-20, y, true)
+				draw_tile(mo.tile, X_P1_MELDS-12, y)
+				draw_tile(mo.tile, X_P1_MELDS- 6, y)
+			elseif mo.origin == "middle" do
+				draw_tile(mo.tile, X_P1_MELDS-20, y)
+				draw_quad_stack(X_P1_MELDS-14, y, true)
+				draw_tile(mo.tile, X_P1_MELDS- 6, y)
+			elseif mo.origin == "right" do
+				draw_tile(mo.tile, X_P1_MELDS-20, y)
+				draw_tile(mo.tile, X_P1_MELDS-14, y)
+				draw_quad_stack(X_P1_MELDS-8, y, true)
+			else
+				print("aquad", X_P1_MELDS-19, y+1, 7)
+			end
+		elseif mo.type == "concealed quad" do
+			draw_tile_flipped( X_P1_MELDS-24, y)
+			draw_tile(mo.tile, X_P1_MELDS-18, y)
+			draw_tile(mo.tile, X_P1_MELDS-12, y)
+			draw_tile_flipped( X_P1_MELDS- 6, y)
+		end
+	end
+end
+
+
 
 
 function print_hand(hand)
@@ -321,6 +424,24 @@ function draw_tile(tile, x, y, horz)
 	spr(n, x+1, y+1)
 	rect(x,y,x+w,y+h,0) -- outline
 end
+
+
+function draw_quad_stack(x, y, horz)
+	local i = horz and SPR_TILE_SIDE_HORZ or SPR_TILE_SIDE_VERT
+	spr(i, x+1, y+1)
+	rect(x,y,x+8,y+8,0) -- outline
+end
+
+
+function draw_tile_flipped(x, y, horz)
+	local w,h = 6,8
+	if (horz) w,h = h,w
+
+	local i = horz and SPR_TILE_BACK_HORZ or SPR_TILE_BACK_VERT
+	spr(i, x+1, y+1)
+	rect(x,y,x+w,y+h,0) -- outlines
+end
+
 
 
 function draw_all_tiles()

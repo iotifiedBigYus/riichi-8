@@ -24,4 +24,9 @@ function _draw()
 	--draw_discards(test_discards3(),4)
 
 	draw_player(player)
+
+	draw_quad_stack(10, 10)
+	draw_quad_stack(10, 20, true)
+	draw_tile_flipped(20, 10)
+	draw_tile_flipped(20, 20, true)
 end
