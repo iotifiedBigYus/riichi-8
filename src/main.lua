@@ -21,5 +21,5 @@ function _draw()
 	draw_discards(test_discards3(),3)
 	draw_discards(test_discards3(),4)
 
-	draw_all_large_tiles()
+	draw_player_hand(test_player_hand())
 end

@@ -62,6 +62,46 @@ function test_hand2()
 end
 
 
+
+function test_player_hand()
+	return {
+		is_closed = false,
+		draw = 8,
+		selected = 8,
+		tiles = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		
+		tile_objs = {
+			{tile =  1, x = 0x07, y = 116},
+			{tile =  2, x = 0x0F, y = 116},
+			{tile =  3, x = 0x17, y = 116},
+			{tile =  4, x = 0x1F, y = 116},
+			{tile =  5, x = 0x27, y = 116},
+			{tile =  6, x = 0x2F, y = 116},
+			{tile =  7, x = 0x37, y = 116},
+			{tile =  8, x = 0x3F, y = 116},
+			{tile =  9, x = 0x47, y = 116},
+			{tile = 10, x = 0x4F, y = 116},
+			{tile = 11, x = 0x57, y = 116},
+			{tile = 12, x = 0x5F, y = 114},
+			{tile = 13, x = 0x67, y = 116},
+			{tile = 14, x = 0x71, y = 116}
+		},
+	}
+end
+
+
+function draw_player_hand(player_hand)
+	draw_player_tiles(player_hand.tile_objs)
+end
+
+
+function draw_player_tiles(tile_objs)
+	for to in all(tile_objs) do
+		draw_large_tile(to.tile, to.x, to.y)
+	end
+end
+
+
 function print_hand(hand)
 	-- s t c o a
 	-- l a r
