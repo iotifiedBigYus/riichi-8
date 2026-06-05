@@ -11,8 +11,8 @@ __lua__
 #include src/shanten_calculator/hand.lua
 #include src/constants.lua
 #include src/hand.lua
+#include src/game.lua
 #include src/main.lua
-
 
 __gfx__
 00000000f777f0008999800097709770f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f00000000000000000000000000000000000

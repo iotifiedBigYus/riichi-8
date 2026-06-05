@@ -3,7 +3,13 @@ function _init()
 	srand(0)
 	hand1 = hand.generate()
 
+	printh("", "output", true)
+
 	player = test_player()
+
+	game = new_game()
+	game:init_wall()
+
 end
 
 function _update60()
@@ -12,11 +18,6 @@ end
 
 function _draw()
 	cls(1)
-	color(6)
-	print_hand(test_hand())
-	print_hand(test_hand2())
-	print_hand(sort_hand(test_hand2()))
-	print(analysis.is_terminal_or_honor(11))
 
 	draw_discards(test_discards4())
 	--draw_discards(test_discards3(),2)
@@ -25,8 +26,11 @@ function _draw()
 
 	draw_player(player)
 
-	draw_quad_stack(10, 10)
-	draw_quad_stack(10, 20, true)
-	draw_tile_flipped(20, 10)
-	draw_tile_flipped(20, 20, true)
+
+	color(6)
+	
+	draw_n_tiles(game.n_tiles,21)
+	if(#game.i_tiles>1) ?game:get_tile()
+	draw_n_tiles(game.n_tiles,21)
+	--draw_n_tiles(game.n_tiles,21)
 end

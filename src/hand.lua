@@ -152,7 +152,6 @@ end
 
 function draw_player_hand(player_hand)
 	assert(player_hand)
-	print(player_hand.i_selected_obj)
 	draw_player_tiles(player_hand.tile_objs)
 	draw_melds(player_hand.meld_objs,1)
 end
@@ -166,7 +165,6 @@ end
 
 
 function draw_melds(meld_objs, i_player)
-	-- TODO: token optimize
 	for i,mo in ipairs(meld_objs) do
 		local y = Y_P1_MELDS-8*i
 		local x = X_P1_MELDS
@@ -267,10 +265,28 @@ function is_complete(hand)
 end
 
 
-function draw_tiles(tiles, n_player)
-	if n_player == 1 then
-
+function draw_i_tiles(i_tiles, w)
+	local ox,oy,c = peek(0x5f26),peek(0x5f27),peek(0x5f25)
+	for i,t in ipairs(i_tiles) do
+		local y = oy+flr((i-1)/w)*8
+		draw_tile(t,ox+(i-1)%w*6,y)
+		poke(0x5f27, y+10)
 	end
+	poke(0x5f25,c)
+end
+
+function draw_n_tiles(n_tiles, w)
+	local ox,oy,c = peek(0x5f26),peek(0x5f27),peek(0x5f25)
+	local m = 0
+	for t,n in ipairs(n_tiles) do
+		for _ = 1,n do
+			local y = oy+flr(m/w)*8
+			draw_tile(t,ox+m%w*6,y)
+			poke(0x5f27, y+10)
+			m += 1
+		end
+	end
+	poke(0x5f25,c)
 end
 
 
@@ -399,7 +415,6 @@ function draw_tile_flipped(x, y, horz)
 	spr(i, x+1, y+1)
 	rect(x,y,x+w,y+h,0) -- outlines
 end
-
 
 
 function draw_all_tiles()
