@@ -286,6 +286,18 @@ function test_discards3()
 end
 
 
+function test_discards4()
+	local tiles = {}
+	for i = 14,37 do
+		add(tiles,i)
+	end
+	return {
+		riichi = 8,
+		tiles = tiles
+	}
+end
+
+
 function draw_discards(discards, i_player)
 	i_player = i_player or 1
 	local ry = flr((discards.riichi-1)/6)

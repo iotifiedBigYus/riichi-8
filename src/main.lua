@@ -18,7 +18,7 @@ function _draw()
 	print_hand(sort_hand(test_hand2()))
 	print(analysis.is_terminal_or_honor(11))
 
-	--draw_discards(test_discards3())
+	draw_discards(test_discards4())
 	--draw_discards(test_discards3(),2)
 	--draw_discards(test_discards3(),3)
 	--draw_discards(test_discards3(),4)
