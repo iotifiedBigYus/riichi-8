@@ -64,12 +64,14 @@ end
 
 
 function test_player_hand()
+	local dt = {tile = 14, x = 0x71, y = 114}
 	return {
 		is_closed = false,
-		draw = 8,
-		selected = 8,
+		drawn_tile = 14,
+		i_selected_obj = 8,
+		selected_obj = dt,
 		tiles = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		
+
 		tile_objs = {
 			{tile =  1, x = 0x07, y = 116},
 			{tile =  2, x = 0x0F, y = 116},
@@ -82,15 +84,55 @@ function test_player_hand()
 			{tile =  9, x = 0x47, y = 116},
 			{tile = 10, x = 0x4F, y = 116},
 			{tile = 11, x = 0x57, y = 116},
-			{tile = 12, x = 0x5F, y = 114},
+			{tile = 12, x = 0x5F, y = 116},
 			{tile = 13, x = 0x67, y = 116},
-			{tile = 14, x = 0x71, y = 116}
+			dt
 		},
 	}
 end
 
 
+function test_player()
+	return {
+		hand = test_player_hand()
+	}
+end
+
+
+function update_player(player)
+	assert(player)
+	update_player_hand(player.hand)
+end
+
+
+function update_player_hand(player_hand)
+	assert(player_hand)
+	--⬆️, ⬇️, ⬅️, ➡️, 
+	if btnp(⬅️) then
+		switch_selected_tile(player_hand, (player_hand.i_selected_obj-2)%#player_hand.tile_objs+1)
+	elseif btnp(➡️) then
+		switch_selected_tile(player_hand, (player_hand.i_selected_obj  )%#player_hand.tile_objs+1)
+	end
+end
+
+
+function switch_selected_tile(player_hand, i)
+	if(player_hand.selected_obj) player_hand.selected_obj.y = Y_P1_HAND
+	player_hand.i_selected_obj = i
+	player_hand.selected_obj = player_hand.tile_objs[i]
+	player_hand.selected_obj.y = Y_P1_HAND - 2
+end
+
+
+function draw_player(player)
+	assert(player)
+	draw_player_hand(player.hand)
+end
+
+
 function draw_player_hand(player_hand)
+	assert(player_hand)
+	print(player_hand.i_selected_obj)
 	draw_player_tiles(player_hand.tile_objs)
 end
 

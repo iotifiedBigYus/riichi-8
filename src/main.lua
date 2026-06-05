@@ -2,10 +2,12 @@
 function _init()
 	srand(0)
 	hand1 = hand.generate()
+
+	player = test_player()
 end
 
 function _update60()
-
+	update_player(player)
 end
 
 function _draw()
@@ -16,10 +18,10 @@ function _draw()
 	print_hand(sort_hand(test_hand2()))
 	print(analysis.is_terminal_or_honor(11))
 
-	draw_discards(test_discards3())
-	draw_discards(test_discards3(),2)
-	draw_discards(test_discards3(),3)
-	draw_discards(test_discards3(),4)
+	--draw_discards(test_discards3())
+	--draw_discards(test_discards3(),2)
+	--draw_discards(test_discards3(),3)
+	--draw_discards(test_discards3(),4)
 
-	draw_player_hand(test_player_hand())
+	draw_player(player)
 end
