@@ -241,6 +241,13 @@ function draw_tile(tile, x, y, horz)
 end
 
 
+function draw_all_tiles()
+	for i = 1,37 do
+		draw_tile(i,(i-1)%21*6,flr((i-1)/21)*8)
+	end
+end
+
+
 function get_tile_color(tile)
 	if tile <= 9 or tile == 35 then return COLOR_MAN end
 	if tile <= 18 or tile == 36 then return COLOR_PIN end
