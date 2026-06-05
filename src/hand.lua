@@ -89,19 +89,19 @@ function test_player_hand()
 		},
 
 		meld_objs = {
-			{tile = 3, type  = "bottom sequence", origin = "left"},
-			{tile = 3, type  = "middle sequence", origin = "left"},
-			{tile = 3, type  = "top sequence",    origin = "left"},
-			{tile = 36, type = "triplet",         origin = "left"},
-			{tile = 36, type = "triplet",         origin = "middle"},
-			{tile = 36, type = "triplet",         origin = "right"},
-			{tile = 37, type = "open quad",       origin = "left"},
-			{tile = 37, type = "open quad",       origin = "middle"},
-			{tile = 37, type = "open quad",       origin = "right"},
-			{tile = 37, type = "added quad",      origin = "left"},
-			{tile = 37, type = "added quad",      origin = "middle"},
-			{tile = 37, type = "added quad",      origin = "right"},
-			{tile = 37, type = "concealed quad"},
+			{tiles = {-1,2,3}},
+			{tiles = {-2,1,3}},
+			{tiles = {-3,1,2}},
+			{tiles = {-5,5,35}},
+			{tiles = {5,-5,5}},
+			{tiles = {5,5,-5}},
+			{tiles = {-14,14,14,14}},
+			{tiles = {14,-14,14,14}},
+			{tiles = {14,14,14,-14}},
+			{tiles = {0,14,14}},
+			{tiles = {14,0,14}},
+			{tiles = {14,14,0}},
+			{tiles = {0,14,14,0}}
 		}
 	}
 end
@@ -169,77 +169,23 @@ function draw_melds(meld_objs, i_player)
 	-- TODO: token optimize
 	for i,mo in ipairs(meld_objs) do
 		local y = Y_P1_MELDS-8*i
-		if mo.type == "bottom sequence" do
-			-- assumed to have origin "left"
-			draw_tile(mo.tile,   X_P1_MELDS-20, y+2, true)
-			draw_tile(mo.tile+1, X_P1_MELDS-12, y)
-			draw_tile(mo.tile+2, X_P1_MELDS- 6, y)
-		elseif mo.type == "middle sequence" do
-			-- assumed to have origin "left"
-			draw_tile(mo.tile,   X_P1_MELDS-20, y+2, true)
-			draw_tile(mo.tile-1, X_P1_MELDS-12, y)
-			draw_tile(mo.tile+1, X_P1_MELDS- 6, y)
-		elseif mo.type == "top sequence" do
-			-- assumed to have origin "left"
-			draw_tile(mo.tile,   X_P1_MELDS-20, y+2, true)
-			draw_tile(mo.tile-2, X_P1_MELDS-12, y)
-			draw_tile(mo.tile-1, X_P1_MELDS- 6, y)
-		elseif mo.type == "triplet" do
-			if mo.origin == "left" do
-				draw_tile(mo.tile, X_P1_MELDS-20, y+2, true)
-				draw_tile(mo.tile, X_P1_MELDS-12, y)
-				draw_tile(mo.tile, X_P1_MELDS- 6, y)
-			elseif mo.origin == "middle" do
-				draw_tile(mo.tile, X_P1_MELDS-20, y)
-				draw_tile(mo.tile, X_P1_MELDS-14, y+2, true)
-				draw_tile(mo.tile, X_P1_MELDS- 6, y)
-			elseif mo.origin == "right" do
-				draw_tile(mo.tile, X_P1_MELDS-20, y)
-				draw_tile(mo.tile, X_P1_MELDS-14, y)
-				draw_tile(mo.tile, X_P1_MELDS- 8, y+2, true)
+		local x = X_P1_MELDS
+		for t in all(mo.tiles) do
+			if t > 0 then
+				x -= 6
+				draw_tile(t,x,y)
+			elseif t < 0 then
+				x -= 8
+				draw_tile(-t,x,y+2,true)
 			else
-				print("trplt", X_P1_MELDS-19, y+1, 7)
+				if #mo.tiles == 3 then
+					x-=8
+					draw_quad_stack( x, y, true)
+				else
+					x-=6
+					draw_tile_flipped( x, y )
+				end
 			end
-		elseif mo.type == "open quad" do
-			if mo.origin == "left" do
-				draw_tile(mo.tile, X_P1_MELDS-26, y+2, true)
-				draw_tile(mo.tile, X_P1_MELDS-18, y)
-				draw_tile(mo.tile, X_P1_MELDS-12, y)
-				draw_tile(mo.tile, X_P1_MELDS- 6, y)
-			elseif mo.origin == "middle" do
-				draw_tile(mo.tile, X_P1_MELDS-26, y)
-				draw_tile(mo.tile, X_P1_MELDS-20, y+2, true)
-				draw_tile(mo.tile, X_P1_MELDS-12, y)
-				draw_tile(mo.tile, X_P1_MELDS- 6, y)
-			elseif mo.origin == "right" do
-				draw_tile(mo.tile, X_P1_MELDS-26, y)
-				draw_tile(mo.tile, X_P1_MELDS-20, y)
-				draw_tile(mo.tile, X_P1_MELDS-14, y)
-				draw_tile(mo.tile, X_P1_MELDS- 8, y+2, true)
-			else
-				print("oquad", X_P1_MELDS-19, y+1, 7)
-			end
-		elseif mo.type == "added quad" do
-			if mo.origin == "left" do
-				draw_quad_stack(X_P1_MELDS-20, y, true)
-				draw_tile(mo.tile, X_P1_MELDS-12, y)
-				draw_tile(mo.tile, X_P1_MELDS- 6, y)
-			elseif mo.origin == "middle" do
-				draw_tile(mo.tile, X_P1_MELDS-20, y)
-				draw_quad_stack(X_P1_MELDS-14, y, true)
-				draw_tile(mo.tile, X_P1_MELDS- 6, y)
-			elseif mo.origin == "right" do
-				draw_tile(mo.tile, X_P1_MELDS-20, y)
-				draw_tile(mo.tile, X_P1_MELDS-14, y)
-				draw_quad_stack(X_P1_MELDS-8, y, true)
-			else
-				print("aquad", X_P1_MELDS-19, y+1, 7)
-			end
-		elseif mo.type == "concealed quad" do
-			draw_tile_flipped( X_P1_MELDS-24, y)
-			draw_tile(mo.tile, X_P1_MELDS-18, y)
-			draw_tile(mo.tile, X_P1_MELDS-12, y)
-			draw_tile_flipped( X_P1_MELDS- 6, y)
 		end
 	end
 end
@@ -428,8 +374,8 @@ end
 
 function draw_quad_stack(x, y, horz)
 	local i = horz and SPR_TILE_SIDE_HORZ or SPR_TILE_SIDE_VERT
+	rectfill(x,y,x+8,y+8,0) -- fill/outline
 	spr(i, x+1, y+1)
-	rect(x,y,x+8,y+8,0) -- outline
 end
 
 
