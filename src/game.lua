@@ -1,53 +1,62 @@
 
 
 function new_game()
+	assert(user)
+	assert(cpu1)
+	assert(cpu2)
+	assert(cpu3)
+
 	return {
-		i_turn_player = 1,
+		turn = 1,
 		n_tiles = {},
 		i_tiles = {},
-		init_wall = init_wall,
-		get_tile = get_tile
+		players = {user, cpu1, cpu2, cpu3}
 	}
 end
 
 
 function init_game()
+	init_wall()
+	init_cpus()
+	init_user()
 
+	game = new_game()
 end
 
 
-function init_wall(self)
-	n_tiles = {}
-	i_tiles = {}
-	for i = 1,34 do
-		add(n_tiles,4)
-		for _ = 1,4 do
-			add(i_tiles,i)
-		end
-	end
-
-	-- make red fives
-	for i = 0,2 do
-		n_tiles[5+i*9] -= 1
-		add(n_tiles,1)
-		del(i_tiles,5+i*9)
-		add(i_tiles,35+i)
-	end
-
-	-- shuffle i_tiles
-	for i = 136,1,-1 do
-		add(i_tiles, del(i_tiles, i_tiles[flr(rnd(i))]))
-	end
-
-	self.n_tiles = n_tiles
-	self.i_tiles = i_tiles
+function next_turn()
+	assert(game)
+	game.turn = game.turn%4+1
 end
 
 
-function get_tile(self)
-	assert(#self.i_tiles > 0)
-	local t = self.i_tiles[1]
-	del(self.i_tiles, t)
-	self.n_tiles[t] -= 1
-	return t
+function draw_game()
+	draw_turn_indicator()
+	for i,p in ipairs(game.players) do
+		draw_discard_pile(p.discard_pile,i)
+	end
+end
+
+
+function draw_turn_indicator()
+	assert(game)
+
+	camera(-X_CENTER,-Y_CENTER)
+
+	local dx = DX_P1_TURN_INDICATOR
+	local dy = DY_P1_TURN_INDICATOR
+	local w = W_P1_TURN_INDICATOR
+	local h = H_P1_TURN_INDICATOR
+	for i = 1,4 do
+		rectfill(
+			dx,
+			dy,
+			dx+w,
+			dy+h,
+			game.turn == i and 10 or 0
+		)
+		dx,dy,w,h = dy,-dx,h,-w
+	end
+
+	camera(0,0)
 end

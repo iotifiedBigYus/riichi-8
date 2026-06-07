@@ -1,11 +1,4 @@
 
-function new_hand()
-	return {
-		current = nil,
-		rest = {},
-		melds = {}
-	}
-end
 
 
 function test_hand()
@@ -59,108 +52,6 @@ function test_hand2()
 			{number = 8, suit = "m"}
 		}
 	}
-end
-
-
-
-function test_player_hand()
-	local dt = {tile = 35, x = 0x71, y = 114}
-	return {
-		is_closed = false,
-		drawn_tile = 14,
-		i_selected_obj = 14,
-		selected_obj = dt,
-
-		tile_objs = {
-			{tile = 1, x = 0x07, y = 116},
-			{tile = 9, x = 0x0F, y = 116},
-			{tile = 10, x = 0x17, y = 116},
-			{tile = 18, x = 0x1F, y = 116},
-			{tile = 19, x = 0x27, y = 116},
-			{tile = 27, x = 0x2F, y = 116},
-			{tile = 28, x = 0x37, y = 116},
-			{tile = 29, x = 0x3F, y = 116},
-			{tile = 30, x = 0x47, y = 116},
-			{tile = 31, x = 0x4F, y = 116},
-			{tile = 32, x = 0x57, y = 116},
-			{tile = 33, x = 0x5F, y = 116},
-			{tile = 34, x = 0x67, y = 116},
-			dt
-		},
-
-		meld_objs = {
-			{tiles = {-1,2,3}},
-			{tiles = {-2,1,3}},
-			{tiles = {-3,1,2}},
-			{tiles = {-5,5,35}},
-			{tiles = {5,-5,5}},
-			{tiles = {5,5,-5}},
-			{tiles = {-14,14,14,14}},
-			{tiles = {14,-14,14,14}},
-			{tiles = {14,14,14,-14}},
-			{tiles = {0,14,14}},
-			{tiles = {14,0,14}},
-			{tiles = {14,14,0}},
-			{tiles = {0,14,14,0}}
-		}
-	}
-end
-
-
-function test_player()
-	return {
-		hand = test_player_hand()
-	}
-end
-
-
-function update_player(player)
-	assert(player)
-	update_player_hand(player.hand)
-end
-
-
-function update_player_hand(hand)
-	assert(hand)
-	--⬆️, ⬇️, ⬅️, ➡️, 
-	if btnp(⬅️) then
-		switch_selected_tile(hand, (hand.i_selected_obj-2)%#hand.tile_objs+1)
-	elseif btnp(➡️) then
-		switch_selected_tile(hand, (hand.i_selected_obj  )%#hand.tile_objs+1)
-	end
-
-	local ox = 63 - #hand.tile_objs*4
-	for i,to in ipairs(hand.tile_objs) do
-		to.x = ox + (i-1)*8
-	end
-end
-
-
-function switch_selected_tile(player_hand, i)
-	if(player_hand.selected_obj) player_hand.selected_obj.y = Y_P1_HAND
-	player_hand.i_selected_obj = i
-	player_hand.selected_obj = player_hand.tile_objs[i]
-	player_hand.selected_obj.y = Y_P1_HAND - 2
-end
-
-
-function draw_player(player)
-	assert(player)
-	draw_player_hand(player.hand)
-end
-
-
-function draw_player_hand(player_hand)
-	assert(player_hand)
-	draw_player_tiles(player_hand.tile_objs)
-	draw_melds(player_hand.meld_objs,1)
-end
-
-
-function draw_player_tiles(tile_objs)
-	for to in all(tile_objs) do
-		draw_large_tile(to.tile, to.x, to.y)
-	end
 end
 
 
@@ -311,68 +202,6 @@ function test_discards4()
 		riichi = 8,
 		tiles = tiles
 	}
-end
-
-
-function draw_discards(discards, i_player)
-	i_player = i_player or 1
-	local ry = flr((discards.riichi-1)/6)
-
-	if i_player == 1 then
-		for i,t in ipairs(discards.tiles) do
-			local ty = flr((i-1)/6)
-			local x,y = X_P1_DISCARDS+(i-1)%6*6, Y_P1_DISCARDS+ty*8
-			if ry == ty and i > discards.riichi then
-				x+=2
-			elseif discards.riichi == i then
-				y+=1
-			end
-			draw_tile(
-				t,x,y,discards.riichi == i
-			)
-		end
-	elseif i_player == 2 then
-		for i,t in ipairs(discards.tiles) do
-			local ty = flr((i-1)/6)
-			local x,y = X_P2_DISCARDS+ty*8, Y_P2_DISCARDS-(i-1)%6*6-6
-			if ry == ty and i > discards.riichi then
-				y-=2
-			elseif discards.riichi == i then
-				x+=1
-				y-=2
-			end
-			draw_tile(
-				t,x,y,discards.riichi != i
-			)
-		end
-	elseif i_player == 3 then
-		for i,t in ipairs(discards.tiles) do
-			local ty = flr((i-1)/6)
-			local x,y = X_P3_DISCARDS-(i-1)%6*6-6, Y_P3_DISCARDS-ty*8-8
-			if ry == ty and i > discards.riichi then
-				x-=2
-			elseif discards.riichi == i then
-				x-=2
-				y+=1
-			end
-			draw_tile(
-				t,x,y,discards.riichi == i
-			)
-		end
-	elseif i_player == 4 then
-		for i,t in ipairs(discards.tiles) do
-			local ty = flr((i-1)/6)
-			local x,y = X_P4_DISCARDS-ty*8-8, Y_P4_DISCARDS+(i-1)%6*6
-			if ry == ty and i > discards.riichi then
-				y+=2
-			elseif discards.riichi == i then
-				x+=1
-			end
-			draw_tile(
-				t,x,y,discards.riichi != i
-			)
-		end
-	end
 end
 
 
