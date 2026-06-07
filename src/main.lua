@@ -2,7 +2,6 @@
 function _init()
 	-- When running program, run this once.
 	srand(0)
-	hand1 = hand.generate()
 
 	printh("", "output", true)
 
@@ -10,7 +9,6 @@ function _init()
 
 	game = new_game()
 	game:init_wall()
-
 end
 
 function _update60()
@@ -31,8 +29,8 @@ function _draw()
 
 	color(6)
 	
-	draw_n_tiles(game.n_tiles,21)
-	if(#game.i_tiles>1) ?game:get_tile()
-	draw_n_tiles(game.n_tiles,21)
+	--draw_n_tiles(game.n_tiles,21)
+	--if(#game.i_tiles>1) ?game:get_tile()
+	--draw_n_tiles(game.n_tiles,21)
 	--draw_n_tiles(game.n_tiles,21)
 end
