@@ -1,59 +1,6 @@
 
 
 
-function test_hand()
-	return {
-		is_closed = true,
-		draw = {number = 1, suit = "m"},
-		tiles = {
-			{number = 1, suit = "m"},
-			{number = 1, suit = "m"},
-			{number = 2, suit = "m"},
-			{number = 2, suit = "m"},
-			{number = 7, suit = "p"},
-			{number = 7, suit = "p"},
-			{number = 7, suit = "p"},
-			{number = 5, suit = "s"},
-			{number = 6, suit = "s"},
-			{number = 7, suit = "s"}
-		},
-		melds = {
-			{
-				type = "concealed quad",
-				origin = "left",
-				tiles = {
-					{number = 1, suit = "z"},
-					{number = 1, suit = "z"},
-					{number = 1, suit = "z"},
-					{number = 1, suit = "z"}
-				}
-			}
-		}
-	}
-end
-
-
-function test_hand2()
-	return {
-		is_closed = true,
-		tiles = {
-			{number = 2, suit = "m"},
-			{number = 4, suit = "m"},
-			{number = 6, suit = "m"},
-			{number = 8, suit = "m"},
-			{number = 1, suit = "m"},
-			{number = 3, suit = "m"},
-			{number = 5, suit = "m"},
-			{number = 7, suit = "m"},
-			{number = 9, suit = "m"},
-			{number = 2, suit = "m"},
-			{number = 4, suit = "m"},
-			{number = 6, suit = "m"},
-			{number = 8, suit = "m"}
-		}
-	}
-end
-
 
 function draw_melds(meld_objs, i_player)
 	for i,mo in ipairs(meld_objs) do
@@ -285,16 +232,5 @@ end
 function draw_all_large_tiles()
 	for i = 1,37 do
 		draw_large_tile(i,(i-1)%16*8,flr((i-1)/16)*12)
-	end
-end
-
-
-function draw_hand(hand)
-	local n = 0
-	for t in all(hand.tiles) do
-
-	end
-	for i,t in ipairs(hand.tiles) do
-
 	end
 end
