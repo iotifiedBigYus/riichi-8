@@ -1,5 +1,6 @@
  
 function _init()
+	-- When running program, run this once.
 	srand(0)
 	hand1 = hand.generate()
 
@@ -13,10 +14,12 @@ function _init()
 end
 
 function _update60()
+	-- update 60 times/sec.
 	update_player(player)
 end
 
 function _draw()
+	-- similar to update 60, but skip frames if running takes too long.
 	cls(1)
 
 	draw_discards(test_discards4())
@@ -25,7 +28,6 @@ function _draw()
 	--draw_discards(test_discards3(),4)
 
 	draw_player(player)
-
 
 	color(6)
 	
