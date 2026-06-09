@@ -1,21 +1,24 @@
 -- the player the user controls
 
-function init_user()
-	user = test_user()
+function new_user()
+	local user = new_player()
+
+	user.is_user = true
+
+	user.hand.tile_objs = {}
+
+	return user
 end
 
-
-function test_user()
-	local user = new_player()
-	user.hand = test_user_hand()
-	return user
+function init_user()
+	user = new_user()
 end
 
 
 function test_user_hand()
 	local dt = {tile = 35, x = 0x71, y = 114}
 	return {
-		tiles = {1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1},
+		tiles = {1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0},
 
 		is_closed = false,
 		drawn_tile = 14,
@@ -63,7 +66,8 @@ function update_user()
 
 
 	if btnp(🅾️) then
-		discard_tile(user, user.hand.selected_obj.tile)
+		--discard_tile(user, user.hand.selected_obj.tile)
+		next_turn()
 	end
 
 
@@ -77,9 +81,9 @@ function update_user_hand(hand)
 
 	--⬆️, ⬇️, ⬅️, ➡️, 
 	if btnp(⬅️) then
-		switch_selected_tile(hand, (hand.i_selected_obj-2)%#hand.tile_objs+1)
+		--switch_selected_tile(hand, (hand.i_selected_obj-2)%#hand.tile_objs+1)
 	elseif btnp(➡️) then
-		switch_selected_tile(hand, (hand.i_selected_obj  )%#hand.tile_objs+1)
+		--switch_selected_tile(hand, (hand.i_selected_obj  )%#hand.tile_objs+1)
 	end
 
 	local ox = 63 - #hand.tile_objs*4

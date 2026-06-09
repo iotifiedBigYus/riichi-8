@@ -15,6 +15,14 @@ function new_player()
 end
 
 
+function pick_up_tile(player)
+	assert(wall)
+	local t = get_tile()
+
+	player.hand.tiles[t] += 1
+end
+
+
 function discard_tile(player, tile)
 	assert(player)
 	assert(tile)
@@ -95,4 +103,21 @@ function draw_discard_pile(discard_pile, i_player)
 			)
 		end
 	end
+end
+
+
+function print_player_hand(hand, i_player)
+	assert(hand)
+	assert(i_player)
+	local x,y
+	if i_player == 1 then
+		x,y = 40, 100
+	elseif i_player == 2 then
+		x,y = 50, 80
+	elseif i_player == 3 then
+		x,y = 40, 5
+	elseif i_player == 4 then
+		x,y = 0,30
+	end
+	print(encode_tiles(hand.tiles,true),x,y,7)
 end

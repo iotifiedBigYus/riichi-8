@@ -22,6 +22,12 @@ function init_game()
 	init_user()
 
 	game = new_game()
+
+	for i,p in ipairs(game.players) do
+		for _ = 1,13 do
+			pick_up_tile(p)
+		end
+	end
 end
 
 
@@ -37,6 +43,7 @@ function draw_game()
 	draw_dora()
 	for i,p in ipairs(game.players) do
 		draw_discard_pile(p.discard_pile,i)
+		print_player_hand(p.hand, i)
 	end
 end
 
