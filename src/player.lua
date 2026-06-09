@@ -20,6 +20,27 @@ function pick_up_tile(player)
 	local t = get_tile()
 
 	player.hand.tiles[t] += 1
+
+	local obj = new_tile_object(t)
+	player.pick_up_tile_obj = obj
+	add(player.tile_objs, obj)
+end
+
+
+function get_starting_hand(player, i_player)
+	assert(wall)
+	for _ = 1,13 do
+		local t = get_tile()
+		player.hand.tiles[t] += 1
+	end
+
+	if i_player == 1 then
+		for t,n in ipairs(player.hand.tiles) do
+			for _ = 1,n do
+				add(player.tile_objs, new_tile_object(t))
+			end
+		end
+	end
 end
 
 
@@ -36,6 +57,31 @@ function test_player()
 	return {
 		hand = test_player_hand()
 	}
+end
+
+
+function draw_melds(meld_objs, i_player)
+	for i,mo in ipairs(meld_objs) do
+		local y = Y_P1_MELDS-8*i
+		local x = X_P1_MELDS
+		for t in all(mo.tiles) do
+			if t > 0 then
+				x -= 6
+				draw_tile(t,x,y)
+			elseif t < 0 then
+				x -= 8
+				draw_tile(-t,x,y+2,true)
+			else
+				if #mo.tiles == 3 then
+					x-=8
+					draw_quad_stack( x, y, true)
+				else
+					x-=6
+					draw_tile_flipped( x, y )
+				end
+			end
+		end
+	end
 end
 
 

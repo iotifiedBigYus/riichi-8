@@ -24,10 +24,15 @@ function init_game()
 	game = new_game()
 
 	for i,p in ipairs(game.players) do
-		for _ = 1,13 do
-			pick_up_tile(p)
-		end
+		get_starting_hand(p,i)
 	end
+
+	pick_up_tile(user)
+end
+
+
+function update_game()
+	update_user()
 end
 
 
@@ -45,6 +50,7 @@ function draw_game()
 		draw_discard_pile(p.discard_pile,i)
 		print_player_hand(p.hand, i)
 	end
+	draw_user()
 end
 
 

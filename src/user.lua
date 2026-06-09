@@ -4,8 +4,10 @@ function new_user()
 	local user = new_player()
 
 	user.is_user = true
-
-	user.hand.tile_objs = {}
+	user.tile_objs = {}
+	user.i_selected_tile_obj = nil
+	user.pick_up_tile_obj = new_tile_object(8)
+	user.selected_obj = nil
 
 	return user
 end
@@ -66,55 +68,91 @@ function update_user()
 
 
 	if btnp(🅾️) then
-		--discard_tile(user, user.hand.selected_obj.tile)
-		next_turn()
+		if user.selected_obj and user.selected_obj.is_tile then
+			discard_selected_tile()
+		end
 	end
-
-
-	update_user_hand(user.hand)
-end
-
-
-function update_user_hand(hand)
-	assert(hand)
-
 
 	--⬆️, ⬇️, ⬅️, ➡️, 
-	if btnp(⬅️) then
-		--switch_selected_tile(hand, (hand.i_selected_obj-2)%#hand.tile_objs+1)
-	elseif btnp(➡️) then
-		--switch_selected_tile(hand, (hand.i_selected_obj  )%#hand.tile_objs+1)
+	if btnp(⬅️) and not btn(➡️) then
+		switch_selected_horz(-1)
+	elseif btnp(➡️) and not btn(⬅️) then
+		switch_selected_horz(1)
 	end
 
-	local ox = 63 - #hand.tile_objs*4
-	for i,to in ipairs(hand.tile_objs) do
-		to.x = ox + (i-1)*8
+	update_user_tile_objects()
+end
+
+
+function update_user_tile_objects()
+	assert(user)
+
+	local ox = 63 - #user.tile_objs*4
+	for i,to in ipairs(user.tile_objs) do
+		local x = to == user.pick_up_tile_obj and ox + (i-1)*8+2 or ox + (i-1)*8
+		set_tile_object_position(to, x)
 	end
 end
 
 
-function switch_selected_tile(hand, i)
-	if(hand.selected_obj) hand.selected_obj.y = Y_P1_HAND
-	hand.i_selected_obj = i
-	hand.selected_obj = hand.tile_objs[i]
-	hand.selected_obj.y = Y_P1_HAND - 2
+function set_tile_object_position(tile_obj, x, y)
+	assert(tile_obj)
+	tile_obj.x = x
+	tile_obj.y = tile_obj.is_selected and Y_P1_SELECTED_TILE or Y_P1_TILE
+end
+
+
+function switch_selected_horz(dx)
+	if not user.selected_obj then
+		select_tile_object(dx < 0 and #user.tile_objs or 1)
+	elseif user.selected_obj.is_tile then
+		deselect_object()
+		select_tile_object((user.i_selected_tile_obj-1+dx)%#user.tile_objs+1)
+	end
+end
+
+
+function select_object(obj)
+	assert(user)
+	assert(obj)
+	user.selected_obj = obj
+	obj.is_selected = true
+end
+
+
+function select_tile_object(i_tile_obj)
+	assert(user)
+	assert(i_tile_obj)
+	select_object(user.tile_objs[i_tile_obj])
+	user.i_selected_tile_obj = i_tile_obj
+end
+
+
+function deselect_object()
+	user.selected_obj.is_selected = false
+	user.selected_obj = nil
+end
+
+
+function discard_selected_tile()
+	assert(user)
+
+	discard_tile(user, user.selected_obj.tile)
+	user.pick_up_tile_obj = nil
+
+	del(user.tile_objs, user.selected_obj.tile)
 end
 
 
 function draw_user()
 	assert(user)
-	draw_user_hand(user.hand)
+	draw_user_tile_objects(user.tile_objs)
+	draw_melds(user.meld_objs,1)
 end
 
 
-function draw_user_hand(hand)
-	assert(hand)
-	draw_user_tiles(hand.tile_objs)
-	draw_melds(hand.meld_objs,1)
-end
-
-
-function draw_user_tiles(tile_objs)
+function draw_user_tile_objects(tile_objs)
+	assert(tile_objs)
 	for to in all(tile_objs) do
 		draw_large_tile(to.tile, to.x, to.y)
 	end

@@ -1,31 +1,6 @@
 --
 
 
-function draw_melds(meld_objs, i_player)
-	for i,mo in ipairs(meld_objs) do
-		local y = Y_P1_MELDS-8*i
-		local x = X_P1_MELDS
-		for t in all(mo.tiles) do
-			if t > 0 then
-				x -= 6
-				draw_tile(t,x,y)
-			elseif t < 0 then
-				x -= 8
-				draw_tile(-t,x,y+2,true)
-			else
-				if #mo.tiles == 3 then
-					x-=8
-					draw_quad_stack( x, y, true)
-				else
-					x-=6
-					draw_tile_flipped( x, y )
-				end
-			end
-		end
-	end
-end
-
-
 function print_hand(hand)
 	-- s t c o a
 	-- l a r

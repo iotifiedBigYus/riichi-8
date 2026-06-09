@@ -7,7 +7,7 @@ function debug(...)
 	for a in all(args) do
 		output ..= debug_type(a) .. " "
 	end
-	printh(output, "debug")
+	printh(output == "" and "[nil]" or output, "debug")
 end
 
 

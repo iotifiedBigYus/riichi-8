@@ -186,3 +186,14 @@ function draw_all_large_tiles()
 		draw_large_tile(i,(i-1)%16*8,flr((i-1)/16)*12)
 	end
 end
+
+
+function new_tile_object(tile, x, y, i)
+	return {
+		tile = tile,
+		x = x,
+		y = y,
+		is_tile = true,
+		is_selected = false
+	}
+end

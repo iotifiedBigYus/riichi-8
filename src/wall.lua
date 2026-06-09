@@ -33,7 +33,6 @@ end
 
 function new_dead_wall()
 	local n_tiles, i_tiles = empty_tiles(), {}
-	debug(n_tiles, i_tiles)
 	for _ = 1,14 do
 		local t = get_tile()
 		n_tiles[t] += 1
