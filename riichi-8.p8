@@ -10,6 +10,7 @@ __lua__
 #include src/shanten_calculator/meld_finder.lua
 #include src/shanten_calculator/hand.lua
 #include src/constants.lua
+#include src/dora.lua
 #include src/wall.lua
 #include src/hand.lua
 #include src/cpu.lua
@@ -17,6 +18,7 @@ __lua__
 #include src/player.lua
 #include src/game.lua
 #include src/main.lua
+
 __gfx__
 00000000f777f0008999800097709770f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f00000000000000000000000000000000000
 00000000777770009999900097709770755570007755700075757000755770007777700077777000777770007777700000000000000000000000000000000000

@@ -17,6 +17,7 @@ end
 
 function init_game()
 	init_wall()
+	init_dora()
 	init_cpus()
 	init_user()
 
@@ -32,6 +33,7 @@ end
 
 function draw_game()
 	draw_turn_indicator()
+	draw_dora()
 	for i,p in ipairs(game.players) do
 		draw_discard_pile(p.discard_pile,i)
 	end
