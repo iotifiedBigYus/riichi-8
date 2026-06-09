@@ -3,7 +3,7 @@ function _init()
 	-- When running program, run this once.
 	srand(0)
 
-	printh("", "output", true)
+	printh("", "debug", true)
 	init_game()
 end
 

@@ -10,6 +10,7 @@ __lua__
 #include src/shanten_calculator/meld_finder.lua
 #include src/shanten_calculator/hand.lua
 #include src/constants.lua
+#include src/debug.lua
 #include src/dora.lua
 #include src/wall.lua
 #include src/hand.lua
