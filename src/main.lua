@@ -8,10 +8,9 @@ function _init()
 	
 	debug("dead wall:",dead_wall)
 
-	add_dora()
-	add_dora()
-	add_dora()
-	add_dora()
+	--local line = "01m402p403s19z"
+	local line = "024m024p024s17z"
+	debug("encoding", line, encode_tiles(parse_tiles(line)))
 end
 
 function _update60()

@@ -18,11 +18,11 @@ function parse_tiles(line)
 		if s == 'm' then
 			--
 		elseif s == 'p' then
-			offset = 9
+			offset = 1
 		elseif s == 's' then
-			offset = 18
+			offset = 2
 		elseif s == 'z' then
-			offset = 27
+			offset = 3
 		else
 			is_number = true
 		end
@@ -31,7 +31,11 @@ function parse_tiles(line)
 			add(indices, tonum(s));
 		else
 			foreach(indices, function(i)
-				tiles[i + offset] += 1
+				if i > 0 then
+					tiles[i + offset*9] += 1
+				else
+					tiles[35 + offset] += 1
+				end
 			end)
 			indices = {}
 		end
@@ -41,17 +45,31 @@ function parse_tiles(line)
 end
 
 
-function encode_tiles(tiles)
-	local code = ""
+function encode_tiles(tiles, in_color)
+	local code = in_color and "\#0" or ""
 	local suffix = { "m", "p", "s", "z" }
+
 	for i = 1,4 do
 		local had_tile = false
-		for j = 1,9 do
-			if ((i-1) * 9 + j > 34) break
-			local num = tiles[(i-1) * 9 + j];
-			for _ = 1,num do
+
+		code ..= in_color and ({"\f8", "\fc", "\fb", "\f6" })[i] or ""
+
+		-- red fives
+		if i <= 3 do
+			local n = tiles[34 + i];
+			for _ = 1,n do
 				had_tile = true;
-				code ..= tonum(j)
+				code ..= 0
+			end
+		end
+		-- number tiles
+		for j = 1,9 do
+			local t = (i-1) * 9 + j
+			if (t > 34) break
+			local n = tiles[t];
+			for _ = 1,n do
+				had_tile = true;
+				code ..= j
 			end
 		end
 		if (had_tile) code ..= suffix[i]
