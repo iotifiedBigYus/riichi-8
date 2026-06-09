@@ -31,8 +31,25 @@ function new_wall()
 end
 
 
-function init_wall()
+function init_walls()
 	wall = new_wall()
+	dead_wall = new_dead_wall()
+end
+
+
+function new_dead_wall()
+	local n_tiles, i_tiles = empty_tiles(), {}
+	debug(n_tiles, i_tiles)
+	for _ = 1,14 do
+		local t = get_tile()
+		n_tiles[t] += 1
+		add(i_tiles,t)
+	end
+	return {
+		length = 14,
+		n_tiles = n_tiles,
+		i_tiles = i_tiles
+	}
 end
 
 

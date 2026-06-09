@@ -5,6 +5,8 @@ function _init()
 
 	printh("", "debug", true)
 	init_game()
+	
+	debug("dead wall:",dead_wall)
 end
 
 function _update60()

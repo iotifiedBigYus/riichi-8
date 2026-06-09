@@ -16,7 +16,7 @@ end
 
 
 function init_game()
-	init_wall()
+	init_walls()
 	init_dora()
 	init_cpus()
 	init_user()
