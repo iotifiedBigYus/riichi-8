@@ -1,0 +1,110 @@
+
+
+function draw_tile(tile, x, y, horz)
+	local w,h = 6,8
+	if (horz) w,h = h,w
+
+	-- backfill
+	rectfill(
+		x, y, x+w, y+h,
+		get_tile_color(tile)
+	)
+	local n
+	if tile <= 27 then
+		local i = horz and SPR_TILE_NUMBERS_HORZ or SPR_TILE_NUMBERS_VERT
+		n = i+(tile-1)%9+1
+	elseif tile <= 34 then
+		local i = horz and SPR_TILE_HONORS_HORZ or SPR_TILE_HONORS_VERT
+		n = i+tile-27
+	else
+		n = horz and SPR_TILE_NUMBERS_HORZ or SPR_TILE_NUMBERS_VERT
+	end
+	spr(n, x+1, y+1)
+	rect(x,y,x+w,y+h,0) -- outline
+end
+
+
+function get_tile_color(tile)
+	if tile <= 9 or tile == 35 then return COLOR_MAN end
+	if tile <= 18 or tile == 36 then return COLOR_PIN end
+	if tile <= 27 or tile == 37 then return COLOR_SOU end
+	return 0
+end
+
+
+function draw_tile_flipped(x, y, horz)
+	local w,h = 6,8
+	if (horz) w,h = h,w
+
+	local i = horz and SPR_TILE_BACK_HORZ or SPR_TILE_BACK_VERT
+	spr(i, x+1, y+1)
+	rect(x,y,x+w,y+h,0) -- outlines
+end
+
+
+function draw_quad_stack(x, y, horz)
+	local i = horz and SPR_TILE_SIDE_HORZ or SPR_TILE_SIDE_VERT
+	rectfill(x,y,x+8,y+8,0) -- fill/outline
+	spr(i, x+1, y+1)
+end
+
+
+function draw_all_tiles()
+	for i = 1,37 do
+		draw_tile(i,(i-1)%21*6,flr((i-1)/21)*8)
+	end
+end
+
+
+function draw_n_tiles(n_tiles, w)
+	local ox,oy,c = peek(0x5f26),peek(0x5f27),peek(0x5f25)
+	local m = 0
+	for t,n in ipairs(n_tiles) do
+		for _ = 1,n do
+			local y = oy+flr(m/w)*8
+			draw_tile(t,ox+m%w*6,y)
+			poke(0x5f27, y+10)
+			m += 1
+		end
+	end
+	poke(0x5f25,c)
+end
+
+
+function draw_i_tiles(i_tiles, w)
+	local ox,oy,c = peek(0x5f26),peek(0x5f27),peek(0x5f25)
+	for i,t in ipairs(i_tiles) do
+		local y = oy+flr((i-1)/w)*8
+		draw_tile(t,ox+(i-1)%w*6,y)
+		poke(0x5f27, y+10)
+	end
+	poke(0x5f25,c)
+end
+
+
+function draw_large_tile(tile, x, y)
+	local w,h = 8,12
+
+	-- backfill
+	rectfill(
+		x, y, x+w, y+h,
+		get_tile_color(tile)
+	)
+	local n
+	if tile <= 27 then
+		n = SPR_TILE_LARGE_NUMBERS+1+(tile-1)%9
+	elseif tile <= 34 then
+		n = SPR_TILE_LARGE_HONORS-27+tile
+	else
+		n = SPR_TILE_LARGE_NUMBERS
+	end
+	spr(n, x+1, y+1, 1, 1.5)
+	rect(x,y,x+w,y+h,0) -- outline
+end
+
+
+function draw_all_large_tiles()
+	for i = 1,37 do
+		draw_large_tile(i,(i-1)%16*8,flr((i-1)/16)*12)
+	end
+end
