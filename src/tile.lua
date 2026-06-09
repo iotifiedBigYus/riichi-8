@@ -7,6 +7,59 @@ function empty_tiles()
 end
 
 
+function parse_tiles(line)
+	local indices = {}
+	local tiles = empty_tiles()
+	
+	for i = 1,#line do
+		local offset = 0;
+		local is_number = false;
+		local s = sub( line, i,i )
+		if s == 'm' then
+			--
+		elseif s == 'p' then
+			offset = 9
+		elseif s == 's' then
+			offset = 18
+		elseif s == 'z' then
+			offset = 27
+		else
+			is_number = true
+		end
+
+		if is_number then
+			add(indices, tonum(s));
+		else
+			foreach(indices, function(i)
+				tiles[i + offset] += 1
+			end)
+			indices = {}
+		end
+	end
+
+	return tiles;
+end
+
+
+function encode_tiles(tiles)
+	local code = ""
+	local suffix = { "m", "p", "s", "z" }
+	for i = 1,4 do
+		local had_tile = false
+		for j = 1,9 do
+			if ((i-1) * 9 + j > 34) break
+			local num = tiles[(i-1) * 9 + j];
+			for _ = 1,num do
+				had_tile = true;
+				code ..= tonum(j)
+			end
+		end
+		if (had_tile) code ..= suffix[i]
+	end
+	return code
+end
+
+
 function draw_tile(tile, x, y, horz)
 	local w,h = 6,8
 	if (horz) w,h = h,w
