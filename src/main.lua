@@ -7,6 +7,11 @@ function _init()
 	init_game()
 	
 	debug("dead wall:",dead_wall)
+
+	add_dora()
+	add_dora()
+	add_dora()
+	add_dora()
 end
 
 function _update60()

@@ -1,13 +1,20 @@
 
 
 function new_dora()
-	assert(wall)
-	return {get_tile()}
+	assert(dead_wall)
+	return {get_dead_tile()}
 end
 
 
 function init_dora()
 	dora = new_dora()
+end
+
+
+function add_dora()
+	assert(dora)
+	assert(#dora < 5)
+	add(dora, get_dead_tile())
 end
 
 

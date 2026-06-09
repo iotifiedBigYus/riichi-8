@@ -31,12 +31,6 @@ function new_wall()
 end
 
 
-function init_walls()
-	wall = new_wall()
-	dead_wall = new_dead_wall()
-end
-
-
 function new_dead_wall()
 	local n_tiles, i_tiles = empty_tiles(), {}
 	debug(n_tiles, i_tiles)
@@ -53,6 +47,12 @@ function new_dead_wall()
 end
 
 
+function init_walls()
+	wall = new_wall()
+	dead_wall = new_dead_wall()
+end
+
+
 function get_tile()
 	assert(wall)
 	assert(#wall.i_tiles > 0)
@@ -60,6 +60,17 @@ function get_tile()
 	del(wall.i_tiles, t)
 	wall.n_tiles[t] -= 1
 	wall.length -= 1
+	return t
+end
+
+
+function get_dead_tile()
+	assert(dead_wall)
+	assert(#dead_wall.i_tiles > 0)
+	local t = dead_wall.i_tiles[1]
+	del(dead_wall.i_tiles, t)
+	dead_wall.n_tiles[t] -= 1
+	dead_wall.length -= 1
 	return t
 end
 
