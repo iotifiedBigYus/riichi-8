@@ -1,6 +1,6 @@
 
 
-function init_wall()
+function new_wall()
 	local n_tiles, i_tiles = {}, {}
 
 	for i = 1,34 do
@@ -31,6 +31,11 @@ function init_wall()
 end
 
 
+function init_wall()
+	wall = new_wall()
+end
+
+
 function get_tile()
 	assert(wall)
 	assert(#wall.i_tiles > 0)
@@ -39,4 +44,10 @@ function get_tile()
 	wall.n_tiles[t] -= 1
 	wall.length -= 1
 	return t
+end
+
+
+function draw_wall()
+	assert(wall)
+	print(wall.length, X_WALL, Y_WALL, 7)
 end

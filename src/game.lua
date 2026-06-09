@@ -32,6 +32,7 @@ end
 
 
 function draw_game()
+	draw_wall()
 	draw_turn_indicator()
 	draw_dora()
 	for i,p in ipairs(game.players) do
