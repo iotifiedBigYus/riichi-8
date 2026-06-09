@@ -1,12 +1,5 @@
 
 
-function empty_tiles()
-	local tiles = {}
-	for _ = 1,34 do add(tiles,0) end
-	return tiles
-end
-
-
 function parse_hand(line)
 	local indices = {}
 	local tiles = empty_tiles()

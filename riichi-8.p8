@@ -13,6 +13,7 @@ __lua__
 #include src/debug.lua
 #include src/dora.lua
 #include src/wall.lua
+#include src/tile.lua
 #include src/hand.lua
 #include src/cpu.lua
 #include src/user.lua

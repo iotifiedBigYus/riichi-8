@@ -1,5 +1,12 @@
 
 
+function empty_tiles()
+	local tiles = {}
+	for _ = 1,37 do add(tiles,0) end
+	return tiles
+end
+
+
 function draw_tile(tile, x, y, horz)
 	local w,h = 6,8
 	if (horz) w,h = h,w
