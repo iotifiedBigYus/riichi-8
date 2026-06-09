@@ -140,7 +140,29 @@ function discard_selected_tile()
 	discard_tile(user, user.selected_obj.tile)
 	user.pick_up_tile_obj = nil
 
-	del(user.tile_objs, user.selected_obj.tile)
+	del(user.tile_objs, user.selected_obj)
+	user.selected_obj = nil
+
+	sort_tile_objects()
+end
+
+
+function sort_tile_objects()
+	assert(user)
+
+	local objs = user.tile_objs
+
+	foreach(objs, function(to)
+		to.prev_x = to.x
+	end)
+	
+	for i = 1,#objs do
+		local j = i
+		while j > 1 and objs[j-1].tile > objs[j].tile do
+			objs[j],objs[j-1] = objs[j-1],objs[j]
+			j = j - 1
+		end
+	end
 end
 
 

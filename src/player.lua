@@ -47,7 +47,11 @@ end
 function discard_tile(player, tile)
 	assert(player)
 	assert(tile)
+
 	add(player.discard_pile.tiles, tile)
+
+	player.hand.tiles[tile] -= 1
+	assert(player.hand.tiles[tile] >= 0)
 
 	next_turn()
 end

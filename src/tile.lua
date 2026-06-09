@@ -194,6 +194,8 @@ function new_tile_object(tile, x, y, i)
 		x = x,
 		y = y,
 		is_tile = true,
-		is_selected = false
+		is_selected = false,
+		prev_x = 0,
+		prev_y = 0
 	}
 end
