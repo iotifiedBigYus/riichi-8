@@ -64,11 +64,12 @@ end
 
 
 function update_user()
+	assert(game)
 	assert(user)
 
 
 	if btnp(🅾️) then
-		if player_turn() == 1 and user.selected_obj and user.selected_obj.is_tile then
+		if game.turn == 1 and user.selected_obj and user.selected_obj.is_tile then
 			discard_selected_tile()
 			update_user_tile_object_positions()
 			end_turn()

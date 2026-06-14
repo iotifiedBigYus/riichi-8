@@ -10,7 +10,7 @@ function new_game()
 	cpu2.name = "cpu2"
 	cpu3.name = "cpu3"
 
-	local east = 1--rnd{1,2,3,4}
+	local east = rnd{1,2,3,4}
 
 	return {
 		turn = east,
@@ -72,12 +72,6 @@ function check_calls()
 	-- ron > kan/pon > chi
 
 	return false
-end
-
-
-function player_turn()
-	assert(game)
-	return (game.turn - game.east) % 4 + 1
 end
 
 
