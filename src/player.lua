@@ -41,6 +41,8 @@ function get_starting_hand(player, i_player)
 			end
 		end
 	end
+
+	update_user_tile_object_positions()
 end
 
 

@@ -161,6 +161,9 @@ end
 
 
 function draw_large_tile(tile, x, y)
+	assert(tile)
+	assert(x)
+	assert(y)
 	local w,h = 8,12
 
 	-- backfill

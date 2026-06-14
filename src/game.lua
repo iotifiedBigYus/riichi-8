@@ -28,6 +28,8 @@ function init_game()
 	end
 
 	pick_up_tile(user)
+
+	update_user_tile_object_positions()
 end
 
 

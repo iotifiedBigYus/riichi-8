@@ -70,6 +70,7 @@ function update_user()
 	if btnp(🅾️) then
 		if user.selected_obj and user.selected_obj.is_tile then
 			discard_selected_tile()
+			update_user_tile_object_positions()
 		end
 	end
 
@@ -79,12 +80,10 @@ function update_user()
 	elseif btnp(➡️) and not btn(⬅️) then
 		switch_selected_horz(1)
 	end
-
-	update_user_tile_objects()
 end
 
 
-function update_user_tile_objects()
+function update_user_tile_object_positions()
 	assert(user)
 
 	local ox = 63 - #user.tile_objs*4
@@ -109,6 +108,7 @@ function switch_selected_horz(dx)
 		deselect_object()
 		select_tile_object((user.i_selected_tile_obj-1+dx)%#user.tile_objs+1)
 	end
+	update_user_tile_object_positions()
 end
 
 
