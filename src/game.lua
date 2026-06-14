@@ -5,9 +5,16 @@ function new_game()
 	assert(cpu1)
 	assert(cpu2)
 	assert(cpu3)
+	user.name = "user"
+	cpu1.name = "cpu1"
+	cpu2.name = "cpu2"
+	cpu3.name = "cpu3"
+
+	local east = 1--rnd{1,2,3,4}
 
 	return {
-		turn = 1,
+		turn = east,
+		east = east,
 		n_tiles = {},
 		i_tiles = {},
 		players = {user, cpu1, cpu2, cpu3}
@@ -22,25 +29,55 @@ function init_game()
 	init_user()
 
 	game = new_game()
+	player = game.players[game.turn]
 
 	for i,p in ipairs(game.players) do
 		get_starting_hand(p,i)
 	end
 
-	pick_up_tile(user)
-
+	pick_up_tile(player)
 	update_user_tile_object_positions()
+
+	if player != user then
+		perform_cpu_turn(player)
+	end
 end
 
 
 function update_game()
 	update_user()
+
 end
 
 
-function next_turn()
+function end_turn()
 	assert(game)
-	game.turn = game.turn%4+1
+	assert(user)
+	if check_calls() then
+
+	else
+		game.turn = game.turn%4+1
+		player = game.players[game.turn]
+
+		pick_up_tile(player)
+		debug(player)
+		if player != user then
+			perform_cpu_turn(player)
+		end
+	end
+end
+
+
+function check_calls()
+	-- ron > kan/pon > chi
+
+	return false
+end
+
+
+function player_turn()
+	assert(game)
+	return (game.turn - game.east) % 4 + 1
 end
 
 

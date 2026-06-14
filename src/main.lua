@@ -20,4 +20,7 @@ function _draw()
 	draw_game()
 
 	color(6)
+
+	print(game.east)
+	print(game.turn)
 end

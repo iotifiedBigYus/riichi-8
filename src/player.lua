@@ -17,6 +17,7 @@ end
 
 function pick_up_tile(player)
 	assert(wall)
+	assert(player)
 	local t = get_tile()
 
 	player.hand.tiles[t] += 1
@@ -24,6 +25,8 @@ function pick_up_tile(player)
 	local obj = new_tile_object(t)
 	player.pick_up_tile_obj = obj
 	add(player.tile_objs, obj)
+
+	update_player_tile_object_positions()
 end
 
 
@@ -41,8 +44,6 @@ function get_starting_hand(player, i_player)
 			end
 		end
 	end
-
-	update_user_tile_object_positions()
 end
 
 
@@ -54,8 +55,6 @@ function discard_tile(player, tile)
 
 	player.hand.tiles[tile] -= 1
 	assert(player.hand.tiles[tile] >= 0)
-
-	next_turn()
 end
 
 
@@ -63,6 +62,15 @@ function test_player()
 	return {
 		hand = test_player_hand()
 	}
+end
+
+
+function update_player_tile_object_positions()
+	assert(player)
+	assert(user)
+	if player == user then
+		update_user_tile_object_positions()
+	end
 end
 
 

@@ -23,3 +23,17 @@ function test_cpu_hand()
 		}
 	}
 end
+
+
+function perform_cpu_turn(cpu)
+	assert(cpu)
+
+	for i = 1,37 do
+		if cpu.hand.tiles[i] > 0 then
+			discard_tile(cpu, i)
+			break
+		end
+	end
+
+	end_turn()
+end
