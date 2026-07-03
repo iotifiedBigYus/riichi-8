@@ -1,111 +1,35 @@
+-- game
 
 
-function new_game()
-	assert(user)
-	assert(cpu1)
-	assert(cpu2)
-	assert(cpu3)
-	user.name = "user"
-	cpu1.name = "cpu1"
-	cpu2.name = "cpu2"
-	cpu3.name = "cpu3"
-
-	local east = rnd{1,2,3,4}
-
-	return {
-		turn = east,
-		east = east,
-		n_tiles = {},
-		i_tiles = {},
-		players = {user, cpu1, cpu2, cpu3}
-	}
-end
+assert(class)
+assert(wall)
 
 
-function init_game()
-	init_walls()
-	init_dora()
-	init_cpus()
-	init_user()
 
-	game = new_game()
-	player = game.players[game.turn]
+game = class:new{
+	turn = 1,
+	east = 1,
 
-	for i,p in ipairs(game.players) do
-		get_starting_hand(p,i)
-	end
+	new = function(self, table)
+		assert(self)
+		wall1 = wall:new()
+		local o = class.new(self, table)
+		o.live_wall = wall:new()
+		o.dead_wall = wall:new()
+		o.players = {}
+		return o
+	end,
 
-	pick_up_tile(player)
-	update_user_tile_object_positions()
-
-	if player != user then
-		perform_cpu_turn(player)
-	end
-end
-
-
-function update_game()
-	update_user()
-
-end
-
-
-function end_turn()
-	assert(game)
-	assert(user)
-	if check_calls() then
-
-	else
-		game.turn = game.turn%4+1
-		player = game.players[game.turn]
-
-		pick_up_tile(player)
-		debug(player)
-		if player != user then
-			perform_cpu_turn(player)
+	init = function(_ENV)
+		east = rnd{1,2,3,4}
+		turn = east
+		live_wall:populate()
+		for i = 1,14 do
+			dead_wall:add_tile(live_wall:get_tile())
 		end
-	end
-end
-
-
-function check_calls()
-	-- ron > kan/pon > chi
-
-	return false
-end
-
-
-function draw_game()
-	draw_wall()
-	draw_turn_indicator()
-	draw_dora()
-	for i,p in ipairs(game.players) do
-		draw_discard_pile(p.discard_pile,i)
-		print_player_hand(p.hand, i)
-	end
-	draw_user()
-end
-
-
-function draw_turn_indicator()
-	assert(game)
-
-	camera(-X_CENTER,-Y_CENTER)
-
-	local dx = DX_P1_TURN_INDICATOR
-	local dy = DY_P1_TURN_INDICATOR
-	local w = W_P1_TURN_INDICATOR
-	local h = H_P1_TURN_INDICATOR
-	for i = 1,4 do
-		rectfill(
-			dx,
-			dy,
-			dx+w,
-			dy+h,
-			game.turn == i and 10 or 0
-		)
-		dx,dy,w,h = dy,-dx,h,-w
-	end
-
-	camera(0,0)
-end
+		assert(#live_wall.t_tiles == 122)
+		assert(live_wall.length == 122)
+		assert(#dead_wall.t_tiles == 14)
+		assert(dead_wall.length == 14)
+	end,
+}
