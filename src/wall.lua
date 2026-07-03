@@ -1,80 +1,65 @@
+-- wall
 
 
-function new_wall()
-	local n_tiles, i_tiles = {}, {}
+assert(class)
 
-	for i = 1,34 do
-		add(n_tiles,4)
-		for _ = 1,4 do
-			add(i_tiles,i)
-		end
-	end
 
-	-- make red fives
-	for i = 0,2 do
-		n_tiles[5+i*9] -= 1
-		add(n_tiles,1)
-		del(i_tiles,5+i*9)
-		add(i_tiles,35+i)
-	end
-
-	-- shuffle i_tiles
-	for i = 136,1,-1 do
-		add(i_tiles, del(i_tiles, i_tiles[flr(rnd(i))]))
-	end
-
-	return {
-		length = 136,
-		n_tiles = n_tiles,
-		i_tiles = i_tiles
-	}
+function empty_tiles()
+	local tiles = {}
+	for _ = 1,37 do add(tiles,0) end
+	return tiles
 end
 
 
-function new_dead_wall()
-	local n_tiles, i_tiles = empty_tiles(), {}
-	for _ = 1,14 do
-		local t = get_tile()
+wall = class:new{
+	length = 0,
+
+	new = function(self, table)
+		assert(self)
+		local o = class.new(self, table)
+		o.n_tiles = empty_tiles()
+		o.t_tiles = {}
+		return o
+	end,
+
+	get_tile = function(_ENV)
+		if #t_tiles == 0 then return end
+		local t = deli(t_tiles)
+		n_tiles[t] -= 1
+		length -= 1
+		return t
+	end,
+
+	add_tile = function(_ENV, t)
+		add(t_tiles, t)
 		n_tiles[t] += 1
-		add(i_tiles,t)
+		length += 1
+	end,
+
+	populate = function(_ENV)
+		for i = 1,34 do
+			n_tiles[i] = 4
+			for _ = 1,4 do
+				add(t_tiles,i)
+			end
+		end
+		length = 136
+	
+		-- make red fives
+		for i = 0,2 do
+			n_tiles[5+i*9] -= 1
+			n_tiles[35+i] += 1
+			del(t_tiles,5+i*9)
+			add(t_tiles,35+i)
+		end
+	
+		-- shuffle i_tiles
+		for i = 136,1,-1 do
+			add(t_tiles, deli(t_tiles, flr(rnd(i))))
+		end
+	end,
+
+	draw = function(_ENV)
+		print(length, X_WALL, Y_WALL, 7)
 	end
-	return {
-		length = 14,
-		n_tiles = n_tiles,
-		i_tiles = i_tiles
-	}
-end
-
-
-function init_walls()
-	wall = new_wall()
-	dead_wall = new_dead_wall()
-end
-
-
-function get_tile()
-	assert(wall)
-	assert(#wall.i_tiles > 0)
-	local t = wall.i_tiles[1]
-	del(wall.i_tiles, t)
-	wall.n_tiles[t] -= 1
-	wall.length -= 1
-	return t
-end
-
-
-function get_dead_tile()
-	assert(dead_wall)
-	assert(#dead_wall.i_tiles > 0)
-	local t = dead_wall.i_tiles[1]
-	del(dead_wall.i_tiles, t)
-	dead_wall.n_tiles[t] -= 1
-	dead_wall.length -= 1
-	return t
-end
-
-
-function draw_wall()
-	assert(wall)
-	print(wall.length, X_WALL, Y_WALL, 7)
-end
+}
