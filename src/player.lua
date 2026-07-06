@@ -1,5 +1,50 @@
+-- player
+
+
 assert(util)
+assert(class)
 assert(hand)
+
+
+
+discard_pile = {
+	riichi = 0,
+	length = 0,
+
+	new = function(self, table)
+		assert(self)
+		local o = class.new(self, table)
+		o.t_tiles = {}
+		return o
+	end,
+
+	add_tile = function(_ENV, t)
+		add(t_tiles, t)
+		length += 1
+	end,
+}
+
+
+player = {
+	score = 0,
+	in_riichi = false,
+
+	new = function(self, table)
+		assert(self)
+		local o = class.new(self, table)
+		o.hand = hand:new()
+		o.n_discarded_tiles = empty_tiles()
+
+		return o
+	end,
+
+
+}
+
+
+
+
+
 
 function new_player()
 	return {
