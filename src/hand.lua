@@ -1,5 +1,20 @@
---
+-- hand
+
+
 assert(util)
+
+
+hand = {
+	drawn_tile = nil,
+
+	new = function(self, table)
+		assert(self)
+		local o = class.new(self, table)
+		o.n_tiles = empty_tiles()
+		o.melds = {}
+		return o
+	end,
+}
 
 
 function print_hand(hand)

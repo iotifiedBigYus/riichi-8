@@ -1,4 +1,5 @@
 assert(util)
+assert(hand)
 
 function new_player()
 	return {
