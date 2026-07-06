@@ -1,3 +1,4 @@
+assert(util)
 
 function new_player()
 	return {

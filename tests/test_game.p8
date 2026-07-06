@@ -3,9 +3,11 @@ version 43
 __lua__
 
 
+#include ../src/util.lua
 #include ../src/class.lua
 #include ../src/wall.lua
 #include ../src/game.lua
+
 
 g = game:new()
 g:init()

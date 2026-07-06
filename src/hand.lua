@@ -1,4 +1,5 @@
 --
+assert(util)
 
 
 function print_hand(hand)

@@ -1,7 +1,9 @@
 pico-8 cartridge // http://www.pico-8.com
 version 43
 __lua__
+-- test wall
 
+#include ../src/util.lua
 #include ../src/class.lua
 #include ../src/wall.lua
 

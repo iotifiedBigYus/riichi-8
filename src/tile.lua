@@ -1,10 +1,6 @@
 
 
-function empty_tiles()
-	local tiles = {}
-	for _ = 1,37 do add(tiles,0) end
-	return tiles
-end
+assert(util)
 
 
 function parse_tiles(line)

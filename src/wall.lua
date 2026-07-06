@@ -1,15 +1,8 @@
 -- wall
 
 
+assert(util)
 assert(class)
-
-
-function empty_tiles()
-	local tiles = {}
-	for _ = 1,37 do add(tiles,0) end
-	return tiles
-end
-
 
 wall = class:new{
 	length = 0,

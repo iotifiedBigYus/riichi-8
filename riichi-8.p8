@@ -5,6 +5,7 @@ __lua__
 -- sam westerlund
 -- 29.5.2026
 
+#include src/util.lua
 #include src/shanten_calculator/shanten.lua
 #include src/shanten_calculator/analysis.lua
 #include src/shanten_calculator/meld_finder.lua
