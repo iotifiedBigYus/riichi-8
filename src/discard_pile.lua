@@ -5,7 +5,7 @@ assert(entity)
 assert(small_tile)
 
 
-discard_pile = entity:new{
+discard_pile = entity:subclass{
 	ox = -12, -- offset from (x,y)
 	oy = 20,
 	riichi = 0,

@@ -8,7 +8,7 @@ assert(dora)
 
 game = class:subclass{
 	new = function(self)
-		local _ENV = class.subclass(self)
+		local _ENV = self:subclass()
 
 		east = rnd(split"1,2,3,4")
 		turn = east
