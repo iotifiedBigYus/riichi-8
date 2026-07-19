@@ -5,7 +5,7 @@
 global = _ENV
 
 class = {
-	new = function(self, table)
+	subclass = function(self, table)
 		assert(self)
 		table = table or {}
 		setmetatable(table, {

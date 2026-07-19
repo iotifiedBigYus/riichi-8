@@ -28,7 +28,7 @@ function get_large_tile_face_sprites_vert()
 end
 
 
-large_tile = small_tile:new{
+large_tile = small_tile:subclass{
 	ws = split"8,8,8,8",
 	hs = split"12,12,12,12",
 	w = 8,

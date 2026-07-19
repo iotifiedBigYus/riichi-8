@@ -5,7 +5,7 @@ assert(util)
 assert(class)
 
 
-entity = class:new{
+entity = class:subclass{
 	x = 64,
 	y = 64,
 	rotation = 1,
@@ -15,7 +15,7 @@ entity = class:new{
 	-- rotation = 4: left
 
 	new = function(self, table)
-		return class.new(self, table):update()
+		return self:subclass(table):update()
 	end,
 
 	set_pos = function(_ENV, new_x, new_y)

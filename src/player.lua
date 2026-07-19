@@ -8,12 +8,12 @@ assert(discard_pile)
 
 
 
-player = class:new{
+player = class:subclass{
 	score = 25000,
 	-- in_riichi = false,
 
 	new = function(self)
-		return class.new(self, {
+		return self:subclass({
 			hand = hand:new(),
 			discard_pile = discard_pile:new(),
 		})

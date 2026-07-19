@@ -7,10 +7,10 @@ assert(meld)
 assert(meld_stack)
 
 
-hand = class:new{
+hand = class:subclass{
 	--drawn_tile = nil,
 	new = function(self)
-		return class.new(self, {
+		return self:subclass({
 			n_tiles = empty_tiles(),
 			n_melds = {},
 			meld_stack = global.meld_stack:new(),

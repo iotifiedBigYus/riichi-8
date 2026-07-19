@@ -5,7 +5,7 @@ assert(entity)
 assert(small_tile)
 
 
-meld = entity:new{
+meld = entity:subclass{
 	origin = 1,
 	-- type = nil
 	-- taken_tile = nil,
@@ -15,7 +15,7 @@ meld = entity:new{
 		return entity.new(self, {
 			m_tiles = {},
 			own_tiles = {},
-		}):update()
+		})
 	end,
 
 	set_origin = function(_ENV, new_origin)

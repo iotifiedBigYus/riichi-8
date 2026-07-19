@@ -4,9 +4,9 @@
 assert(class)
 
 
-async = class:new{
+async = class:subclass{
 	new = function(self)
-		return class.new(self, {
+		return self:subclass({
 			routines = {},
 		})
 	end,

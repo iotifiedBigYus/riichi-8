@@ -56,7 +56,7 @@ function get_small_tile_face_sprites_horz()
 end
 
 
-small_tile = entity:new{
+small_tile = entity:subclass{
 	tile = 32,
 	tile_colors = split[[
 		8,8,8,8,8,8,8,8,8,

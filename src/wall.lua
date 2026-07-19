@@ -5,11 +5,11 @@ assert(util)
 assert(class)
 
 
-wall = class:new{
+wall = class:subclass{
 	length = 0,
 
 	new = function(self)
-		return class.new(self, {
+		return self:subclass({
 			n_tiles = empty_tiles(),
 			t_tiles = {},
 		})

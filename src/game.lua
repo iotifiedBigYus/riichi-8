@@ -6,9 +6,9 @@ assert(wall)
 assert(dora)
 
 
-game = class:new{
+game = class:subclass{
 	new = function(self)
-		local _ENV = class.new(self)
+		local _ENV = class.subclass(self)
 
 		east = rnd(split"1,2,3,4")
 		turn = east

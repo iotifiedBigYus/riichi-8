@@ -5,7 +5,7 @@ assert(class)
 assert(entity)
 
 
-meld_stack = entity:new{
+meld_stack = entity:subclass{
 	length = 0,
 	ox = 50,
 	oy = 50,
