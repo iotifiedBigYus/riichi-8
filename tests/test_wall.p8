@@ -16,17 +16,15 @@ for i = 1,5 do
 	wall2:add_tile(1)
 end
 for i = 1,5 do
-	?wall1:get_tile()
-	?wall2:get_tile()
+	assert(wall1:get_tile() == 6-i)
+	assert(wall2:get_tile() == 1)
 end
 
-?wall1.length
+assert(wall1:get_length() == 0)
 wall1:populate()
-?#wall1.t_tiles
-?wall1.length
-?wall2.length
-
-wall1:draw()
+assert(#wall1:populate():populate().t_tiles == wall1:get_length())
+assert(wall2:get_length() == 0)
+?"all good"
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000

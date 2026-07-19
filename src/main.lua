@@ -5,7 +5,6 @@ function _init()
 
 	printh("", "debug", true)
 	game0 = game:new()
-	game0:init()
 end
 
 function _update60()
@@ -21,6 +20,6 @@ function _draw()
 
 	color(6)
 
-	print(game.east)
-	print(game.turn)
+	print(game0.east)
+	print(game0.turn)
 end

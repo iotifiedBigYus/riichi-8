@@ -4,62 +4,34 @@
 assert(util)
 assert(class)
 assert(hand)
+assert(discard_pile)
 
 
 
-discard_pile = {
-	riichi = 0,
-	length = 0,
+player = class:new{
+	score = 25000,
+	-- in_riichi = false,
 
-	new = function(self, table)
-		assert(self)
-		local o = class.new(self, table)
-		o.t_tiles = {}
-		return o
+	new = function(self)
+		return class.new(self, {
+			hand = hand:new(),
+			discard_pile = discard_pile:new(),
+		})
 	end,
 
-	add_tile = function(_ENV, t)
-		add(t_tiles, t)
-		length += 1
+	add_points = function(_ENV, points)
+		score += points
+		return _ENV
+	end,
+
+	get_score = function(_ENV)
+		return score
+	end,
+
+	update = function(_ENV)
+		return _ENV
 	end,
 }
-
-
-player = {
-	score = 0,
-	in_riichi = false,
-
-	new = function(self, table)
-		assert(self)
-		local o = class.new(self, table)
-		o.hand = hand:new()
-		o.n_discarded_tiles = empty_tiles()
-
-		return o
-	end,
-
-
-}
-
-
-
-
-
-
-function new_player()
-	return {
-		hand = {
-			tiles = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			melds = {},
-			drawn_tile = 1,
-		},
-		discarded_tiles = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		discard_pile = {
-			riichi = 0,
-			tiles = {}
-		}
-	}
-end
 
 
 function pick_up_tile(player)
@@ -105,110 +77,11 @@ function discard_tile(player, tile)
 end
 
 
-function test_player()
-	return {
-		hand = test_player_hand()
-	}
-end
-
-
 function update_player_tile_object_positions()
 	assert(player)
 	assert(user)
 	if player == user then
 		update_user_tile_object_positions()
-	end
-end
-
-
-function draw_melds(meld_objs, i_player)
-	for i,mo in ipairs(meld_objs) do
-		local y = Y_P1_MELDS-8*i
-		local x = X_P1_MELDS
-		for t in all(mo.tiles) do
-			if t > 0 then
-				x -= 6
-				draw_tile(t,x,y)
-			elseif t < 0 then
-				x -= 8
-				draw_tile(-t,x,y+2,true)
-			else
-				if #mo.tiles == 3 then
-					x-=8
-					draw_quad_stack( x, y, true)
-				else
-					x-=6
-					draw_tile_flipped( x, y )
-				end
-			end
-		end
-	end
-end
-
-
-function draw_discard_pile(discard_pile, i_player)
-	assert(discard_pile)
-
-	tiles = discard_pile.tiles
-	riichi = discard_pile.riichi
-
-	i_player = i_player or 1
-	local ry = flr((riichi-1)/6)
-
-	if i_player == 1 then
-		for i,t in ipairs(tiles) do
-			local ty = flr((i-1)/6)
-			local x,y = X_P1_DISCARDS+(i-1)%6*6, Y_P1_DISCARDS+ty*8
-			if ry == ty and i > riichi then
-				x+=2
-			elseif riichi == i then
-				y+=1
-			end
-			draw_tile(
-				t,x,y,riichi == i
-			)
-		end
-	elseif i_player == 2 then
-		for i,t in ipairs(tiles) do
-			local ty = flr((i-1)/6)
-			local x,y = X_P2_DISCARDS+ty*8, Y_P2_DISCARDS-(i-1)%6*6-6
-			if ry == ty and i > riichi then
-				y-=2
-			elseif riichi == i then
-				x+=1
-				y-=2
-			end
-			draw_tile(
-				t,x,y,riichi != i
-			)
-		end
-	elseif i_player == 3 then
-		for i,t in ipairs(tiles) do
-			local ty = flr((i-1)/6)
-			local x,y = X_P3_DISCARDS-(i-1)%6*6-6, Y_P3_DISCARDS-ty*8-8
-			if ry == ty and i > riichi then
-				x-=2
-			elseif riichi == i then
-				x-=2
-				y+=1
-			end
-			draw_tile(
-				t,x,y,riichi == i
-			)
-		end
-	elseif i_player == 4 then
-		for i,t in ipairs(tiles) do
-			local ty = flr((i-1)/6)
-			local x,y = X_P4_DISCARDS-ty*8-8, Y_P4_DISCARDS+(i-1)%6*6
-			if ry == ty and i > riichi then
-				y+=2
-			elseif riichi == i then
-				x+=1
-			end
-			draw_tile(
-				t,x,y,riichi != i
-			)
-		end
 	end
 end
 

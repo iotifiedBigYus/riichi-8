@@ -2,17 +2,23 @@
 
 
 assert(util)
+assert(class)
+assert(meld)
+assert(meld_stack)
 
 
-hand = {
-	drawn_tile = nil,
+hand = class:new{
+	--drawn_tile = nil,
+	new = function(self)
+		return class.new(self, {
+			n_tiles = empty_tiles(),
+			n_melds = {},
+			meld_stack = global.meld_stack:new(),
+		})
+	end,
 
-	new = function(self, table)
-		assert(self)
-		local o = class.new(self, table)
-		o.n_tiles = empty_tiles()
-		o.melds = {}
-		return o
+	draw = function(_ENV)
+
 	end,
 }
 
@@ -83,33 +89,4 @@ function sort_hand(hand)
 	end
 
 	return hand
-end
-
-
-function is_complete(hand)
-	tiles = {hand. draw, unpack(hand.tiles)}
-end
-
-
-function test_discards3()
-	local tiles = {}
-	for i = 1,37 do
-		add(tiles,i)
-	end
-	return {
-		riichi = 8,
-		tiles = tiles
-	}
-end
-
-
-function test_discards4()
-	local tiles = {}
-	for i = 14,37 do
-		add(tiles,i)
-	end
-	return {
-		riichi = 8,
-		tiles = tiles
-	}
 end

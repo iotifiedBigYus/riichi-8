@@ -5,10 +5,15 @@ __lua__
 
 #include ../src/util.lua
 #include ../src/class.lua
+#include ../src/entity.lua
+#include ../src/small_tile.lua
+#include ../src/discard_pile.lua
+#include ../src/meld.lua
+#include ../src/meld_stack.lua
 #include ../src/hand.lua
 #include ../src/player.lua
 
-
+cls(1)
 pile = discard_pile:new()
 ?pile.length
 pile:add_tile(2)

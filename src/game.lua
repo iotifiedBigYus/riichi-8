@@ -3,29 +3,19 @@
 
 assert(class)
 assert(wall)
-
+assert(dora)
 
 
 game = class:new{
-	turn = 1,
-	east = 1,
+	new = function(self)
+		local _ENV = class.new(self)
 
-	new = function(self, table)
-		assert(self)
-		local o = class.new(self, table)
-		o.live_wall = wall:new()
-		o.dead_wall = wall:new()
-		o.t_dora_indicators = {}
-		--o.n_dora_tiles = {}
-		o.t_uradora_indicators = {}
-		--o.n_uradora_tiles = {}
-		return o
-	end,
-
-	init = function(_ENV)
-		east = rnd{1,2,3,4}
+		east = rnd(split"1,2,3,4")
 		turn = east
+
 		-- init walls
+		dead_wall = wall:new()
+		live_wall = wall:new()
 		live_wall:populate()
 		for i = 1,14 do
 			dead_wall:add_tile(live_wall:get_tile())
@@ -34,47 +24,72 @@ game = class:new{
 		assert(live_wall.length == 122)
 		assert(#dead_wall.t_tiles == 14)
 		assert(dead_wall.length == 14)
+
 		-- init dora
-		_ENV:add_dora()
+		dora = dora:new()
+		dora:add_pair(dead_wall:get_tiles(2))
+
+
+		assert(#dora.indicators.t_tiles == 1)
+		assert(dora.indicators.length == 1)
+		assert(#dead_wall.t_tiles == 12)
+		assert(dead_wall.length == 12)
+
+		-- init players
+		players = {
+			user:new()
+
+		}
+
+		init_game = function()
+			init_walls()
+			init_dora()
+			init_cpus()
+			init_user()
+		
+			game = new_game()
+			player = game.players[game.turn]
+		
+			for i,p in ipairs(game.players) do
+				get_starting_hand(p,i)
+			end
+		
+			pick_up_tile(player)
+			update_user_tile_object_positions()
+		
+			if player != user then
+				perform_cpu_turn(player)
+			end
+		end
+
+
+		return _ENV
 	end,
 
-	add_dora = function(_ENV)
-		local t = dead_wall:get_tile()
-		add(t_dora_indicators, t)
-		--local indicated = split"2,3,4,5,6,7,8,9,1   11,12,13,14,15,16,17,18,10   20,21,22,23,24,25,26,27,19   29,30,31,28   33,34,32"
-		--n_dora_tiles[indicated[t]] += 1
+	get_starting_hand = function(player, i_player)
+		assert(wall)
+		for _ = 1,13 do
+			local t = get_tile()
+			player.hand.tiles[t] += 1
+		end
+	
+		if i_player == 1 then
+			for t,n in ipairs(player.hand.tiles) do
+				for _ = 1,n do
+					add(player.tile_objs, new_tile_object(t))
+				end
+			end
+		end
 	end,
 
 	update = function(_ENV)
-
+		return _ENV
 	end,
 
 	draw = function(_ENV)
-
+		return _ENV
 	end,
 }
-
-
-function init_game()
-	init_walls()
-	init_dora()
-	init_cpus()
-	init_user()
-
-	game = new_game()
-	player = game.players[game.turn]
-
-	for i,p in ipairs(game.players) do
-		get_starting_hand(p,i)
-	end
-
-	pick_up_tile(player)
-	update_user_tile_object_positions()
-
-	if player != user then
-		perform_cpu_turn(player)
-	end
-end
 
 
 function update_game()

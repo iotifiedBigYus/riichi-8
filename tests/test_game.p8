@@ -3,16 +3,20 @@ version 43
 __lua__
 
 
+#include ../src/constants.lua
 #include ../src/util.lua
 #include ../src/class.lua
+#include ../src/entity.lua
 #include ../src/wall.lua
+#include ../src/small_tile.lua
+#include ../src/dora.lua
 #include ../src/game.lua
 
 
 g = game:new()
-g:init()
 ?g.turn
 
+cls()
 g.live_wall:draw()
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
