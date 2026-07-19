@@ -14,6 +14,10 @@ entity = class:new{
 	-- rotation = 3: up
 	-- rotation = 4: left
 
+	new = function(self, table)
+		return class.new(self, table):update()
+	end,
+
 	set_pos = function(_ENV, new_x, new_y)
 		x, y = new_x, new_y
 		_ENV:update()
