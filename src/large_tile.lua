@@ -4,6 +4,29 @@
 assert(util)
 assert(small_tile)
 
+function get_large_tile_face_sprites_vert()
+	local sprites = {}
+
+	for tile = 1,37 do
+		local spr_numbers_vert = 0x61
+		local spr_honors_vert = 0x40-28
+		local spr_fives_vert = 0x60
+
+		if tile <= 27 then
+			-- number tiles
+			add(sprites, spr_numbers_vert+(tile-1)%9)
+		elseif tile <= 34 then
+			-- honors
+			add(sprites, spr_honors_vert+tile)
+		else
+			-- "red" fives
+			add(sprites, spr_fives_vert)
+		end
+	end
+	
+	return sprites
+end
+
 
 large_tile = small_tile:new{
 	ws = split"8,8,8,8",
@@ -12,9 +35,7 @@ large_tile = small_tile:new{
 	h = 12,
 	spr_y = 7,
 	spr_h = 1.875,
-	spr_numbers_vert = 0x61,
-	spr_honors_vert = 0x40-28,
-	spr_fives_vert = 0x60,
+	face_sprites_vert = get_large_tile_face_sprites_vert(), --TODO: replace with split table
 
 	draw_all_tiles = function(_ENV)
 		--debug
@@ -32,6 +53,7 @@ large_tile = small_tile:new{
 	end,
 
 	draw_n_tiles = function(_ENV, n_tiles)
+		--debug
 		local ox,oy,c = peek(0x5f26),peek(0x5f27),peek(0x5f25)
 		local i = 1
 		for tile,n in ipairs(n_tiles) do
@@ -49,6 +71,7 @@ large_tile = small_tile:new{
 	end,
 
 	draw_i_tiles = function(_ENV, i_tiles)
+		--debug
 		local ox,oy,c = peek(0x5f26),peek(0x5f27),peek(0x5f25)
 		for i,tile in ipairs(i_tiles) do
 			local x = ox+4+(i-1)%16*8
