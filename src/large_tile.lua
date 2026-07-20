@@ -29,7 +29,7 @@ function get_large_tile_face_sprites_vert()
 end
 
 
-large_tile = small_tile:subclass{
+large_tile = tile:subclass{
 	ws = split"8,8,8,8",
 	hs = split"12,12,12,12",
 	w = 8,
@@ -37,51 +37,4 @@ large_tile = small_tile:subclass{
 	spr_y = 7,
 	spr_h = 1.875,
 	face_sprites_vert = get_large_tile_face_sprites_vert(), --TODO: replace with split table
-
-	draw_all_tiles = function(_ENV)
-		--debug
-		for j = 1,37 do
-			_ENV:new()
-			:set_tile(j)
-			:set_pos(
-				4+(j-1)%16*8,
-				6+flr((j-1)/16)*12
-			)
-			:draw()
-		end
-
-		return _ENV
-	end,
-
-	draw_n_tiles = function(_ENV, n_tiles)
-		--debug
-		local ox,oy,c = peek(0x5f26),peek(0x5f27),peek(0x5f25)
-		local i = 1
-		for tile,n in ipairs(n_tiles) do
-			for _ = 1,n do
-				local x = ox+4+(i-1)%16*8
-				local y = oy+6+flr((i-1)/16)*12
-				_ENV:new():set_tile(tile):set_pos(x,y):draw()
-				poke(0x5f27, y+10)
-				i += 1
-			end
-		end
-		poke(0x5f25,c)
-
-		return _ENV
-	end,
-
-	draw_i_tiles = function(_ENV, i_tiles)
-		--debug
-		local ox,oy,c = peek(0x5f26),peek(0x5f27),peek(0x5f25)
-		for i,tile in ipairs(i_tiles) do
-			local x = ox+4+(i-1)%16*8
-			local y = oy+6+flr((i-1)/16)*12
-			_ENV:new():set_tile(tile):set_pos(x,y):draw()
-			poke(0x5f27, y+10)
-		end
-		poke(0x5f25,c)
-
-		return _ENV
-	end,
 }
