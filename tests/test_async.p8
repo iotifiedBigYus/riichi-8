@@ -18,6 +18,10 @@ t = tile:new()
 
 
 game_async = async:new()
+
+function _update60()
+end
+
 function _draw()
 	game_async:resume()
 	
