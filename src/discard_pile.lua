@@ -1,9 +1,8 @@
 -- discard pile
 
-
---TODO: move fit_in_four from higher level operations to lower ones
 --TODO: make inherit from hand/wall
 
+assert(fit_in_four)
 assert(entity)
 assert(tile)
 
