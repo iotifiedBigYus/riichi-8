@@ -1,7 +1,6 @@
 -- tile
 
 
-assert(util)
 assert(class)
 assert(entity)
 
@@ -66,10 +65,20 @@ tile = entity:subclass{
 		0,0,0,
 		8,12,11
 	]],
+	relative_values = split[[
+		1,2,3,4,5,6,7,8,9,
+		11,12,13,14,15,16,17,18,19,
+		21,22,23,24,25,26,27,28,29,
+		31,32,33,34,
+		41,42,43,
+		4.5,14.5,24.5
+	]],
+	--[[
+		relative value is used to sort tiles.
+		the absolute values used can be chosen arbitrarily.
+	]]
 	ws = split"6,6,6,8", --based on status
 	hs = split"8,8,4,4",
-	w = 6,
-	h = 8,
 	spr_x = 3,
 	spr_y = 3,
 	spr_w = 0.875,
@@ -85,6 +94,9 @@ tile = entity:subclass{
 		status = 4: on edge face towards
 	]]
 	--value_color = 0,
+	--relative_value = 41,
+	--w = 6,
+	--h = 8,
 	--sprite = nil,
 	--spr_flip = false,
 	
@@ -108,6 +120,8 @@ tile = entity:subclass{
 	end,
 
 	update = function(_ENV)
+		relative_value = relative_values[value]
+
 		w,h = ws[status], hs[status]
 		
 		local turn = rotation % 2 == 0
