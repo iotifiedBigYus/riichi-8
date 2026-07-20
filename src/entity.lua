@@ -1,7 +1,7 @@
 -- entity
 
 
-assert(util)
+assert(fit_in_four)
 assert(class)
 
 
@@ -25,8 +25,7 @@ entity = class:subclass{
 	end,
 
 	set_rotation = function(_ENV, new_rotation)
-		assert(new_rotation >= 1 and new_rotation <= 4)
-		rotation = new_rotation
+		rotation = fit_in_four(new_rotation)
 		_ENV:update()
 		return _ENV
 	end,
