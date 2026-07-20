@@ -9,16 +9,18 @@ __lua__
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
-#include ../src/small_tile.lua
+#include ../src/tile.lua
 #include ../src/large_tile.lua
+#include ../src/debug_tile.lua
+#include ../src/debug_large_tile.lua
 
 cls(1)
 
 for i = 1,4 do
 	for j = 1,4 do
 		x,y = 10*i,10*j
-		t = small_tile:new()
-		:set_tile(1)
+		t = tile:new()
+		:set_value(1)
 		:set_pos(x,y)
 		:set_rotation(i)
 		:set_status(j)
@@ -30,11 +32,11 @@ end
 --t.spr_flip = true
 color(7)
 --?t.rotation
-small_tile:draw_all_tiles()
+draw_all_tiles()
 
 large_tile
 :new()
-:set_tile(1)
+:set_value(1)
 :set_pos(10,10)
 :draw()
 
@@ -46,10 +48,10 @@ n_tiles[1] = 4
 n_tiles[2] = 1
 n_tiles[3] = 2
 
-cursor(0,00)small_tile:draw_n_tiles(n_tiles)
-cursor(0,8)small_tile:draw_i_tiles(i_tiles)
-cursor(0,16)large_tile:draw_n_tiles(n_tiles)
-cursor(0,28)large_tile:draw_i_tiles(i_tiles)
+cursor(0,00)draw_n_tiles(n_tiles)
+cursor(0,8)draw_i_tiles(i_tiles)
+cursor(0,16)draw_n_tiles(n_tiles)
+cursor(0,28)draw_large_i_tiles(i_tiles)
 __gfx__
 000000000e999e0000000000000000000f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f0000000000000000000000000000000000
 00000000099999000000000000000000075557000775570007575700075577000777770007777700077777000777770000000000000000000000000000000000

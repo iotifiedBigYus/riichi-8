@@ -101,7 +101,7 @@ tile = entity:subclass{
 		return _ENV
 	end,
 
-	set_prs = function(_ENV, new_x, new_y, new_rotation, new_status)
+	set_state = function(_ENV, new_x, new_y, new_rotation, new_status)
 		x, y, rotation, status = new_x, new_y, new_rotation, new_status
 		_ENV:update()
 		return _ENV
