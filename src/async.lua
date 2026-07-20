@@ -12,7 +12,13 @@ async = class:subclass{
 	end,
 
 	create = function(_ENV, func)
-		add(routines, func)
+		add(routines, cocreate(func))
+	end,
+
+	create_many = function(_ENV, funcs)
+		foreach(funcs, function(f)
+			add(routines, cocreate(f))
+		end)
 	end,
 
 	kill = function(_ENV)
@@ -23,16 +29,12 @@ async = class:subclass{
 		foreach(routines, coresume)
 	end,
 
-	animate = function(_ENV, obj, key, value, frames, easing, no_snap)
+	set_later = function(_ENV, obj, key, value, frames)
 		add(routines, cocreate(function()
-			local value0 = obj[key]
-			for i = 1,frames do
-				local t = easing and easing(i/frames) or i/frames
-				obj[key] = value0 + (value-value0)*t
+			for _ = 1,frames do
 				yield()
 			end
-			if (no_snap) return
-			obj[key] = flr(obj[key]) -- snap on finish
+			obj[key] = value
 		end))
 	end,
 }

@@ -4,8 +4,7 @@ __lua__
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
-#include ../src/small_tile.lua
-#include ../src/meld.lua
+#include ../src/tile.lua
 #include ../src/debug.lua
 #include ../src/async.lua
 
@@ -15,26 +14,29 @@ __lua__
 cls(1)
 
 
-ck = meld:new()
-:set_origin(1)
-:set_own_tiles(2,2,2,2)
+t = tile:new()
 
 
 game_async = async:new()
 function _draw()
 	game_async:resume()
 	
-	local x,y = ck:get_pos()
+	local x,y = t:get_pos()
+	func1 = animate(t,"x",98,16,ease_in_out_quad)
+	func2 = animate(t,"x",30,16)
+	
 	if btnp(➡️) then
-		game_async:animate(ck,"x",x+30,16,ease_in_out_quad)
+		--func1()
+		game_async:create(func1)
 	elseif btnp(⬅️) then
-		game_async:animate(ck,"x",x-30,16)
+		--func2()
+		game_async:create(func2)
 	end
 	
 	
 	cls(1)
 	--y+=1
-	ck:set_rotation(1):draw()
+	t:set_rotation(1):draw()
 	pset(64,64,11)
 	?stat(1)
 	?x
