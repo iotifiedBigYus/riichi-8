@@ -33,9 +33,11 @@ meld4 = meld:new():set_origin(4):set_tiles({t1[4],t2[4]},t3[4]):apply_tile_state
 
 stack1 = meld_stack:new():set_melds({meld1, meld2, meld3, meld4})
 
-stack1:apply_tile_states():draw()
+for i = 1,4 do
+	stack1:set_rotation(i):apply_tile_states():draw()
+end
 
-color(8)
+color()
 ?#stack1.meld_states
 ?stack1.meld_states[2][2]
 

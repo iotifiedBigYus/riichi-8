@@ -1,6 +1,7 @@
 -- meld stack
 
 
+assert(empty_tiles)
 assert(class)
 assert(entity)
 
@@ -30,19 +31,12 @@ meld_stack = entity:subclass{
 		return _ENV
 	end,
 
-	get_next_pos = function(_ENV)
-		return _ENV:get_rotated_pos(ox, oy-length*8)
-	end,
-
-	get_animations = function(_ENV)
-		local animations = {}
-		for tile in all(all_tiles) do
-			add(
-				animations,
-				animate(tile, "x", states[1], 16, ease_in_out_quad)
-			)
-		end
-		return animations
+	get_values = function(_ENV)
+		local values = empty_tiles()
+		foreach(melds, function(meld)
+			values = add_values(values, meld:get_values())
+		end)
+		return values
 	end,
 
 	get_meld_state = function(_ENV, i)
