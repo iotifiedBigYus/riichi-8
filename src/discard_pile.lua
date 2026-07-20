@@ -1,66 +1,84 @@
 -- discard pile
 
 
+--TODO: move fit_in_four from higher level operations to lower ones
+
+
 assert(entity)
-assert(small_tile)
+assert(tile)
 
 
 discard_pile = entity:subclass{
-	ox = -12, -- offset from (x,y)
-	oy = 20,
-	riichi = 0,
-	length = 0,
+	riichi_i = 0,
+	--length = 0,
+	--riichi_row = -1,
 
 	new = function(self)
 		return entity.new(self, {
-			t_tiles = {},
+			tiles = {},
+			tile_states = {},
 		})
 	end,
 
 	add_tile = function(_ENV, tile, in_riichi)
-		add(t_tiles, tile)
-		length += 1
-		if in_riichi and riichi == 0 then
-			riichi = length
+		add(tiles, tile)
+		if in_riichi and riichi_i == 0 then
+			riichi_i = #tiles
+		end
+		_ENV:update()
+		return _ENV
+	end,
+
+	remove_tile = function(_ENV, t)
+		tile = deli(tiles)
+		_ENV:update()
+		return tile
+	end,
+
+	get_tile_state = function(_ENV, i)
+		local row = flr((i-1)/6)
+		local x = (i-1)%6*6+3
+		local y = row*8+4
+		local tile_rotation = rotation
+
+		if riichi_row == row and i > riichi_i then
+			x+=2
+		elseif riichi_i == i then
+			x+=1
+			tile_rotation = fit_in_four(rotation+1)
+		end
+
+		local tile_x, tile_y = _ENV:get_rotated_pos(x,y)
+		return {
+			tile_x,
+			tile_y,
+			tile_rotation,
+			1,
+		}
+	end,
+
+	apply_tile_states = function(_ENV)
+		for i,tile in ipairs(tiles) do
+			tile:set_state(tile_states[i])
 		end
 		return _ENV
 	end,
 
-	get_length = function(_ENV)
-		return length
-	end,
+	update = function(_ENV)
+		length = #tiles
 
-	get_riichi = function(_ENV)
-		return riichi
-	end,
+		riichi_row = flr((riichi_i-1)/6)
 
-	remove_tile = function(_ENV, t)
-		length -= 1
-		return deli(t_tiles)
+		tile_states = {}
+		for i = 1,length do
+			add(tile_states, _ENV:get_tile_state(i))
+		end
+
+		return _ENV
 	end,
 
 	draw = function(_ENV)
-		local ry = flr((riichi-1)/6)
-		for i,tile in ipairs(t_tiles) do
-			-- x,y as if you are in first rotation
-			local ty = flr((i-1)/6)
-			local dx,dy = (i-1)%6*6-3+ox, ty*8+4+oy
-			local tile_rotation = rotation
-			if ry == ty and i > riichi then
-				dx+=2
-			elseif riichi == i then
-				dx+=1
-				tile_rotation = rotation%4+1
-			end
-			
-			-- x,y are rotated
-			small_tile:new()
-			:set_tile(tile)
-			:set_pos(_ENV:get_rotated_pos(dx, dy))
-			:set_rotation(tile_rotation)
-			:draw()
-		end
-		
+		foreach(tiles, function(tile) tile:draw() end)
 		return _ENV
 	end,
 }

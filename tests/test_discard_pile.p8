@@ -7,36 +7,36 @@ __lua__
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
-#include ../src/small_tile.lua
+#include ../src/tile.lua
 #include ../src/discard_pile.lua
 
 
 cls(1)
 
 p = discard_pile:new()
-:add_tile(1)
-:add_tile(2)
-:add_tile(3)
-:add_tile(4)
-:add_tile(5)
-:add_tile(6)
-:add_tile(7)
-:add_tile(8,true)
+:add_tile(tile:new():set_value(1))
+:add_tile(tile:new():set_value(2))
+:add_tile(tile:new():set_value(3))
+:add_tile(tile:new():set_value(4))
+:add_tile(tile:new():set_value(5))
+:add_tile(tile:new():set_value(6))
+:add_tile(tile:new():set_value(7))
+:add_tile(tile:new():set_value(8),true)
 
-?p:remove_tile()
-?p:remove_tile()
+?"revoved value: "..p:remove_tile().value
+?"revoved value: "..p:remove_tile().value
 
 p
-:add_tile(9)
-:add_tile(10)
-:add_tile(11,true)
-:add_tile(12)
-:add_tile(13)
+:add_tile(tile:new():set_value(9))
+:add_tile(tile:new():set_value(10))
+:add_tile(tile:new():set_value(11),true)
+:add_tile(tile:new():set_value(12))
+:add_tile(tile:new():set_value(13))
 
-?p:get_length()
+?"length: "..p.length
 
 for i = 1,4 do
-	p:set_rotation(i):draw()
+	p:set_rotation(i):apply_tile_states():draw()
 end
 
 pset(64,64,11)
