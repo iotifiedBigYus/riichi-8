@@ -14,9 +14,8 @@ __lua__
 #include src/constants.lua
 #include src/debug.lua
 #include src/wall.lua
-#include src/small_tile.lua
-#include src/dora.lua
 #include src/tile.lua
+#include src/dora.lua
 #include src/meld.lua
 #include src/discard_pile.lua
 #include src/hand.lua

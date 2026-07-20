@@ -2,22 +2,23 @@
 
 
 assert(util)
-assert(small_tile)
+assert(tile)
+
 
 function get_large_tile_face_sprites_vert()
 	local sprites = {}
 
-	for tile = 1,37 do
+	for value = 1,37 do
 		local spr_numbers_vert = 0x61
 		local spr_honors_vert = 0x40-28
 		local spr_fives_vert = 0x60
 
-		if tile <= 27 then
+		if value <= 27 then
 			-- number tiles
-			add(sprites, spr_numbers_vert+(tile-1)%9)
-		elseif tile <= 34 then
+			add(sprites, spr_numbers_vert+(value-1)%9)
+		elseif value <= 34 then
 			-- honors
-			add(sprites, spr_honors_vert+tile)
+			add(sprites, spr_honors_vert+value)
 		else
 			-- "red" fives
 			add(sprites, spr_fives_vert)
