@@ -1,8 +1,7 @@
 -- util
 -- https://easings.net/
 
-
-util = {}
+-- TODO: rename empty_tiles to empty_values
 
 
 function empty_tiles()
@@ -17,12 +16,22 @@ function empty_tiles()
 end
 
 
+function sum_values(values1, values2)
+	values_sum = {}
+	for i = 1,37 do
+		values_sum[i] = values1[i] + values2[i]
+	end
+	return values_sum
+end
+
+
 function ease_in_out_quad(x)
 	return x < 0.5 and 2 * x * x or 1 - (-2 * x + 2)^2 / 2
 end
 
 
 function fit_in_four(x)
+	assert(x)
 	return (x-1)%4+1
 end
 
