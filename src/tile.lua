@@ -1,6 +1,9 @@
 -- tile
 
 
+-- TODO: change set_state input
+
+
 assert(util)
 assert(class)
 assert(entity)

@@ -19,7 +19,8 @@ meld = entity:subclass{
 		return entity.new(self, {
 			own_tiles = {},
 			all_tiles = {},
-			states = {}, --[[
+			--tile_states = {},
+			--[[
 				state: desired {x, y, rotation, status}
 				for each tile in all_tiles
 			]]
@@ -131,9 +132,9 @@ meld = entity:subclass{
 		}
 	end,
 
-	update_tile_states = function(_ENV)
+	apply_tile_states = function(_ENV)
 		for i,tile in ipairs(all_tiles) do
-			tile:set_state(unpack(states[i]))
+			tile:set_state(unpack(tile_states[i]))
 		end
 		return _ENV
 	end,
@@ -151,7 +152,7 @@ meld = entity:subclass{
 			type = 1 -- chii / pon
 		end
 
-		states = {}
+		tile_states = {}
 		local i = 1
 		for tile in all(all_tiles) do
 			local state
@@ -163,17 +164,14 @@ meld = entity:subclass{
 				state = _ENV:get_own_tile_state(i)
 				i+=1
 			end
-			add(states, state)
+			add(tile_states, state)
 		end
 
 		return _ENV
 	end,
 
 	draw = function(_ENV)
-		foreach(
-			all_tiles,
-			function(t) t:draw() end
-		)
+		foreach(all_tiles,function(t) t:draw() end)
 		return _ENV
 	end,
 }

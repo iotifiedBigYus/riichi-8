@@ -26,10 +26,10 @@ t4 = tile:new():set_value(1)
 m = meld:new()
 
 for i = 1,4 do
-	m:set_pos(30,i*10+40):set_origin(i):set_tiles({t1,t2},t3):update_tile_states():draw()
-	m:set_pos(60,i*10+40):set_origin(i):set_tiles({t1,t2},t3,t4):update_tile_states():draw()
-	m:set_pos(90,i*10+40):set_origin(i):set_tiles({t1,t2,t3},t4):update_tile_states():draw()
-	m:set_pos(120,i*10+40):set_origin(i):set_tiles({t1,t2,t3,t4}):update_tile_states():draw()
+	m:set_pos(30,i*10+40):set_origin(i):set_tiles({t1,t2},t3):apply_tile_states():draw()
+	m:set_pos(60,i*10+40):set_origin(i):set_tiles({t1,t2},t3,t4):apply_tile_states():draw()
+	m:set_pos(90,i*10+40):set_origin(i):set_tiles({t1,t2,t3},t4):apply_tile_states():draw()
+	m:set_pos(120,i*10+40):set_origin(i):set_tiles({t1,t2,t3,t4}):apply_tile_states():draw()
 end
 
 assert(#m:set_tiles({t1,t2},t3,t4)

@@ -6,24 +6,26 @@ assert(entity)
 
 
 meld_stack = entity:subclass{
-	length = 0,
-	ox = 50,
-	oy = 50,
+	--length = 0,
 
 	new = function(self)
 		return entity.new(self, {
 			melds = {},
+			meld_states = {}, --[[
+				state: desired {x, y, rotation}
+				for each meld in melds
+			]]
 		})
 	end,
 
+	set_melds = function(_ENV, new_melds)
+		melds = new_melds
+		_ENV:update()
+		return _ENV
+	end,
+
 	add_meld = function(_ENV, meld)
-		add(
-			melds,
-			meld:set_pos(
-				_ENV:get_next_pos()
-			):set_rotation(rotation)
-		)
-		length += 1
+		add(melds, meld)
 		_ENV:update()
 		return _ENV
 	end,
@@ -32,8 +34,55 @@ meld_stack = entity:subclass{
 		return _ENV:get_rotated_pos(ox, oy-length*8)
 	end,
 
+	get_animations = function(_ENV)
+		local animations = {}
+		for tile in all(all_tiles) do
+			add(
+				animations,
+				animate(tile, "x", states[1], 16, ease_in_out_quad)
+			)
+		end
+		return animations
+	end,
+
+	get_meld_state = function(_ENV, i)
+		local meld_x, meld_y = _ENV:get_rotated_pos(
+			0,
+			8-8*i
+		)
+		return {
+			meld_x,
+			meld_y,
+			rotation
+		}
+	end,
+
+	apply_meld_states = function(_ENV)
+		--trim
+		for i,meld in ipairs(melds) do
+			meld:set_state(meld_states[i])
+		end
+		return _ENV
+	end,
+
+	apply_tile_states = function(_ENV)
+		for i,meld in ipairs(melds) do
+			meld:set_state(meld_states[i]):apply_tile_states()
+		end
+		return _ENV
+	end,
+
 	update = function(_ENV)
-		foreach(melds, function(m) m:update() end)
+		length = #melds
+
+		meld_states = {}
+		for i = 1,length do
+			add(
+				meld_states,
+				_ENV:get_meld_state(i)
+			)
+		end
+
 		return _ENV
 	end,
 

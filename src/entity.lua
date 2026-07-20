@@ -31,6 +31,12 @@ entity = class:subclass{
 		return _ENV
 	end,
 
+	set_state = function(_ENV, state)
+		x, y, rotation = unpack(state)
+		_ENV:update()
+		return _ENV
+	end,
+
 	get_pos = function(_ENV)
 		return x,y
 	end,

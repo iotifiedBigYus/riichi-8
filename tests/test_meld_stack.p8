@@ -7,23 +7,39 @@ __lua__
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
-#include ../src/small_tile.lua
+#include ../src/tile.lua
 #include ../src/meld.lua
 #include ../src/meld_stack.lua
 
 cls(1)
 
-meld_stack:new()
-:add_meld(
-meld:new()
-:set_own_tiles(3,4)
-:set_taken_tile(2)
-):add_meld(
-meld:new()
-:set_origin(2)
-:set_own_tiles(3,4,5)
-:set_taken_tile(2)
-):draw()
+--tiles
+t1 = {}
+t2 = {}
+t3 = {}
+t4 = {}
+for i = 1,4 do
+	add(t1, tile:new():set_value(i))
+	add(t2, tile:new():set_value(i))
+	add(t3, tile:new():set_value(i))
+	add(t4, tile:new():set_value(i))
+end
+
+meld1 = meld:new():set_tiles({t1[1],t2[1],t3[1],t4[1]}):apply_tile_states()
+meld2 = meld:new():set_origin(2):set_tiles({t1[2],t2[2],t3[2]},t4[2]):apply_tile_states()
+meld3 = meld:new():set_origin(3):set_tiles({t1[3],t2[3]},t3[3],t4[3]):apply_tile_states()
+meld4 = meld:new():set_origin(4):set_tiles({t1[4],t2[4]},t3[4]):apply_tile_states()
+
+
+stack1 = meld_stack:new():set_melds({meld1, meld2, meld3, meld4})
+
+stack1:apply_tile_states():draw()
+
+color(8)
+?#stack1.meld_states
+?stack1.meld_states[2][2]
+
+pset(64,64,11)
 __gfx__
 000000000e999e0000000000000000000f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f0000000000000000000000000000000000
 00000000099999000000000000000000075557000775570007575700075577000777770007777700077777000777770000000000000000000000000000000000
