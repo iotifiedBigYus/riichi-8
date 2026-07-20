@@ -23,8 +23,8 @@ p = discard_pile:new()
 :add_tile(tile:new():set_value(7))
 :add_tile(tile:new():set_value(8),true)
 
-?"revoved value: "..p:remove_tile().value
-?"revoved value: "..p:remove_tile().value
+?"removed value: "..p:remove_latest_tile().value
+?"removed value: "..p:remove_latest_tile().value
 
 p
 :add_tile(tile:new():set_value(9))

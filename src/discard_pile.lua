@@ -2,7 +2,7 @@
 
 
 --TODO: move fit_in_four from higher level operations to lower ones
-
+--TODO: make inherit from hand/wall
 
 assert(entity)
 assert(tile)
@@ -29,7 +29,7 @@ discard_pile = entity:subclass{
 		return _ENV
 	end,
 
-	remove_tile = function(_ENV, t)
+	remove_latest_tile = function(_ENV, t)
 		tile = deli(tiles)
 		_ENV:update()
 		return tile
