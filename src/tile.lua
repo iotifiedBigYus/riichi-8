@@ -1,9 +1,6 @@
 -- tile
 
 
--- TODO: change set_state input
-
-
 assert(util)
 assert(class)
 assert(entity)
@@ -104,8 +101,8 @@ tile = entity:subclass{
 		return _ENV
 	end,
 
-	set_state = function(_ENV, new_x, new_y, new_rotation, new_status)
-		x, y, rotation, status = new_x, new_y, new_rotation, new_status
+	set_state = function(_ENV, state)
+		x, y, rotation, status = unpack(state)
 		_ENV:update()
 		return _ENV
 	end,

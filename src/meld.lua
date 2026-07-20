@@ -134,7 +134,7 @@ meld = entity:subclass{
 
 	apply_tile_states = function(_ENV)
 		for i,tile in ipairs(all_tiles) do
-			tile:set_state(unpack(tile_states[i]))
+			tile:set_state(tile_states[i])
 		end
 		return _ENV
 	end,
