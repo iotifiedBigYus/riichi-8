@@ -1,124 +1,49 @@
 pico-8 cartridge // http://www.pico-8.com
 version 43
 __lua__
+-- test meld
+
+
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
-#include ../src/small_tile.lua
+#include ../src/tile.lua
 #include ../src/meld.lua
 #include ../src/debug.lua
 #include ../src/async.lua
 
 
--- test meld
-
 cls(1)
 
-lc = meld:new()
-:set_origin(4)
-:set_own_tiles(2,3)
-:set_taken_tile(1)
 
-ap = meld:new()
-:set_origin(3)
-:set_own_tiles(4,4)
-:set_taken_tile(4)
+test_async = async:new()
 
-rp = meld:new()
-:set_origin(2)
-:set_own_tiles(4,4)
-:set_taken_tile(4)
+t1 = tile:new():set_value(1)
+t2 = tile:new():set_value(1)
+t3 = tile:new():set_value(1)
+t4 = tile:new():set_value(1)
 
-lak = meld:new()
-:set_origin(4)
-:set_added_tile(5)
-:set_own_tiles(5,5)
-:set_taken_tile(5)
+m = meld:new()
 
-aak = meld:new()
-:set_origin(3)
-:set_added_tile(5)
-:set_own_tiles(5,5)
-:set_taken_tile(5)
+for i = 1,4 do
+	m:set_pos(30,i*10+40):set_origin(i):set_tiles({t1,t2},t3):update_tile_states():draw()
+	m:set_pos(60,i*10+40):set_origin(i):set_tiles({t1,t2},t3,t4):update_tile_states():draw()
+	m:set_pos(90,i*10+40):set_origin(i):set_tiles({t1,t2,t3},t4):update_tile_states():draw()
+	m:set_pos(120,i*10+40):set_origin(i):set_tiles({t1,t2,t3,t4}):update_tile_states():draw()
+end
 
-rak = meld:new()
-:set_origin(2)
-:set_added_tile(5)
-:set_own_tiles(5,5)
-:set_taken_tile(5)
-
-lok = meld:new()
-:set_origin(4)
-:set_own_tiles(5,5,5)
-:set_taken_tile(5)
-
-aok = meld:new()
-:set_origin(3)
-:set_own_tiles(5,5,5)
-:set_taken_tile(5)
-
-rok = meld:new()
-:set_origin(2)
-:set_own_tiles(5,5,5)
-:set_taken_tile(5)
-
-ck = meld:new()
-:set_origin(1)
-:set_own_tiles(2,2,2,2)
-
-debug"left chi"
-debug(lc.m_tiles)
-
-debug"across pon"
-debug(ap.m_tiles)
-
-debug"right pon"
-debug(rp.m_tiles)
-
-debug"left added kan"
-debug(lak.m_tiles)
-
-debug"across added kan"
-debug(aak.m_tiles)
-
-debug"right added kan"
-debug(rak
-.m_tiles
-)
-
-debug"left kan"
-debug(lok
-.m_tiles
-)
-
-debug"across kan"
-debug(aok
-.m_tiles
-)
-
-debug"right kan"
-debug(rok
-)
-
-debug"closed kan"
-debug(ck
-.m_tiles
-)
-
-x,y = 64,64
+assert(#m:set_tiles({t1,t2},t3,t4)
+:set_added_tile(t1)
+:set_added_tile(t4)
+:set_added_tile(t4).all_tiles == 4)
 
 
+m:draw()
+
+pset(64,64,11)
 
 function _draw()
-	cls(1)
-	--y+=1
-	ck:set_pos(x,y)
-	:set_rotation(1):draw()
-	:set_rotation(2):draw()
-	:set_rotation(3):draw()
-	:set_rotation(4):draw()
-	pset(64,64,11)
-	?stat(1)
+	--test_async:resume()
 end
 __gfx__
 000000000e999e0000000000000000000f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f0000000000000000000000000000000000

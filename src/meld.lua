@@ -1,20 +1,28 @@
 -- meld
 
 
+assert(util)
 assert(entity)
-assert(small_tile)
+assert(tile)
 
 
 meld = entity:subclass{
-	origin = 1,
-	-- type = nil
+	origin = 1, --[[
+		relative to player
+		1: oneself, 2: from the right, ...
+	]]
+	-- type = nil,
 	-- taken_tile = nil,
 	-- added_tile = nil,
-
+	
 	new = function(self)
 		return entity.new(self, {
-			m_tiles = {},
 			own_tiles = {},
+			all_tiles = {},
+			states = {}, --[[
+				state: desired {x, y, rotation, status}
+				for each tile in all_tiles
+			]]
 		})
 	end,
 
@@ -24,98 +32,148 @@ meld = entity:subclass{
 		_ENV:update()
 		return _ENV
 	end,
+	
+	set_tiles = function(_ENV, new_own_tiles, new_taken_tile, new_added_tile)
+		own_tiles = new_own_tiles
+		taken_tile = new_taken_tile
+		added_tile = new_added_tile
 
-	set_taken_tile = function(_ENV, tile)
-		taken_tile = tile
-		_ENV:update()
-		return _ENV
-	end,
+		local tiles = {unpack(new_own_tiles)}
+		add(tiles, new_taken_tile)
+		add(tiles, new_added_tile)
+		all_tiles = tiles
 
-	set_own_tiles = function(_ENV, tile1, tile2, tile3, tile4)
-		assert(tile2)
-		own_tiles = {}
-		foreach(
-			{tile1, tile2, tile3, tile4},
-			function(t) add(own_tiles, t)end
-		)
 		_ENV:update()
 		return _ENV
 	end,
 
 	set_added_tile = function(_ENV, tile)
+		del(all_tiles, added_tile) -- own_tiles is assumed to be irrelevant
+		add(all_tiles, tile)
 		added_tile = tile
 		_ENV:update()
 		return _ENV
 	end,
 
-	update = function(_ENV)
-		-- m_tiles:
-		-- {1,2,-3} -> from left -||
-		-- {5,-5,5} -> from across |-|
-		-- {-5,5,5} -> from right ||-
-		-- {14,14,-14,14} -> kan from across ||-|
-		-- {14,0,14} -> added kan from across |=|
-		-- {0,14,14,0} -> closed kan :||:
+	get_own_tile_state = function(_ENV, i)
+		local tile_x, tile_y = _ENV:get_rotated_pos(
+			split[[
+				000,  0,0,0,
+				-17,-11,0,0,
+				-17, -3,0,0,
+				-9,  -3,0,0,
 
-		if #own_tiles == 4 then
-			type = 4
-		elseif #own_tiles == 3 then
-			type = 3
-		elseif taken_tile then
-			type = 2
-		else
-			type = 1
+				000,  0,0,0,
+				-17,-11,0,0,
+				-17, -3,0,0,
+				-9,  -3,0,0,
+
+				000,  0,  0,0,
+				-23,-17,-11,0,
+				-23, -9, -3,0,
+				-15, -9, -3,0,
+			
+				-21,-15,-9,-3,
+				000,  0, 0, 0,
+				000,  0, 0, 0,
+				000,  0, 0, 0,
+			]][type*16 + origin*4 + i - 20],
+			-4
+		)
+		return {
+			tile_x,
+			tile_y,
+			rotation,
+			split[[
+				1,1,0,0,
+				1,1,0,0,
+				1,1,1,0,
+				2,1,1,2,
+			]][type*4 + i -4],
+		}
+	end,
+
+	get_taken_tile_state = function(_ENV)
+		local tile_x, tile_y = _ENV:get_rotated_pos(
+			split[[
+				0,-4,-10,-16,
+				0,-4,-10,-16,
+				0,-4,-16,-22,
+				0  0,  0,  0,
+			]][type*4 + origin - 4],
+			split"-3,-2,-3"[type]
+		)
+		return {
+			tile_x,
+			tile_y,
+			fit_in_four(
+				rotation + split[[
+					0,-1,1,1,
+					0, 0,0,0,
+					0,-1,1,1,
+					0, 0,0,0,
+				]][type*4 + origin - 4]
+			),
+			split"1,4,1"[type],
+		}
+	end,
+
+	get_added_tile_state = function(_ENV)
+		local tile_x, tile_y = _ENV:get_rotated_pos(
+			split"0,-4,-10,-16"[origin],
+			-6
+		)
+		return {
+			tile_x,
+			tile_y,
+			rotation,
+			4,
+		}
+	end,
+
+	update_tile_states = function(_ENV)
+		for i,tile in ipairs(all_tiles) do
+			tile:set_state(unpack(states[i]))
 		end
-		
-		m_tiles = {}
-		foreach(own_tiles, function(t) add(m_tiles,t)end)
+		return _ENV
+	end,
 
-		if taken_tile then
-			add(m_tiles, added_tile and 0 or -taken_tile, ({nil, 1, 2})[origin])
-		elseif origin == 1 then
-			m_tiles[1],m_tiles[4] = 0,0
+	update = function(_ENV)
+		if #own_tiles == 4 then
+			type, origin = 4, 1 -- closed kan
+			taken_tile, added_tile = nil, nil
+		elseif #own_tiles == 3 then
+			type = 3 -- open kan
+			added_tile = nil
+		elseif added_tile then
+			type = 2 -- added kan
+		else
+			type = 1 -- chii / pon
+		end
+
+		states = {}
+		local i = 1
+		for tile in all(all_tiles) do
+			local state
+			if tile == added_tile then
+				state = _ENV:get_added_tile_state()
+			elseif tile == taken_tile then
+				state = _ENV:get_taken_tile_state()
+			else
+				state = _ENV:get_own_tile_state(i)
+				i+=1
+			end
+			add(states, state)
 		end
 
 		return _ENV
 	end,
 
 	draw = function(_ENV)
-		local x1 = 0
-		for t in all(m_tiles) do
-			local st = small_tile:new():set_rotation(rotation)
-			if t > 0 then
-				st:set_tile(t)
-				:set_pos(
-					_ENV:get_rotated_pos(x1-3,-4)
-				):draw()
-				x1 -= 6
-			elseif t < 0 then
-				st:set_tile(-t)
-				:set_rotation(rotation%4+1)
-				:set_pos(
-					_ENV:get_rotated_pos(x1-4,-3)
-				):draw()
-				x1 -= 8
-			else
-				if #m_tiles == 3 then
-					st:set_rotation(rotation)
-					:set_status(4)
-					:set_pos(
-						_ENV:get_rotated_pos(x1-4,-2)
-					):draw()
-					:set_pos(
-						_ENV:get_rotated_pos(x1-4,-6)
-					):draw()
-					x1 -= 8
-				else
-					st:set_status(2)
-					:set_pos(
-						_ENV:get_rotated_pos(x1-3,-4)
-					):draw()
-					x1-=6
-				end
-			end
-		end
+		foreach(
+			all_tiles,
+			function(t) t:draw() end
+		)
 		return _ENV
 	end,
 }
