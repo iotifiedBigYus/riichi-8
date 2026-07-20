@@ -1,7 +1,6 @@
 -- large tile
 
 
-assert(util)
 assert(tile)
 
 
