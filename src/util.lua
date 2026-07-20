@@ -22,6 +22,35 @@ function ease_in_out_quad(x)
 end
 
 
+function fit_in_four(x)
+	return (x-1)%4+1
+end
+
+
+function animate(obj, key, value, frames, easing, no_snap)
+	return function()
+		local value0 = obj[key]
+		for i = 1,frames do
+			local t = easing and easing(i/frames) or i/frames
+			obj[key] = value0 + (value-value0)*t
+			yield()
+		end
+		if (no_snap) return
+		obj[key] = flr(obj[key]) -- snap on finish
+	end
+end
+
+
+function set_later(obj, key, value, frames)
+	return function()
+		for _ = 1,frames do
+			yield()
+		end
+		obj[key] = value
+	end
+end
+
+
 function parse_line(line)
 	local indices = {}
 	local n_tiles = empty_tiles()
