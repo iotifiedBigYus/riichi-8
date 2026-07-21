@@ -107,8 +107,7 @@ tile = entity:subclass{
 	end,
 
 	set_status = function(_ENV, new_status)
-		assert(new_status >= 1 and new_status <= 4)
-		status = new_status
+		status = fit_in_four(new_status)
 		_ENV:update()
 		return _ENV
 	end,

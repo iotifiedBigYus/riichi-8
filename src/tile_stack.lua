@@ -33,8 +33,9 @@ tile_stack = entity:subclass{
 	end,
 	
 	remove_tile = function(_ENV, tile)
-		del(tiles, tile)
-		return _ENV:update()
+		local removed_tile = del(tiles, tile)
+		_ENV:update()
+		return removed_tile
 	end,
 
 	remove_latest_tile = function(_ENV)

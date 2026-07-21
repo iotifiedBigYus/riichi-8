@@ -3,6 +3,7 @@ version 43
 __lua__
 -- test hand
 
+
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
@@ -28,17 +29,23 @@ cls(1)
 
 h = hand:new()
 h:set_tiles(tiles)
-h:set_rotation(2):set_openness(true):apply_tile_states():draw()
+h:set_rotation(2):set_status(1):apply_tile_states():draw()
 
 h:set_rotation(1):apply_tile_states():draw()
 
-t = tile:new()
+t = tile:new():set_value(1)
 
-h:set_pos(64,74):add_tile(t):apply_tile_states():draw()
+h:set_pos(64,74):set_pulled_tile(t):apply_tile_states():draw()
 
-h:set_pos(64,84):remove_tile(t):apply_tile_states():draw()
+h:set_pos(64,84):remove_tile_i(2)
+h:remove_tile_i(3)
+h:remove_tile_i(3)
+h:remove_tile_i(3)
+h:add_tile(t):apply_tile_states():draw()
 
-h:set_pos(64,94):set_openness(false):apply_tile_states():draw()
+h:set_pos(64,94):set_status(3):apply_tile_states():draw()
+
+h:set_pos(64,104):set_status(2):apply_tile_states():draw()
 
 color()
 
