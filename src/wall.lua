@@ -1,9 +1,6 @@
 -- wall
 
 
---TODO: rewrite shuffle using rnd(table)
-
-
 assert(empty_values)
 assert(tile_stack)
 assert(tile)

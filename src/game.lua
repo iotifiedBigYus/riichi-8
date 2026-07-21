@@ -1,17 +1,17 @@
 -- game
 
 
---TODO: fix dora
+--TODO: clean up methods
 
 
-assert(class)
+assert(entity)
 assert(wall)
 assert(dora_stack)
 
 
-game = class:subclass{
+game = entity:subclass{
 	new = function(self)
-		local _ENV = self:subclass()
+		local _ENV = entity.new(self)
 
 		east = rnd(split"1,2,3,4")
 		turn = east
@@ -26,17 +26,14 @@ game = class:subclass{
 		assert(live_wall.length == 122)
 		assert(dead_wall.length == 14)
 
-		--[[ init dora
-		dora = dora:new()
-		dora:add_pair(unpack(dead_wall:remove_latest_tiles(2)))
+		dora_stack = dora_stack:new()
+		uradora_stack = dora_stack:new()
+		dora_stack:add_tile(dead_wall:remove_latest_tile())
+		uradora_stack:add_tile(dead_wall:remove_latest_tile())
 
-
-		assert(#dora.indicators.t_tiles == 1)
-		assert(dora.indicators.length == 1)
-		assert(#dead_wall.t_tiles == 12)
+		assert(dora_stack.length == 1)
+		assert(uradora_stack.length == 1)
 		assert(dead_wall.length == 12)
-
-		--]]
 
 		-- init players
 		players = {

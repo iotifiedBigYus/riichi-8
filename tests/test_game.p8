@@ -8,9 +8,9 @@ __lua__
 #include ../src/class.lua
 #include ../src/entity.lua
 #include ../src/tile.lua
+#include ../src/tile_stack.lua
 #include ../src/wall.lua
-#include ../src/tile.lua
-#include ../src/dora.lua
+#include ../src/dora_stack.lua
 #include ../src/game.lua
 -->8
 assert(game)

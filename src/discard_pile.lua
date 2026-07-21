@@ -1,6 +1,5 @@
 -- discard pile
 
---TODO: make inherit from hand/wall
 
 assert(fit_in_four)
 assert(tile_stack)

@@ -1,9 +1,6 @@
 -- meld
 
 
---TODO: make inherit from hand/wall
-
-
 assert(empty_values)
 assert(fit_in_four)
 assert(entity)
