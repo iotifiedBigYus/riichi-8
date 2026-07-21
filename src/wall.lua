@@ -4,70 +4,66 @@
 --TODO: make entity, with tiles instead of values
 
 
-assert(class)
 assert(empty_values)
+assert(entity)
+assert(tile)
 
 
-wall = class:subclass{
-	length = 0,
+wall = entity:subclass{
+	--length = 0,
 
 	new = function(self)
-		return self:subclass({
-			n_tiles = empty_values(),
-			t_tiles = {},
+		return entity.new(self, {
+			tiles   = {}
 		})
 	end,
 
-	populate = function(_ENV)
-		t_tiles = {}
+	populate = function(_ENV, seed)
+		tiles = {}
 		for i = 1,34 do
-			n_tiles[i] = 4
 			for _ = 1,4 do
-				add(t_tiles,i)
+				add(tiles,tile:new():set_value(i))
 			end
 		end
-		length = 136
 	
 		-- make red fives
 		for i = 0,2 do
-			n_tiles[5+i*9] -= 1
-			n_tiles[35+i] += 1
-			del(t_tiles,5+i*9)
-			add(t_tiles,35+i)
+			tiles[4*(5+i*9)]:set_value(35+i)
 		end
 	
-		-- shuffle i_tiles
+		-- shuffle
+		if seed then srand(seed) end
 		for i = 136,1,-1 do
-			add(t_tiles, deli(t_tiles, flr(rnd(i))))
+			add(tiles, deli(tiles, flr(rnd(i))))
 		end
 
+		_ENV:update()
 		return _ENV
 	end,
 
-	get_tile = function(_ENV)
-		if #t_tiles == 0 then return end
-		local t = deli(t_tiles)
-		n_tiles[t] -= 1
-		length -= 1
-		return t
+	add_tile = function(_ENV, tile)
+		add(tiles, tile)
+		_ENV:update()
+		return _ENV
 	end,
 
-	get_tiles = function(_ENV, n)
-		local tiles = {}
-		for _ = 1,n do
-			global.add(tiles, _ENV:get_tile())
-		end
-		return unpack(tiles)
+	remove_latest_tile = function(_ENV)
+		local tile = deli(tiles)
+		_ENV:update()
+		return tile
 	end,
 
-	get_length = function(_ENV)
-		return length
+	get_values = function(_ENV)
+		local values = empty_values()
+		foreach(tiles, function(tile)
+			values[tile.value] += 1
+		end)
+		return values
 	end,
 
-	add_tile = function(_ENV, t)
-		add(t_tiles, t)
-		n_tiles[t] += 1
-		length += 1
+	update = function(_ENV)
+		length = #tiles
+
 		return _ENV
 	end,
 }

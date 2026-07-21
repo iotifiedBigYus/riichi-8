@@ -38,11 +38,8 @@ entity = class:subclass{
 	end,
 
 	get_pos = function(_ENV)
+		--trim
 		return x,y
-	end,
-
-	update = function(_ENV)
-		return _ENV
 	end,
 
 	get_rotated_pos = function(_ENV, dx, dy)
@@ -51,4 +48,12 @@ entity = class:subclass{
 
 		return x + dx*ix+dy*jx, y + dx*iy+dy*jy
 	end,
+
+	update = function(_ENV)
+		return _ENV
+	end,
+
+	draw = function(_ENV)
+		return _ENV
+	end
 }

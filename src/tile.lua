@@ -57,6 +57,19 @@ end
 
 tile = entity:subclass{
 	value = 32,
+	status = 1, --[[
+		status = 1: face up
+		status = 2: face down
+		status = 3: standing face towards
+		status = 4: on edge face towards
+	]]
+	--value_color = 0,
+	--relative_value = 41,
+	--sprite = nil,
+	--w = 6,
+	--h = 8,
+	--spr_flip = false,
+
 	value_colors = split[[
 		8,8,8,8,8,8,8,8,8,
 		12,12,12,12,12,12,12,12,12,
@@ -72,33 +85,20 @@ tile = entity:subclass{
 		31,32,33,34,
 		41,42,43,
 		4.5,14.5,24.5
-	]],
-	--[[
+	]], --[[
 		relative value is used to sort tiles.
 		the absolute values used can be chosen arbitrarily.
 	]]
+	face_sprites_vert = get_small_tile_face_sprites_vert(), --TODO: replace with split table
+	face_sprites_horz = get_small_tile_face_sprites_horz(),
+	misc_sprites_vert = split"0x00,0x01,0x02,0x03",
+	misc_sprites_horz = split"0x00,0x11,0x12,0x13",
 	ws = split"6,6,6,8", --based on status
 	hs = split"8,8,4,4",
 	spr_x = 3,
 	spr_y = 3,
 	spr_w = 0.875,
 	spr_h = 0.875,
-	face_sprites_vert = get_small_tile_face_sprites_vert(), --TODO: replace with split table
-	face_sprites_horz = get_small_tile_face_sprites_horz(),
-	misc_sprites_vert = split"0x00,0x01,0x02,0x03",
-	misc_sprites_horz = split"0x00,0x11,0x12,0x13",
-	status = 1, --[[
-		status = 1: face up
-		status = 2: face down
-		status = 3: standing face towards
-		status = 4: on edge face towards
-	]]
-	--value_color = 0,
-	--relative_value = 41,
-	--w = 6,
-	--h = 8,
-	--sprite = nil,
-	--spr_flip = false,
 	
 	set_value = function(_ENV, new_value)
 		value = new_value

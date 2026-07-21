@@ -6,6 +6,8 @@ __lua__
 
 #include ../src/util.lua
 #include ../src/class.lua
+#include ../src/entity.lua
+#include ../src/tile.lua
 #include ../src/wall.lua
 -->8
 assert(wall)
@@ -15,19 +17,29 @@ cls()
 wall1 = wall:new()
 wall2 = wall:new()
 
+assert(wall1)
+
 for i = 1,5 do
-	wall1:add_tile(i)
-	wall2:add_tile(1)
-end
-for i = 1,5 do
-	assert(wall1:get_tile() == 6-i)
-	assert(wall2:get_tile() == 1)
+	wall1:add_tile(tile:new():set_value(i))
+	wall2:add_tile(tile:new():set_value(1))
 end
 
-assert(wall1:get_length() == 0)
-wall1:populate()
-assert(#wall1:populate():populate().t_tiles == wall1:get_length())
-assert(wall2:get_length() == 0)
+assert(wall1.length == 5)
+
+for i = 1,5 do
+	assert(wall1:remove_latest_tile().value == 6-i)
+	assert(wall2:remove_latest_tile().value == 1)
+end
+
+assert(wall1.length == 0)
+assert(#wall1:populate().tiles == wall1.length)
+assert(wall1:populate():populate().length == wall1.length)
+assert(wall2.length == 0)
+assert(wall1:get_values()[1] == 4)
+assert(wall1:get_values()[5] == 3)
+assert(wall1:get_values()[37] == 1)
+
+
 ?"all good"
 
 
