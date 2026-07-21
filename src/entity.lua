@@ -32,6 +32,7 @@ entity = class:subclass{
 
 	set_state = function(_ENV, state)
 		x, y, rotation = unpack(state)
+		rotation = fit_in_four(rotation)
 		_ENV:update()
 		return _ENV
 	end,

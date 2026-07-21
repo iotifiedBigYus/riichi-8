@@ -44,7 +44,7 @@ discard_pile = entity:subclass{
 			x+=2
 		elseif riichi_i == i then
 			x+=1
-			tile_rotation = fit_in_four(rotation+1)
+			tile_rotation = rotation+1
 		end
 
 		local tile_x, tile_y = _ENV:get_rotated_pos(x,y)

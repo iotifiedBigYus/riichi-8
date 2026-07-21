@@ -1,7 +1,7 @@
 -- wall
 
 
-assert(util)
+assert(empty_tiles)
 assert(class)
 
 

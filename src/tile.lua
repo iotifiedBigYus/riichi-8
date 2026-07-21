@@ -115,6 +115,8 @@ tile = entity:subclass{
 
 	set_state = function(_ENV, state)
 		x, y, rotation, status = unpack(state)
+		rotation = fit_in_four(rotation)
+		status = fit_in_four(status)
 		_ENV:update()
 		return _ENV
 	end,
