@@ -8,16 +8,18 @@ assert(empty_values)
 assert(fit_in_four)
 assert(entity)
 assert(tile)
+assert(tile_stack)
 
 
-meld = entity:subclass{
-	origin = 1, --[[
+meld = tile_stack:subclass{
+	origin = 1,
+	--[[
 		relative to player
-		1: oneself, 2: from the right, ...
+		1: oneself, 2: from the right, 3: across, ...
 	]]
-	-- type = nil,
 	-- taken_tile = nil,
 	-- added_tile = nil,
+	-- type = nil,
 	
 	new = function(self)
 		return entity.new(self, {
@@ -33,31 +35,19 @@ meld = entity:subclass{
 
 	set_origin = function(_ENV, new_origin)
 		origin = fit_in_four(new_origin)
-		_ENV:update()
-		return _ENV
+		return _ENV:update()
 	end,
 	
 	set_tiles = function(_ENV, new_own_tiles, new_taken_tile, new_added_tile)
 		own_tiles = new_own_tiles
 		taken_tile = new_taken_tile
-		added_tile = new_added_tile
-
-		_ENV:update()
-		return _ENV
+		added_tile = new_added_tiles
+		return _ENV:update()
 	end,
 
 	set_added_tile = function(_ENV, tile)
 		added_tile = tile
-		_ENV:update()
-		return _ENV
-	end,
-
-	get_values = function(_ENV)
-		local values = empty_values()
-		foreach(tiles, function(tile)
-			values[tile.value] += 1
-		end)
-		return values
+		return _ENV:update()
 	end,
 
 	get_own_tile_state = function(_ENV, i)
@@ -175,11 +165,6 @@ meld = entity:subclass{
 			add(tile_states, state)
 		end
 
-		return _ENV
-	end,
-
-	draw = function(_ENV)
-		foreach(tiles, function(t) t:draw() end)
 		return _ENV
 	end,
 }
