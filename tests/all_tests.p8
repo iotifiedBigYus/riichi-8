@@ -1,49 +1,41 @@
 pico-8 cartridge // http://www.pico-8.com
 version 43
 __lua__
--- test discard pile
+-- all tests back-to-back
 
 
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
 #include ../src/tile.lua
+#include ../src/large_tile.lua
+#include ../src/debug_tile.lua
+#include ../src/debug_large_tile.lua
+#include ../src/wall.lua
+#include ../src/hand.lua
+#include ../src/meld.lua
+#include ../src/meld_stack.lua
 #include ../src/discard_pile.lua
+#include ../src/player.lua
+#include ../src/dora.lua
+#include ../src/async.lua
+#include ../src/game.lua
+
+#include test_async.p8:1
+#include test_discard_pile.p8:1
+#include test_dora.p8:1
+#include test_game.p8:1
+#include test_hand.p8:1
+#include test_meld_stack.p8:1
+#include test_meld.p8:1
+#include test_player.p8:1
+#include test_tile.p8:1
+#include test_wall.p8:1
 -->8
-assert(discard_pile)
+cls(3)
 
-cls(1)
-
-p = discard_pile:new()
-:add_tile(tile:new():set_value(1))
-:add_tile(tile:new():set_value(2))
-:add_tile(tile:new():set_value(3))
-:add_tile(tile:new():set_value(4))
-:add_tile(tile:new():set_value(5))
-:add_tile(tile:new():set_value(6))
-:add_tile(tile:new():set_value(7))
-:add_tile(tile:new():set_value(8),true)
-
-?"removed value: "..p:remove_latest_tile().value
-?"removed value: "..p:remove_latest_tile().value
-
-p
-:add_tile(tile:new():set_value(9))
-:add_tile(tile:new():set_value(10))
-:add_tile(tile:new():set_value(11),true)
-:add_tile(tile:new():set_value(12))
-:add_tile(tile:new():set_value(13))
-
-?"length: "..p.length
-
-for i = 1,4 do
-	p:set_rotation(i):apply_tile_states():draw()
-end
-
-pset(64,64,11)
-
-
-flip()
+color(11)
+?"passed"
 __gfx__
 000000000e999e0000000000000000000f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f0000000000000000000000000000000000
 00000000099999000000000000000000075557000775570007575700075577000777770007777700077777000777770000000000000000000000000000000000

@@ -4,8 +4,6 @@ __lua__
 -- test tile
 
 
-#include ../src/debug.lua
-#include ../src/constants.lua
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
@@ -13,6 +11,12 @@ __lua__
 #include ../src/large_tile.lua
 #include ../src/debug_tile.lua
 #include ../src/debug_large_tile.lua
+-->8
+assert(tile)
+assert(large_tile)
+assert(draw_all_tiles)
+assert(draw_all_large_tiles)
+
 
 cls(1)
 
@@ -52,6 +56,9 @@ cursor(0,00)draw_n_tiles(n_tiles)
 cursor(0,8)draw_i_tiles(i_tiles)
 cursor(0,16)draw_n_tiles(n_tiles)
 cursor(0,28)draw_large_i_tiles(i_tiles)
+
+
+flip()
 __gfx__
 000000000e999e0000000000000000000f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f0000000000000000000000000000000000
 00000000099999000000000000000000075557000775570007575700075577000777770007777700077777000777770000000000000000000000000000000000

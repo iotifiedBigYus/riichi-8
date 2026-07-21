@@ -7,11 +7,10 @@ __lua__
 #include ../src/class.lua
 #include ../src/entity.lua
 #include ../src/tile.lua
-#include ../src/large_tile.lua
-#include ../src/meld.lua
-#include ../src/meld_stack.lua
-#include ../src/discard_pile.lua
 #include ../src/hand.lua
+-->8
+assert(tile)
+assert(hand)
 
 function test_tile(i)
 	return tile:new():set_value(i)
@@ -43,6 +42,9 @@ h:set_pos(64,94):set_openness(false):apply_tile_states():draw()
 color()
 
 pset(64,64,11)
+
+
+flip()
 __gfx__
 000000000e999e0000000000000000000f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f0000000000000000000000000000000000
 00000000099999000000000000000000075557000775570007575700075577000777770007777700077777000777770000000000000000000000000000000000

@@ -1,23 +1,28 @@
 pico-8 cartridge // http://www.pico-8.com
 version 43
 __lua__
+-- test game
 
 
-#include ../src/constants.lua
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
 #include ../src/wall.lua
-#include ../src/small_tile.lua
+#include ../src/tile.lua
 #include ../src/dora.lua
 #include ../src/game.lua
+-->8
+assert(game)
 
 
 g = game:new()
+
+cls(1)
+
 ?g.turn
 
-cls()
-g.live_wall:draw()
+
+flip()
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000

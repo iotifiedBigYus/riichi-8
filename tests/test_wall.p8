@@ -3,9 +3,13 @@ version 43
 __lua__
 -- test wall
 
+
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/wall.lua
+-->8
+assert(wall)
+
 
 cls()
 wall1 = wall:new()
@@ -25,6 +29,9 @@ wall1:populate()
 assert(#wall1:populate():populate().t_tiles == wall1:get_length())
 assert(wall2:get_length() == 0)
 ?"all good"
+
+
+flip()
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000

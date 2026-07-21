@@ -9,12 +9,11 @@ __lua__
 #include ../src/entity.lua
 #include ../src/tile.lua
 #include ../src/meld.lua
-#include ../src/debug.lua
-#include ../src/async.lua
+-->8
+assert(tile)
+assert(meld)
 
 cls(1)
-
-test_async = async:new()
 
 t1 = tile:new():set_value(1)
 t2 = tile:new():set_value(1)
@@ -63,6 +62,9 @@ for i = 1,12 do
 end
 
 color()
+
+
+flip()
 __gfx__
 000000000e999e0000000000000000000f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f0000000000000000000000000000000000
 00000000099999000000000000000000075557000775570007575700075577000777770007777700077777000777770000000000000000000000000000000000

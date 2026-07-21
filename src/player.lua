@@ -1,14 +1,68 @@
 -- player
 
 
-assert(util)
+--TODO: fix class body
+
+
+assert(empty_tiles)
+assert(sum_values)
 assert(class)
 assert(hand)
 assert(discard_pile)
+assert(meld_stack)
 
 
+player = entity:subclass{
 
-player = class:subclass{
+	--in_tenpai = false,
+	--in_riichi = false,
+	--drawn_tile = nil,
+
+	new = function(self)
+		return entity.new(self,{
+			closed_tiles = {},
+			meld_stack = global.meld_stack:new(),
+			closed_values = empty_tiles(),
+			value_melds = {}, --rename to value_melds
+			total_values = empty_tiles(),
+		})
+	end,
+
+	set_melds = function(_ENV, new_melds)
+		meld_stack:set_melds(new_melds)
+		_ENV:update()
+		return _ENV
+	end,
+
+	apply_tile_states = function(_ENV)
+		meld_stack:apply_tile_states()
+		return _ENV
+	end,
+
+	update = function(_ENV)
+		meld_stack:set_state({x,y,rotation})
+
+		--values
+		value_melds = {}
+		foreach(meld_stack.melds, function(m)
+			add(value_melds, m:get_values())
+		end)
+
+		total_values = sum_values(closed_values, empty_tiles())
+		foreach(value_melds, function(v)
+			total_values = sum_values(total_values, v)
+		end)
+		return _ENV
+	end,
+
+	draw = function(_ENV)
+		foreach(tiles, function(tile) tile:draw() end)
+		meld_stack:draw()
+		return _ENV
+	end,
+}
+
+player2 = class:subclass{
 	score = 25000,
 	-- in_riichi = false,
 

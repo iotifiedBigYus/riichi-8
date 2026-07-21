@@ -1,6 +1,9 @@
 -- wall
 
 
+--TODO: make entity, with tiles instead of values
+
+
 assert(empty_tiles)
 assert(class)
 

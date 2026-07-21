@@ -2,9 +2,6 @@
 
 
 assert(entity)
-assert(large_tile)
-assert(meld)
-assert(meld_stack)
 
 
 hand = entity:subclass{
@@ -89,7 +86,6 @@ hand = entity:subclass{
 
 	draw = function(_ENV)
 		foreach(tiles, function(tile) tile:draw() end)
-		meld_stack:draw()
 		return _ENV
 	end,
 }

@@ -6,19 +6,24 @@ __lua__
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
-#include ../src/small_tile.lua
+#include ../src/tile.lua
 #include ../src/discard_pile.lua
 #include ../src/meld.lua
 #include ../src/meld_stack.lua
 #include ../src/hand.lua
 #include ../src/player.lua
+-->8
+assert(discard_pile)
+assert(player)
 
 cls(1)
 pile = discard_pile:new()
 ?pile.length
 pile:add_tile(2)
-?pile.t_tiles[1]
 plr = player:new()
+
+
+flip()
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000

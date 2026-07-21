@@ -10,6 +10,11 @@ __lua__
 #include ../src/tile.lua
 #include ../src/meld.lua
 #include ../src/meld_stack.lua
+-->8
+assert(tile)
+assert(meld)
+assert(meld_stack)
+
 
 cls(1)
 
@@ -38,10 +43,13 @@ for i = 1,4 do
 end
 
 color()
-?#stack1.meld_states
-?stack1.meld_states[2][2]
+?"# meld states: "..#stack1.meld_states
+--?stack1.meld_states[2][2]
 
 pset(64,64,11)
+
+
+flip()
 __gfx__
 000000000e999e0000000000000000000f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f0000000000000000000000000000000000
 00000000099999000000000000000000075557000775570007575700075577000777770007777700077777000777770000000000000000000000000000000000

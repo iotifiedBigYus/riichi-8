@@ -1,10 +1,10 @@
 -- dora (with indicators)
 
 
-assert(util)
-assert(class)
+assert(empty_tiles)
+assert(entity)
 assert(wall)
-assert(small_tile)
+assert(tile)
 
 
 dora = entity:subclass{
@@ -47,8 +47,8 @@ dora = entity:subclass{
 		assert( n < 6)
 		for i = 1,5 do
 			local x1 = x+i*6-6
-			small_tile:new()
-			:set_tile(indicators.t_tiles[i])
+			tile:new()
+			:set_value(indicators.t_tiles[i])
 			:set_status(i <= n and 1 or 2)
 			:set_pos(x1, y)
 			:draw()

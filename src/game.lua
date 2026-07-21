@@ -37,8 +37,6 @@ game = class:subclass{
 
 		-- init players
 		players = {
-			user:new()
-
 		}
 
 		init_game = function()

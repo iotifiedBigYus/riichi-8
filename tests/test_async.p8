@@ -1,15 +1,18 @@
 pico-8 cartridge // http://www.pico-8.com
 version 43
 __lua__
+-- test async
+
+
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
 #include ../src/tile.lua
-#include ../src/debug.lua
 #include ../src/async.lua
+-->8
+assert(tile)
+assert(async)
 
-
--- test async
 
 cls(1)
 
@@ -19,6 +22,9 @@ t = tile:new()
 
 game_async = async:new()
 
+
+flip()
+-->8
 function _update60()
 end
 

@@ -8,11 +8,15 @@ __lua__
 #include ../src/class.lua
 #include ../src/entity.lua
 #include ../src/wall.lua
-#include ../src/small_tile.lua
+#include ../src/tile.lua
 #include ../src/dora.lua
+-->8
+assert(dora)
+
 
 d = dora:new():add_pair(1,2)
 
+-->8
 function _draw()
 	cls(1)
 	color(7)
@@ -25,7 +29,6 @@ function _draw()
 	
 	d:draw()
 end
-
 __gfx__
 000000000e999e0000000000000000000f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f0000000000000000000000000000000000
 00000000099999000000000000000000075557000775570007575700075577000777770007777700077777000777770000000000000000000000000000000000
