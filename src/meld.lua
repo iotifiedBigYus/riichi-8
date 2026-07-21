@@ -4,7 +4,7 @@
 --TODO: make inherit from hand/wall
 
 
-assert(empty_tiles)
+assert(empty_values)
 assert(fit_in_four)
 assert(entity)
 assert(tile)
@@ -53,7 +53,7 @@ meld = entity:subclass{
 	end,
 
 	get_values = function(_ENV)
-		local values = empty_tiles()
+		local values = empty_values()
 		foreach(tiles, function(tile)
 			values[tile.value] += 1
 		end)

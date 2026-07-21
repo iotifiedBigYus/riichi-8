@@ -1,7 +1,7 @@
 -- meld stack
 
 
-assert(empty_tiles)
+assert(empty_values)
 assert(class)
 assert(entity)
 
@@ -32,7 +32,7 @@ meld_stack = entity:subclass{
 	end,
 
 	get_values = function(_ENV)
-		local values = empty_tiles()
+		local values = empty_values()
 		foreach(melds, function(meld)
 			values = add_values(values, meld:get_values())
 		end)

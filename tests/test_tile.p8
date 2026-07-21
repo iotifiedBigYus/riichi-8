@@ -47,7 +47,7 @@ large_tile
 large_tile:draw_all_tiles()
 
 i_tiles = {1,2,3,1+9,2+9,3+9,1+18,2+18,3+18,1+27,1+27,1+27,1+31,1+31}
-n_tiles = empty_tiles()
+n_tiles = empty_values()
 n_tiles[1] = 4
 n_tiles[2] = 1
 n_tiles[3] = 2

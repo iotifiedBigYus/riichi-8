@@ -4,8 +4,8 @@
 --TODO: make entity, with tiles instead of values
 
 
-assert(empty_tiles)
 assert(class)
+assert(empty_values)
 
 
 wall = class:subclass{
@@ -13,7 +13,7 @@ wall = class:subclass{
 
 	new = function(self)
 		return self:subclass({
-			n_tiles = empty_tiles(),
+			n_tiles = empty_values(),
 			t_tiles = {},
 		})
 	end,

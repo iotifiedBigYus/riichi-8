@@ -4,7 +4,7 @@
 --TODO: fix class body
 
 
-assert(empty_tiles)
+assert(empty_values)
 assert(sum_values)
 assert(class)
 assert(hand)
@@ -22,9 +22,9 @@ player = entity:subclass{
 		return entity.new(self,{
 			closed_tiles = {},
 			meld_stack = global.meld_stack:new(),
-			closed_values = empty_tiles(),
+			closed_values = empty_values(),
 			value_melds = {}, --rename to value_melds
-			total_values = empty_tiles(),
+			total_values = empty_values(),
 		})
 	end,
 
@@ -48,7 +48,7 @@ player = entity:subclass{
 			add(value_melds, m:get_values())
 		end)
 
-		total_values = sum_values(closed_values, empty_tiles())
+		total_values = sum_values(closed_values, empty_values())
 		foreach(value_melds, function(v)
 			total_values = sum_values(total_values, v)
 		end)

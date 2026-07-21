@@ -1,10 +1,8 @@
 -- util
 -- https://easings.net/
 
--- TODO: rename empty_tiles to empty_values
 
-
-function empty_tiles()
+function empty_values()
 	return split[[
 		0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,
@@ -62,7 +60,7 @@ end
 
 function parse_line(line)
 	local indices = {}
-	local n_tiles = empty_tiles()
+	local n_tiles = empty_values()
 	
 	for i = 1,#line do
 		local offset = 0;

@@ -1,7 +1,7 @@
 -- dora (with indicators)
 
 
-assert(empty_tiles)
+assert(empty_values)
 assert(entity)
 assert(wall)
 assert(tile)
@@ -17,8 +17,8 @@ dora = entity:subclass{
 		return entity.new(self, {
 			indicators     = wall:new(),
 			ura_indicators = wall:new(),
-			n_tiles     = empty_tiles(),
-			n_ura_tiles = empty_tiles(),
+			n_tiles     = empty_values(),
+			n_ura_tiles = empty_values(),
 		})
 	end,
 
