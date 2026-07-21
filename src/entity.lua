@@ -14,8 +14,8 @@ entity = class:subclass{
 	-- rotation = 3: up
 	-- rotation = 4: left
 
-	new = function(self, table)
-		return self:subclass(table):update()
+	new = function(parent, table)
+		return parent:subclass(table):update()
 	end,
 
 	set_pos = function(_ENV, new_x, new_y)

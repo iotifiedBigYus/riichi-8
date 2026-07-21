@@ -1,52 +1,15 @@
 -- hand
 
 
-assert(entity)
+assert(tile_stack)
 
 
-hand = entity:subclass{
-	--length = 0,
+hand = tile_stack:subclass{
 	--is_open = false,
-
-	new = function(self)
-		return entity.new(self,{
-			tiles = {},
-			--tile_states = {},
-			--[[
-				state: desired {x, y, rotation, status}
-				for each tile in all_tiles
-			]]
-		})
-	end,
-
-	set_tiles = function(_ENV, new_tiles)
-		tiles = new_tiles
-		_ENV:update()
-		return _ENV
-	end,
 
 	set_openness = function(_ENV, new_is_open)
 		is_open = new_is_open
 		_ENV:update()
-		return _ENV
-	end,
-
-	add_tile = function(_ENV, tile)
-		add(tiles, tile)
-		_ENV:update()
-		return _ENV
-	end,
-
-	remove_tile = function(_ENV, tile)
-		del(tiles, tile)
-		_ENV:update()
-		return _ENV
-	end,
-
-	apply_tile_states = function(_ENV)
-		for i,tile in ipairs(tiles) do
-			tile:set_state(tile_states[i])
-		end
 		return _ENV
 	end,
 
@@ -76,17 +39,7 @@ hand = entity:subclass{
 			end
 		end
 
-		tile_states = {}
-		for i = 1,length do
-			add(tile_states, _ENV:get_tile_state(i))
-		end
-
-		return _ENV
-	end,
-
-	draw = function(_ENV)
-		foreach(tiles, function(tile) tile:draw() end)
-		return _ENV
+		return _ENV:update_tile_states()
 	end,
 }
 

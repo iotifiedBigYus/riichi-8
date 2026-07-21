@@ -2,19 +2,11 @@
 
 
 assert(empty_values)
-assert(entity)
+assert(tile_stack)
 assert(tile)
 
 
-wall = entity:subclass{
-	--length = 0,
-
-	new = function(self)
-		return entity.new(self, {
-			tiles   = {}
-		})
-	end,
-
+wall = tile_stack:subclass{
 	populate = function(_ENV, seed)
 		tiles = {}
 		for i = 1,34 do
@@ -34,42 +26,6 @@ wall = entity:subclass{
 			add(tiles, deli(tiles, flr(rnd(i))))
 		end
 
-		_ENV:update()
-		return _ENV
-	end,
-
-	add_tile = function(_ENV, tile)
-		add(tiles, tile)
-		_ENV:update()
-		return _ENV
-	end,
-
-	remove_latest_tile = function(_ENV)
-		local tile = deli(tiles)
-		_ENV:update()
-		return tile
-	end,
-
-	remove_latest_tiles = function(_ENV, n)
-		local removed_tiles = {}
-		for _ = 1,n do
-			add(tiles, deli(tiles))
-		end
-		_ENV:update()
-		return removed_tiles
-	end,
-
-	get_values = function(_ENV)
-		local values = empty_values()
-		foreach(tiles, function(tile)
-			values[tile.value] += 1
-		end)
-		return values
-	end,
-
-	update = function(_ENV)
-		length = #tiles
-
-		return _ENV
+		return _ENV:update()
 	end,
 }

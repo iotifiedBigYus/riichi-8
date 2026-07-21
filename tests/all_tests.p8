@@ -3,7 +3,6 @@ version 43
 __lua__
 -- all tests back-to-back
 
-
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
@@ -11,6 +10,7 @@ __lua__
 #include ../src/large_tile.lua
 #include ../src/debug_tile.lua
 #include ../src/debug_large_tile.lua
+#include ../src/tile_stack.lua
 #include ../src/wall.lua
 #include ../src/hand.lua
 #include ../src/meld.lua

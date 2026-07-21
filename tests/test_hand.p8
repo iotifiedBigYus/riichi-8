@@ -7,6 +7,7 @@ __lua__
 #include ../src/class.lua
 #include ../src/entity.lua
 #include ../src/tile.lua
+#include ../src/tile_stack.lua
 #include ../src/hand.lua
 -->8
 assert(tile)
