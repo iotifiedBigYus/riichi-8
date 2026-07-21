@@ -40,7 +40,7 @@ assert(wall1:get_values()[1] == 4)
 assert(wall1:get_values()[5] == 3)
 assert(wall1:get_values()[37] == 1)
 
-
+?"first value: "..wall1.tiles[1].value
 ?"all good"
 
 

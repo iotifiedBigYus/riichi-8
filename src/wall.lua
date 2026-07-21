@@ -25,9 +25,11 @@ wall = tile_stack:subclass{
 	
 		-- shuffle
 		if seed then srand(seed) end
-		for i = 136,1,-1 do
-			add(tiles, deli(tiles, flr(rnd(i))))
+		local shuffled_tiles = {}
+		for i = 1,136 do
+				add(shuffled_tiles, del(tiles,rnd(tiles)))
 		end
+		tiles = shuffled_tiles
 
 		return _ENV:update()
 	end,
