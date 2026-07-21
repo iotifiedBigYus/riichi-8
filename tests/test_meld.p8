@@ -12,9 +12,7 @@ __lua__
 #include ../src/debug.lua
 #include ../src/async.lua
 
-
 cls(1)
-
 
 test_async = async:new()
 
@@ -25,26 +23,46 @@ t4 = tile:new():set_value(1)
 
 m = meld:new()
 
+tiles = {t1,t2,t3,t4}
+
 for i = 1,4 do
-	m:set_pos(30,i*10+40):set_origin(i):set_tiles({t1,t2},t3):apply_tile_states():draw()
-	m:set_pos(60,i*10+40):set_origin(i):set_tiles({t1,t2},t3,t4):apply_tile_states():draw()
-	m:set_pos(90,i*10+40):set_origin(i):set_tiles({t1,t2,t3},t4):apply_tile_states():draw()
-	m:set_pos(120,i*10+40):set_origin(i):set_tiles({t1,t2,t3,t4}):apply_tile_states():draw()
+	local y = i*10+5
+	m:set_pos(30,y):set_origin(i)
+	:set_tiles({t1,t2},t3):apply_tile_states():draw()
+	m:set_pos(60,y):set_origin(i)
+	:set_tiles({t1,t2},t3,t4):apply_tile_states():draw()
+	m:set_pos(90,y):set_origin(i)
+	:set_tiles({t1,t2,t3},t4):apply_tile_states():draw()
+	m:set_pos(120,y):set_origin(i)
+	:set_tiles({t1,t2,t3,t4}):apply_tile_states():draw()
+	y+=40
+	m:set_pos(30,y):set_origin(i)
+	:set_tiles({t1}):apply_tile_states():draw()
+	m:set_pos(60,y):set_origin(i)
+	:set_tiles({t1,t2}):apply_tile_states():draw()
+	m:set_pos(90,y):set_origin(i)
+	:set_tiles({t1,t2,t3}):apply_tile_states():draw()
+	y+=40
+	m:set_pos(30,y):set_origin(i)
+	:set_tiles({t1},t2):apply_tile_states():draw()
+	m:set_pos(60,y):set_origin(i)
+	:set_tiles({t1},t2,t3):apply_tile_states():draw()
 end
 
 assert(#m:set_tiles({t1,t2},t3,t4)
 :set_added_tile(t1)
 :set_added_tile(t4)
-:set_added_tile(t4).all_tiles == 4)
+:set_added_tile(t4).tiles == 4)
 
-
-m:draw()
-
+for i = 1,12 do
+	for j = 1,4 do
+		if i/4+j <= 5 then
+			pset(j*30,i*10+5,11)
+		end
+	end
+end
 
 color()
-
-
-pset(64,64,11)
 __gfx__
 000000000e999e0000000000000000000f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f0000000000000000000000000000000000
 00000000099999000000000000000000075557000775570007575700075577000777770007777700077777000777770000000000000000000000000000000000

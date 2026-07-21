@@ -2,7 +2,6 @@
 
 
 --TODO: make inherit from hand/wall
---TODO: make own_tiles and all_tiles become just tiles, redefine type logic
 
 
 assert(empty_tiles)
@@ -22,12 +21,12 @@ meld = entity:subclass{
 	
 	new = function(self)
 		return entity.new(self, {
+			tiles = {},
 			own_tiles = {},
-			all_tiles = {},
 			--tile_states = {},
 			--[[
 				state: desired {x, y, rotation, status}
-				for each tile in all_tiles
+				for each tile in tiles
 			]]
 		})
 	end,
@@ -55,7 +54,7 @@ meld = entity:subclass{
 
 	get_values = function(_ENV)
 		local values = empty_tiles()
-		foreach(all_tiles, function(tile)
+		foreach(tiles, function(tile)
 			values[tile.value] += 1
 		end)
 		return values
@@ -107,19 +106,17 @@ meld = entity:subclass{
 				0,-4,-16,-22,
 				0  0,  0,  0,
 			]][type*4 + origin - 4],
-			split"-3,-2,-3,0"[type]
+			split"-3,-2,-3,"[type]
 		)
 		return {
 			tile_x,
 			tile_y,
-			fit_in_four(
-				rotation + split[[
-					1,-1,1,1,
-					0, 0,0,0,
-					1,-1,1,1,
-					0, 0,0,0,
-				]][type*4 + origin - 4]
-			),
+			rotation + split[[
+				0,-1,1,1,
+				0, 0,0,0,
+				0,-1,1,1,
+				0, 0,0,0,
+			]][type*4 + origin - 4],
 			split"1,4,1,0"[type],
 		}
 	end,
@@ -138,32 +135,34 @@ meld = entity:subclass{
 	end,
 
 	apply_tile_states = function(_ENV)
-		for i,tile in ipairs(all_tiles) do
+		for i,tile in ipairs(tiles) do
 			tile:set_state(tile_states[i])
 		end
 		return _ENV
 	end,
 
 	update = function(_ENV)
-		if #own_tiles == 4 then
-			type = 4 -- closed kan
-			taken_tile, added_tile = nil, nil
-		elseif #own_tiles == 3 then
-			type = 3 -- open kan
-			added_tile = nil
+		tiles = {unpack(own_tiles)}
+		add(tiles, taken_tile)
+		add(tiles, added_tile)
+
+		length = #tiles
+
+		assert(length <= 4)
+
+		if length <= 3 then
+			type = 1 -- chii / pon
 		elseif added_tile then
 			type = 2 -- added kan
+		elseif taken_tile then
+			type = 3 -- open kan
 		else
-			type = 1 -- chii / pon
+			type = 4 -- closed kan
 		end
-
-		all_tiles = {unpack(own_tiles)}
-		add(all_tiles, taken_tile)
-		add(all_tiles, added_tile)
-
+		
 		tile_states = {}
 		local i = 1
-		for tile in all(all_tiles) do
+		for tile in all(tiles) do
 			local state
 			if tile == added_tile then
 				state = _ENV:get_added_tile_state()
@@ -180,7 +179,7 @@ meld = entity:subclass{
 	end,
 
 	draw = function(_ENV)
-		foreach(all_tiles,function(t) t:draw() end)
+		foreach(tiles, function(t) t:draw() end)
 		return _ENV
 	end,
 }
