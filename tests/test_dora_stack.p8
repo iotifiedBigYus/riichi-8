@@ -1,33 +1,51 @@
 pico-8 cartridge // http://www.pico-8.com
 version 43
 __lua__
--- test dora
+-- test dora (indicator) stack
 
 
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
-#include ../src/wall.lua
 #include ../src/tile.lua
-#include ../src/dora.lua
+#include ../src/tile_stack.lua
+#include ../src/dora_stack.lua
 -->8
-assert(dora)
+assert(dora_stack)
+assert(tile)
+
+d = dora_stack:new()
+d:add_tiles(
+	{tile:new():set_value(1),
+	tile:new():set_value(4+18)}
+)
 
 
-d = dora:new():add_pair(1,2)
+assert(d:get_dora_values()[2] == 1)
+assert(d:get_dora_values()[37] == 1)
+assert(d:get_dora_values()[5+18] == 1)
 
 -->8
 function _draw()
 	cls(1)
-	color(7)
-	?d.indicators.length
-	?d.ura_indicators.length
-
+	
 	if btnp(➡️) then
-		d:add_pair(1,2)
+		local v = flr(rnd(37))+1
+		d:add_tile(tile:new():set_value(v))
+	end if btnp(⬅️) then
+		d:remove_latest_tile()
 	end
 	
-	d:draw()
+	d:apply_tile_states():draw()
+	
+	color()
+	?"length: "..d.length
+	?"doras:"
+	for value,n in ipairs(d:get_dora_values()) do
+		if n > 0 then
+			?value..": "..n
+		end
+	end
 end
 __gfx__
 000000000e999e0000000000000000000f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f0000000000000000000000000000000000

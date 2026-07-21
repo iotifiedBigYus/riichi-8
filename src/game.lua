@@ -6,7 +6,7 @@
 
 assert(class)
 assert(wall)
-assert(dora)
+assert(dora_stack)
 
 
 game = class:subclass{

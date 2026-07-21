@@ -3,6 +3,7 @@ version 43
 __lua__
 -- all tests back-to-back
 
+
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
@@ -17,13 +18,13 @@ __lua__
 #include ../src/meld_stack.lua
 #include ../src/discard_pile.lua
 #include ../src/player.lua
-#include ../src/dora.lua
+#include ../src/dora_stack.lua
 #include ../src/async.lua
 #include ../src/game.lua
 
 #include test_async.p8:1
 #include test_discard_pile.p8:1
-#include test_dora.p8:1
+#include test_dora_stack.p8:1
 #include test_game.p8:1
 #include test_hand.p8:1
 #include test_meld_stack.p8:1
