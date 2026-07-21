@@ -3,10 +3,12 @@ version 43
 __lua__
 -- test player
 
+
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
 #include ../src/tile.lua
+#include ../src/tile_stack.lua
 #include ../src/discard_pile.lua
 #include ../src/meld.lua
 #include ../src/meld_stack.lua
@@ -17,9 +19,6 @@ assert(discard_pile)
 assert(player)
 
 cls(1)
-pile = discard_pile:new()
-?pile.length
-pile:add_tile(2)
 plr = player:new()
 
 

@@ -13,24 +13,37 @@ assert(meld_stack)
 
 
 player = entity:subclass{
-
+	score = 25000,
 	--in_tenpai = false,
 	--in_riichi = false,
 	--drawn_tile = nil,
 
 	new = function(self)
 		return entity.new(self,{
-			closed_tiles = {},
+			hand = global.hand:new(),
 			meld_stack = global.meld_stack:new(),
-			closed_values = empty_values(),
-			value_melds = {}, --rename to value_melds
-			total_values = empty_values(),
+			discard_pile = global.discard_pile:new(),
+			discard_values = empty_values(),
 		})
+	end,
+
+	pick_up_tile = function(_ENV, tile)
+		--[[
+		local obj = new_tile_object(t)
+		player.pick_up_tile_obj = obj
+		add(player.tile_objs, obj)
+	
+		update_player_tile_object_positions()
+		]]
 	end,
 
 	set_melds = function(_ENV, new_melds)
 		meld_stack:set_melds(new_melds)
-		_ENV:update()
+		return _ENV:update()
+	end,
+
+	add_points = function(_ENV, points)
+		score += points
 		return _ENV
 	end,
 
@@ -41,17 +54,6 @@ player = entity:subclass{
 
 	update = function(_ENV)
 		meld_stack:set_state({x,y,rotation})
-
-		--values
-		value_melds = {}
-		foreach(meld_stack.melds, function(m)
-			add(value_melds, m:get_values())
-		end)
-
-		total_values = sum_values(closed_values, empty_values())
-		foreach(value_melds, function(v)
-			total_values = sum_values(total_values, v)
-		end)
 		return _ENV
 	end,
 
@@ -61,46 +63,6 @@ player = entity:subclass{
 		return _ENV
 	end,
 }
-
-player2 = class:subclass{
-	score = 25000,
-	-- in_riichi = false,
-
-	new = function(self)
-		return self:subclass({
-			hand = hand:new(),
-			discard_pile = discard_pile:new(),
-		})
-	end,
-
-	add_points = function(_ENV, points)
-		score += points
-		return _ENV
-	end,
-
-	get_score = function(_ENV)
-		return score
-	end,
-
-	update = function(_ENV)
-		return _ENV
-	end,
-}
-
-
-function pick_up_tile(player)
-	assert(wall)
-	assert(player)
-	local t = get_tile()
-
-	player.hand.tiles[t] += 1
-
-	local obj = new_tile_object(t)
-	player.pick_up_tile_obj = obj
-	add(player.tile_objs, obj)
-
-	update_player_tile_object_positions()
-end
 
 
 function get_starting_hand(player, i_player)
