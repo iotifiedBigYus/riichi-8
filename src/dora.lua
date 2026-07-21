@@ -1,6 +1,9 @@
 -- dora (with indicators)
 
 
+-- TODO: make inherit from tile_stack
+
+
 assert(empty_values)
 assert(entity)
 assert(wall)

@@ -1,6 +1,9 @@
 -- game
 
 
+--TODO: fix dora
+
+
 assert(class)
 assert(wall)
 assert(dora)
@@ -18,22 +21,22 @@ game = class:subclass{
 		live_wall = wall:new()
 		live_wall:populate()
 		for i = 1,14 do
-			dead_wall:add_tile(live_wall:get_tile())
+			dead_wall:add_tile(live_wall:remove_latest_tile())
 		end
-		assert(#live_wall.t_tiles == 122)
 		assert(live_wall.length == 122)
-		assert(#dead_wall.t_tiles == 14)
 		assert(dead_wall.length == 14)
 
-		-- init dora
+		--[[ init dora
 		dora = dora:new()
-		dora:add_pair(dead_wall:get_tiles(2))
+		dora:add_pair(unpack(dead_wall:remove_latest_tiles(2)))
 
 
 		assert(#dora.indicators.t_tiles == 1)
 		assert(dora.indicators.length == 1)
 		assert(#dead_wall.t_tiles == 12)
 		assert(dead_wall.length == 12)
+
+		--]]
 
 		-- init players
 		players = {

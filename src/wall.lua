@@ -1,9 +1,6 @@
 -- wall
 
 
---TODO: make entity, with tiles instead of values
-
-
 assert(empty_values)
 assert(entity)
 assert(tile)
@@ -51,6 +48,15 @@ wall = entity:subclass{
 		local tile = deli(tiles)
 		_ENV:update()
 		return tile
+	end,
+
+	remove_latest_tiles = function(_ENV, n)
+		local removed_tiles = {}
+		for _ = 1,n do
+			add(tiles, deli(tiles))
+		end
+		_ENV:update()
+		return removed_tiles
 	end,
 
 	get_values = function(_ENV)

@@ -7,6 +7,7 @@ __lua__
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
+#include ../src/tile.lua
 #include ../src/wall.lua
 #include ../src/tile.lua
 #include ../src/dora.lua
