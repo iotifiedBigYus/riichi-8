@@ -27,25 +27,34 @@ end
 cls(1)
 
 
-h = hand:new()
-h:set_tiles(tiles)
-h:set_rotation(2):set_status(1):apply_tile_states():draw()
-
-h:set_rotation(1):apply_tile_states():draw()
 
 t = tile:new():set_value(1)
 
-h:set_pos(64,74):set_pulled_tile(t):apply_tile_states():draw()
+h = hand:new()
 
-h:set_pos(64,84):remove_tile_i(2)
-h:remove_tile_i(3)
-h:remove_tile_i(3)
-h:remove_tile_i(3)
-h:add_tile(t):apply_tile_states():draw()
 
-h:set_pos(64,94):set_status(3):apply_tile_states():draw()
+h:set_tiles(tiles)
+h:set_rotation(2):set_status(1):apply_tile_states():draw()
 
-h:set_pos(64,104):set_status(2):apply_tile_states():draw()
+
+h:set_rotation(1):apply_tile_states():draw()
+color()?h.length
+h:set_pos(64,70):add_tile(t):apply_tile_states():draw()
+color()?h.length..h.previous_length..tostr(h.pulled_tile)
+h:remove_tile_i(2)
+h:set_pos(64,80):apply_tile_states():draw()
+color()?h.length..h.previous_length..tostr(h.pulled_tile)
+h:remove_tile_i(2)
+h:set_pos(64,90):apply_tile_states():draw()
+color()?h.length..h.previous_length
+h:add_tile(tile:new())
+h:set_pos(64,100):apply_tile_states():draw()
+color()?h.length..h.previous_length
+h:set_pos(64,110):set_status(3):apply_tile_states():draw()
+color()?h.length..h.previous_length
+h:set_pos(64,120):set_status(2):apply_tile_states():draw()
+
+--h:set_pos(64,104):set_status(2):apply_tile_states():draw()
 
 color()
 
