@@ -4,59 +4,20 @@
 assert(empty_values)
 assert(class)
 assert(entity)
+assert(stack)
 
 
-meld_stack = entity:subclass{
-	--length = 0,
+meld_stack = stack:subclass{
 
-	new = function(self)
-		return entity.new(self, {
-			melds = {},
-			meld_states = {}, --[[
-				state: desired {x, y, rotation}
-				for each meld in melds
-			]]
-		})
-	end,
-
-	set_melds = function(_ENV, new_melds)
-		melds = new_melds
-		_ENV:update()
-		return _ENV
-	end,
-
-	add_meld = function(_ENV, meld)
-		add(melds, meld)
-		_ENV:update()
-		return _ENV
-	end,
+	set_melds = stack.set_elements,
 
 	get_values = function(_ENV)
+		--TODO: make it output list of values
 		local values = empty_values()
 		foreach(melds, function(meld)
 			values = add_values(values, meld:get_values())
 		end)
 		return values
-	end,
-
-	get_meld_state = function(_ENV, i)
-		local meld_x, meld_y = _ENV:get_rotated_pos(
-			0,
-			8-8*i
-		)
-		return {
-			meld_x,
-			meld_y,
-			rotation
-		}
-	end,
-
-	apply_meld_states = function(_ENV)
-		--trim
-		for i,meld in ipairs(melds) do
-			meld:set_state(meld_states[i])
-		end
-		return _ENV
 	end,
 
 	apply_tile_states = function(_ENV)
@@ -67,7 +28,8 @@ meld_stack = entity:subclass{
 	end,
 
 	update = function(_ENV)
-		length = #melds
+		length = #elements
+		melds = elements
 
 		meld_states = {}
 		for i = 1,length do

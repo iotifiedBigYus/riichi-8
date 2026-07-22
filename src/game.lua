@@ -26,15 +26,17 @@ game = entity:subclass{
 		-- init walls
 		dead_wall = wall:new()
 		live_wall = wall:new()
+		assert(live_wall.length == 0)
 		live_wall:populate()
-		for i = 1,14 do
-			dead_wall:add_tile(live_wall:remove_latest_tile())
+		assert(live_wall.length == 136)
+		for _ = 1,14 do
+			dead_wall:push(live_wall:pop())
 		end
-		assert(live_wall.length == 122)
 		assert(dead_wall.length == 14)
+		assert(live_wall.length == 122)
 
-		dora_stack = dora_stack:new():add_tile(dead_wall:remove_latest_tile())
-		uradora_stack = dora_stack:new():add_tile(dead_wall:remove_latest_tile())
+		dora_stack = dora_stack:new():push(dead_wall:pop())
+		uradora_stack = dora_stack:new():push(dead_wall:pop())
 
 		assert(dora_stack.length == 1)
 		assert(uradora_stack.length == 1)
@@ -45,12 +47,17 @@ game = entity:subclass{
 
 		for i = 1,4 do
 			local player = global.player:new()
-			player.hand:set_tiles(live_wall:remove_latest_tiles(13)):set_status(3)
+			for _ = 1,13 do
+				player.hand:add(live_wall:pop())
+			end
+			player.hand:set_status(3)
+
+			assert(player.hand.length == 13)
 			add(players, player)
 			assert(live_wall.length == 122 - i*13)
 		end
 
-		players[turn].hand:add_tiles(live_wall:remove_latest_tile())
+		players[turn].hand:add(live_wall:pop())
 		assert(live_wall.length == 69)
 
 

@@ -8,6 +8,7 @@ __lua__
 #include ../src/class.lua
 #include ../src/entity.lua
 #include ../src/tile.lua
+#include ../src/stack.lua
 #include ../src/tile_stack.lua
 #include ../src/dora_stack.lua
 -->8
@@ -15,10 +16,8 @@ assert(dora_stack)
 assert(tile)
 
 d = dora_stack:new()
-d:add_tiles(
-	{tile:new():set_value(1),
-	tile:new():set_value(4+18)}
-)
+d:push(tile:new():set_value(1))
+:push(tile:new():set_value(4+18))
 
 
 assert(d:get_dora_values()[2] == 1)
@@ -31,9 +30,9 @@ function _draw()
 	
 	if btnp(➡️) then
 		local v = flr(rnd(37))+1
-		d:add_tile(tile:new():set_value(v))
+		d:push(tile:new():set_value(v))
 	end if btnp(⬅️) then
-		d:remove_latest_tile()
+		d:pop()
 	end
 	
 	d:apply_tile_states():draw()

@@ -7,6 +7,7 @@ __lua__
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
+#include ../src/stack.lua
 #include ../src/tile.lua
 #include ../src/tile_stack.lua
 #include ../src/discard_pile.lua
@@ -16,24 +17,25 @@ assert(discard_pile)
 cls(1)
 
 p = discard_pile:new()
-:add_tile(tile:new():set_value(1))
-:add_tile(tile:new():set_value(2))
-:add_tile(tile:new():set_value(3))
-:add_tile(tile:new():set_value(4))
-:add_tile(tile:new():set_value(5))
-:add_tile(tile:new():set_value(6))
-:add_tile(tile:new():set_value(7))
-:add_tile(tile:new():set_value(8),true)
+:push(tile:new():set_value(1))
+:push(tile:new():set_value(2))
+:push(tile:new():set_value(3))
+:push(tile:new():set_value(4))
+:push(tile:new():set_value(5))
+:push(tile:new():set_value(6))
+:push(tile:new():set_value(7))
+:set_riichi_i():push(tile:new():set_value(8))
 
-?"removed value: "..p:remove_latest_tile().value
-?"removed value: "..p:remove_latest_tile().value
+?"removed value: "..p:pop().value
+?"removed value: "..p:pop().value
 
 p
-:add_tile(tile:new():set_value(9))
-:add_tile(tile:new():set_value(10))
-:add_tile(tile:new():set_value(11),true)
-:add_tile(tile:new():set_value(12))
-:add_tile(tile:new():set_value(13))
+:push(tile:new():set_value(9))
+:push(tile:new():set_value(10))
+:set_riichi_i()
+:push(tile:new():set_value(11))
+:push(tile:new():set_value(12))
+:push(tile:new():set_value(13))
 
 ?"length: "..p.length
 

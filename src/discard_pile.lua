@@ -12,16 +12,8 @@ discard_pile = tile_stack:subclass{
 	--riichi_row = -1,
 
 	set_riichi_i = function(_ENV, i)
-		--debug
-		riichi_i = i
-		return _ENV:update()
-	end,
-
-	add_tile = function(_ENV, tile, in_riichi)
-		add(tiles, tile)
-		if in_riichi and riichi_i == 0 then
-			riichi_i = #tiles
-		end
+		-- will set it to a later tile if called again
+		riichi_i = i or length + 1
 		return _ENV:update()
 	end,
 
@@ -49,7 +41,8 @@ discard_pile = tile_stack:subclass{
 	end,
 
 	update = function(_ENV)
-		length = #tiles
+		length = #elements
+		tiles = elements
 
 		riichi_row = flr((riichi_i-1)/6)
 

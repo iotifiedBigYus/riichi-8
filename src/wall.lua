@@ -28,6 +28,8 @@ wall = tile_stack:subclass{
 		end
 		tiles = shuffled_tiles
 
+		elements = tiles --> important
+		
 		return _ENV:update()
 	end,
 }

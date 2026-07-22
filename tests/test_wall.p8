@@ -7,6 +7,7 @@ __lua__
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
+#include ../src/stack.lua
 #include ../src/tile.lua
 #include ../src/tile_stack.lua
 #include ../src/wall.lua
@@ -21,15 +22,15 @@ wall2 = wall:new()
 assert(wall1)
 
 for i = 1,5 do
-	wall1:add_tile(tile:new():set_value(i))
-	wall2:add_tile(tile:new():set_value(1))
+	wall1:push(tile:new():set_value(i))
+	wall2:push(tile:new():set_value(1))
 end
 
 assert(wall1.length == 5)
 
 for i = 1,5 do
-	assert(wall1:remove_latest_tile().value == 6-i)
-	assert(wall2:remove_latest_tile().value == 1)
+	assert(wall1:pop().value == 6-i)
+	assert(wall2:pop().value == 1)
 end
 
 assert(wall1.length == 0)
@@ -42,9 +43,6 @@ assert(wall1:get_values()[37] == 1)
 
 ?"first value: "..wall1.tiles[1].value
 ?"all good"
-
-assert(#wall1:remove_latest_tiles(13) == 13)
-
 
 flip()
 __gfx__

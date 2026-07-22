@@ -8,6 +8,7 @@ __lua__
 #include ../src/class.lua
 #include ../src/entity.lua
 #include ../src/tile.lua
+#include ../src/stack.lua
 #include ../src/tile_stack.lua
 #include ../src/discard_pile.lua
 #include ../src/meld.lua

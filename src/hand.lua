@@ -1,7 +1,7 @@
 -- hand
 
 
--- TODO: inherit from meld
+-- TODO: inherit from meld, which should inherit form something else than tile stack
 
 
 assert(tile_stack)
@@ -41,23 +41,14 @@ hand = tile_stack:subclass{
 		return _ENV:update()
 	end,
 
-	add_tile = function(_ENV, tile)
+	add = function(_ENV, tile)
 		-- assimilates the previous pulled tile
 		add(previous_tiles, pulled_tile)
 		pulled_tile = tile
 		return _ENV:update()
 	end,
 
-	add_tiles = function(_ENV, tiles)
-		-- assimilates the previous pulled tile
-		foreach(tiles, function(t)
-			add(previous_tiles, pulled_tile)
-			pulled_tile = t
-		end)
-		return _ENV:update()
-	end,
-
-	remove_tile = function(_ENV, tile)
+	del = function(_ENV, tile)
 		-- assimilates the pulled tile before removing
 		add(previous_tiles, pulled_tile)
 		pulled_tile = nil
@@ -66,7 +57,7 @@ hand = tile_stack:subclass{
 		return removed_tile
 	end,
 
-	remove_tile_i = function(_ENV, i)
+	deli = function(_ENV, i)
 		-- assimilates the pulled tile before removing
 		add(previous_tiles, pulled_tile)
 		pulled_tile = nil

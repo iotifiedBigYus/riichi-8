@@ -7,6 +7,7 @@ __lua__
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
+#include ../src/stack.lua
 #include ../src/tile.lua
 #include ../src/tile_stack.lua
 #include ../src/hand.lua
@@ -37,25 +38,25 @@ h:set_tiles(tiles)
 h:set_rotation(2):set_status(1):apply_tile_states():draw()
 
 h:set_pos(64,50):set_rotation(1):set_size(2):apply_tile_states():draw()
-h:add_tile(test_tile()):apply_tile_states():draw()
+h:add(test_tile()):apply_tile_states():draw()
 
 
 
 h:set_pos(64,60):set_size(1):apply_tile_states():draw()
 color()?h.length
 
-h:set_pos(64,70):add_tile(t):apply_tile_states():draw()
+h:set_pos(64,70):add(t):apply_tile_states():draw()
 color()?h.length..h.previous_length..tostr(h.pulled_tile)
 
-h:remove_tile_i(2)
+h:deli(2)
 h:set_pos(64,80):apply_tile_states():draw()
 color()?h.length..h.previous_length..tostr(h.pulled_tile)
 
-h:remove_tile_i(2)
+h:deli(2)
 h:set_pos(64,90):apply_tile_states():draw()
 color()?h.length..h.previous_length
 
-h:add_tile(tile:new())
+h:add(tile:new())
 h:set_pos(64,100):apply_tile_states():draw()
 color()?h.length..h.previous_length
 
