@@ -1,7 +1,7 @@
 -- discard pile
 
 
-assert(fit_in_four)
+assert(fit_in)
 assert(tile_stack)
 assert(tile)
 
@@ -43,6 +43,7 @@ discard_pile = tile_stack:subclass{
 			tile_x,
 			tile_y,
 			tile_rotation,
+			1,
 			1,
 		}
 	end,

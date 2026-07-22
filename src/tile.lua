@@ -5,70 +5,31 @@ assert(class)
 assert(entity)
 
 
-function get_small_tile_face_sprites_vert()
-	-- will be turned into split table
-	local sprites = {}
-
-	for value = 1,37 do
-		local spr_numbers_vert = 0x21
-		local spr_honors_vert = 0x04-28
-		local spr_fives_vert = 0x20
-
-		if value <= 27 then
-			-- number tiles
-			add(sprites, spr_numbers_vert+(value-1)%9)
-		elseif value <= 34 then
-			-- honors
-			add(sprites, spr_honors_vert+value)
-		else
-			-- "red" fives
-			add(sprites, spr_fives_vert)
-		end
-	end
-	
-	return sprites
-end
-
-
-function get_small_tile_face_sprites_horz()
-	-- will be turned into split table
-	local sprites = {}
-
-	for value = 1,37 do
-		local spr_numbers_horz = 0x31
-		local spr_honors_horz = 0x14-28
-		local spr_fives_horz = 0x30
-
-		if value <= 27 then
-			-- number tiles
-			add(sprites, spr_numbers_horz+(value-1)%9)
-		elseif value <= 34 then
-			-- honors
-			add(sprites, spr_honors_horz+value)
-		else
-			-- "red" fives
-			add(sprites, spr_fives_horz)
-		end
-	end
-
-	return sprites
-end
-
-
 tile = entity:subclass{
 	value = 32,
 	status = 1, --[[
-		status = 1: face up
-		status = 2: face down
-		status = 3: standing face towards
-		status = 4: on edge face towards
+		~ status ~ 
+		1: face up
+		2: face down
+		3: standing face towards
+		4: on edge face towards
 	]]
+	size = 1,
+	--[[
+		~ size ~
+		1: small (6x8)
+		2: large (8x12)
+	--]]
 	--value_color = 0,
 	--relative_value = 41,
 	--sprite = nil,
+	--spr_flip = false,
+	--spr_x = 3,
+	--spr_y = 3,
+	--spr_w = 0.875,
+	--spr_h = 0.875,
 	--w = 6,
 	--h = 8,
-	--spr_flip = false,
 
 	value_colors = split[[
 		8,8,8,8,8,8,8,8,8,
@@ -85,64 +46,98 @@ tile = entity:subclass{
 		31,32,33,34,
 		41,42,43,
 		4.5,14.5,24.5
-	]], --[[
+	]],
+	--[[
 		relative value is used to sort tiles.
 		the absolute values used can be chosen arbitrarily.
-	]]
-	face_sprites_vert = get_small_tile_face_sprites_vert(), --TODO: replace with split table
-	face_sprites_horz = get_small_tile_face_sprites_horz(),
+	--]]
+	face_sprites = split[[
+		0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,
+		0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,
+		0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,
+		0x04,0x05,0x06,0x07,
+		0x08,0x09,0x0a,
+		0x20,0x20,0x20,
+
+		0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,
+		0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,
+		0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,
+		0x14,0x15,0x16,0x17,
+		0x18,0x19,0x1a,
+		0x30,0x30,0x30,
+
+		0x61,0x62,0x63,0x64,0x65,0x66,0x67,0x68,0x69,
+		0x61,0x62,0x63,0x64,0x65,0x66,0x67,0x68,0x69,
+		0x61,0x62,0x63,0x64,0x65,0x66,0x67,0x68,0x69,
+		0x40,0x41,0x42,0x43,
+		0x44,0x45,0x46,
+		0x60,0x60,0x60,
+	]],
+	misc_sprites = split[[
+		0x00,0x01,0x02,0x03,
+		0x00,0x11,0x12,0x13,
+	]],
 	misc_sprites_vert = split"0x00,0x01,0x02,0x03",
 	misc_sprites_horz = split"0x00,0x11,0x12,0x13",
-	ws = split"6,6,6,8", --based on status
-	hs = split"8,8,4,4",
-	spr_x = 3,
-	spr_y = 3,
-	spr_w = 0.875,
-	spr_h = 0.875,
+	spr_xs = split"3,3",
+	spr_ys = split"3,7",
+	spr_ws = split"0.875,0.875",
+	spr_hs = split"0.875,1.875",
+	ws = split[[
+		6,6,6,8,
+		8,0,0,0,
+	]], --based on status
+	hs = split[[
+		8,8,4,4,
+		12,0,0,0,
+	]],
 	
 	set_value = function(_ENV, new_value)
 		value = new_value or 32
-		_ENV:update()
-		return _ENV
+		return _ENV:update()
+	end,
+
+	set_size = function(_ENV, new_size)
+		size = new_size or 1
+		return _ENV:update()
 	end,
 
 	set_status = function(_ENV, new_status)
-		status = fit_in_four(new_status)
-		_ENV:update()
-		return _ENV
+		status = fit_in(new_status)
+		return _ENV:update()
 	end,
 
 	set_state = function(_ENV, state)
-		x, y, rotation, status = unpack(state)
-		rotation = fit_in_four(rotation)
-		status = fit_in_four(status)
-		_ENV:update()
-		return _ENV
+		x, y, rotation, status, size = unpack(state)
+		rotation = fit_in(rotation)
+		status = fit_in(status)
+		size = fit_in(size, 2)
+		return _ENV:update()
 	end,
 
 	update = function(_ENV)
-		relative_value = relative_values[value]
+		local turn = (rotation-1)%2+1
 
-		w,h = ws[status], hs[status]
-		
-		local turn = rotation % 2 == 0
-		if turn then w,h = h,w end
+		w,h = ws[size*4 - 4 + status], hs[size*4 - 4 + status]
+		if turn == 2 then w,h = h,w end
 
 		value_color = value_colors[value]
+		relative_value = relative_values[value]
+
+		spr_x = spr_xs[size]
+		spr_y = spr_ys[size]
+		spr_w = spr_ws[size]
+		spr_h = spr_hs[size]
 
 		spr_flip = rotation > 2
 		if status == 1 then
 			-- 1: face visible
-			sprite = turn
-			and face_sprites_horz[value]
-			or  face_sprites_vert[value]
+			sprite = face_sprites[(size*2 + turn - 3)*37 + value]
 		else
 			-- 2: flipped
 			-- 3: standing
 			-- 4: on edge
-			sprite = turn
-			and misc_sprites_horz[status]
-			or  misc_sprites_vert[status]
+			sprite = misc_sprites[turn*4 - 4 + status]
 		end
 
 		return _ENV

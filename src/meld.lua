@@ -2,7 +2,7 @@
 
 
 assert(empty_values)
-assert(fit_in_four)
+assert(fit_in)
 assert(entity)
 assert(tile)
 assert(tile_stack)
@@ -31,7 +31,7 @@ meld = tile_stack:subclass{
 	end,
 
 	set_origin = function(_ENV, new_origin)
-		origin = fit_in_four(new_origin or 1)
+		origin = fit_in(new_origin or 1)
 		return _ENV:update()
 	end,
 	
@@ -82,6 +82,7 @@ meld = tile_stack:subclass{
 				1,1,1,0,
 				2,1,1,2,
 			]][type*4 + i -4],
+			1,
 		}
 	end,
 
@@ -105,6 +106,7 @@ meld = tile_stack:subclass{
 				0, 0,0,0,
 			]][type*4 + origin - 4],
 			split"1,4,1,0"[type],
+			1,
 		}
 	end,
 
@@ -118,6 +120,7 @@ meld = tile_stack:subclass{
 			tile_y,
 			rotation,
 			4,
+			1,
 		}
 	end,
 

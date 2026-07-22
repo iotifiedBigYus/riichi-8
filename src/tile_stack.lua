@@ -28,7 +28,7 @@ tile_stack = entity:subclass{
 	end,
 
 	get_tile_state = function(_ENV, i)
-		return {x+i*6-6, y, 1, 1}
+		return {x+i*6-6, y, 1, 1, 1}
 	end,
 
 	add_tile = function(_ENV, tile)

@@ -28,9 +28,10 @@ function ease_in_out_quad(x)
 end
 
 
-function fit_in_four(x)
+function fit_in(x,n)
 	assert(x)
-	return (x-1)%4+1
+	n = n or 4
+	return (x-1)%n+1
 end
 
 

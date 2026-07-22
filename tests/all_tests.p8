@@ -8,9 +8,7 @@ __lua__
 #include ../src/class.lua
 #include ../src/entity.lua
 #include ../src/tile.lua
-#include ../src/large_tile.lua
 #include ../src/debug_tile.lua
-#include ../src/debug_large_tile.lua
 #include ../src/tile_stack.lua
 #include ../src/wall.lua
 #include ../src/hand.lua

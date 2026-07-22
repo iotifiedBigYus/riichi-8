@@ -10,10 +10,17 @@ assert(tile_stack)
 hand = tile_stack:subclass{
 	status = 1,
 	--[[
+		~ status ~
 		1: revealed
 		2: discarded
 		3: standing
-	]]
+	--]]
+	size = 1,
+	--[[
+		~ size ~
+		1: small
+		2: large
+	--]]
 	--pulled_tile = nil,
 	--length = 0,
 	--previous_length = 0,
@@ -36,42 +43,50 @@ hand = tile_stack:subclass{
 		return _ENV:update()
 	end,
 
-	set_state = function(_ENV, state)
-		x, y, rotation, status = unpack(state)
-		rotation = fit_in_four(rotation)
-		status = fit_in_four(status)
-		return _ENV:update()
-	end,
-
 	set_status = function(_ENV, new_status)
 		--trim
 		status = new_status
 		return _ENV:update()
 	end,
 
+	set_size = function(_ENV, new_size)
+		size = new_size
+		return _ENV:update()
+	end,
+
+	set_state = function(_ENV, state)
+		x, y, rotation, status, size = unpack(state)
+		rotation = fit_in(rotation)
+		status = fit_in(status,3)
+		size = fit_in(size,2)
+		return _ENV:update()
+	end,
+
 	get_pulled_tile_state = function(_ENV)
 		local tile_x, tile_y = _ENV:get_rotated_pos(
-			3*previous_length+2,
-			split"4,4,2"[status]
+			2+previous_length*split"3,4"[size],
+			split"4,4,2, 6,0,0"[size*3 - 3 +status]
 		)
 		return {
 			tile_x,
 			tile_y,
 			rotation,
 			status,
+			size,
 		} 
 	end,
 
 	get_previous_tile_state = function(_ENV, i)
 		local tile_x, tile_y = _ENV:get_rotated_pos(
-			(i-.5*previous_length-1)*6,
-			split"4,4,2"[status]
+			(i-.5*previous_length-1)*split"6,8"[size],
+			split"4,4,2, 6,0,0"[size*3 - 3 +status]
 		)
 		return {
 			tile_x,
 			tile_y,
 			rotation,
 			status,
+			size,
 		}
 	end,
 
