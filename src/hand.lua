@@ -1,7 +1,7 @@
 -- hand
 
 
--- TODO: figure out why there is a gap before the pulled tile
+-- TODO: inherit from meld
 
 
 assert(tile_stack)
@@ -36,12 +36,6 @@ hand = tile_stack:subclass{
 		return _ENV:update()
 	end,
 
-	set_pulled_tile = function(_ENV, new_pulled_tile)
-		--trim
-		pulled_tile = new_pulled_tile
-		return _ENV:update()
-	end,
-
 	set_state = function(_ENV, state)
 		x, y, rotation, status = unpack(state)
 		rotation = fit_in_four(rotation)
@@ -53,31 +47,6 @@ hand = tile_stack:subclass{
 		--trim
 		status = new_status
 		return _ENV:update()
-	end,
-
-	add_tile = function(_ENV, tile)
-		-- assimilates the previous pulled tile
-		add(previous_tiles, pulled_tile)
-		pulled_tile = tile
-		return _ENV:update()
-	end,
-
-	remove_tile = function(_ENV, tile)
-		-- assimilates the pulled tile before removing
-		add(previous_tiles, pulled_tile)
-		pulled_tile = nil
-		local removed_tile = del(previous_tiles, tile)
-		_ENV:update()
-		return removed_tile
-	end,
-
-	remove_tile_i = function(_ENV, i)
-		-- assimilates the pulled tile before removing
-		add(previous_tiles, pulled_tile)
-		pulled_tile = nil
-		local removed_tile = deli(previous_tiles, i)
-		_ENV:update()
-		return removed_tile
 	end,
 
 	get_pulled_tile_state = function(_ENV)
@@ -104,6 +73,40 @@ hand = tile_stack:subclass{
 			rotation,
 			status,
 		}
+	end,
+
+	add_tile = function(_ENV, tile)
+		-- assimilates the previous pulled tile
+		add(previous_tiles, pulled_tile)
+		pulled_tile = tile
+		return _ENV:update()
+	end,
+
+	add_tiles = function(_ENV, tiles)
+		-- assimilates the previous pulled tile
+		foreach(tiles, function(t)
+			add(previous_tiles, pulled_tile)
+			pulled_tile = t
+		end)
+		return _ENV:update()
+	end,
+
+	remove_tile = function(_ENV, tile)
+		-- assimilates the pulled tile before removing
+		add(previous_tiles, pulled_tile)
+		pulled_tile = nil
+		local removed_tile = del(previous_tiles, tile)
+		_ENV:update()
+		return removed_tile
+	end,
+
+	remove_tile_i = function(_ENV, i)
+		-- assimilates the pulled tile before removing
+		add(previous_tiles, pulled_tile)
+		pulled_tile = nil
+		local removed_tile = deli(previous_tiles, i)
+		_ENV:update()
+		return removed_tile
 	end,
 
 	update = function(_ENV)

@@ -101,7 +101,7 @@ tile = entity:subclass{
 	spr_h = 0.875,
 	
 	set_value = function(_ENV, new_value)
-		value = new_value
+		value = new_value or 32
 		_ENV:update()
 		return _ENV
 	end,

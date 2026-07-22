@@ -43,6 +43,8 @@ assert(wall1:get_values()[37] == 1)
 ?"first value: "..wall1.tiles[1].value
 ?"all good"
 
+assert(#wall1:remove_latest_tiles(13) == 13)
+
 
 flip()
 __gfx__

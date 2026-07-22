@@ -31,7 +31,7 @@ meld = tile_stack:subclass{
 	end,
 
 	set_origin = function(_ENV, new_origin)
-		origin = fit_in_four(new_origin)
+		origin = fit_in_four(new_origin or 1)
 		return _ENV:update()
 	end,
 	

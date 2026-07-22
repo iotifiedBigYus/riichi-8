@@ -14,6 +14,12 @@ assert(meld_stack)
 
 player = entity:subclass{
 	score = 25000,
+	hand_x = 0,
+	hand_y = 54,
+	meld_stack_x = 48,
+	meld_stack_y = 52,
+	discard_pile_x = -18,
+	discard_pile_y = 20,
 	--in_tenpai = false,
 	--in_riichi = false,
 	--drawn_tile = nil,
@@ -27,60 +33,35 @@ player = entity:subclass{
 		})
 	end,
 
-	pick_up_tile = function(_ENV, tile)
-		--[[
-		local obj = new_tile_object(t)
-		player.pick_up_tile_obj = obj
-		add(player.tile_objs, obj)
-	
-		update_player_tile_object_positions()
-		]]
-	end,
-
-	set_melds = function(_ENV, new_melds)
-		meld_stack:set_melds(new_melds)
-		return _ENV:update()
-	end,
-
 	add_points = function(_ENV, points)
 		score += points
 		return _ENV
 	end,
 
 	apply_tile_states = function(_ENV)
+		discard_pile:apply_tile_states()
 		meld_stack:apply_tile_states()
+		hand:apply_tile_states()
 		return _ENV
 	end,
 
 	update = function(_ENV)
-		meld_stack:set_state({x,y,rotation})
+		discard_pile:set_rotation(rotation)
+		:set_pos(_ENV:get_rotated_pos(discard_pile_x,discard_pile_y))
+		meld_stack:set_rotation(rotation)
+		:set_pos(_ENV:get_rotated_pos(meld_stack_x,meld_stack_y))
+		hand:set_rotation(rotation)
+		:set_pos(_ENV:get_rotated_pos(hand_x,hand_y))
 		return _ENV
 	end,
 
 	draw = function(_ENV)
-		foreach(tiles, function(tile) tile:draw() end)
+		discard_pile:draw()
 		meld_stack:draw()
+		hand:draw()
 		return _ENV
 	end,
 }
-
-
-function get_starting_hand(player, i_player)
-	assert(wall)
-	for _ = 1,13 do
-		local t = get_tile()
-		player.hand.tiles[t] += 1
-	end
-
-	if i_player == 1 then
-		for t,n in ipairs(player.hand.tiles) do
-			for _ = 1,n do
-				add(player.tile_objs, new_tile_object(t))
-			end
-		end
-	end
-end
-
 
 function discard_tile(player, tile)
 	assert(player)

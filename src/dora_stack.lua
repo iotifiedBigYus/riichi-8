@@ -40,8 +40,4 @@ dora_stack = tile_stack:subclass{
 		end)
 		return values
 	end,
-
-	get_tile_state = function(_ENV, i)
-		return {x+i*6-6, y, 1, 1}
-	end,
 }

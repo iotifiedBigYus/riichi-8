@@ -27,7 +27,6 @@ end
 cls(1)
 
 
-
 t = tile:new():set_value(1)
 
 h = hand:new()

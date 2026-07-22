@@ -19,6 +19,18 @@ tile_stack = entity:subclass{
 		return _ENV:update()
 	end,
 
+	get_values = function(_ENV)
+		local values = empty_values()
+		foreach(tiles, function(tile)
+			values[tile.value] += 1
+		end)
+		return values
+	end,
+
+	get_tile_state = function(_ENV, i)
+		return {x+i*6-6, y, 1, 1}
+	end,
+
 	add_tile = function(_ENV, tile)
 		add(tiles, tile)
 		return _ENV:update()
@@ -47,22 +59,10 @@ tile_stack = entity:subclass{
 	remove_latest_tiles = function(_ENV, n)
 		local removed_tiles = {}
 		for _ = 1,n do
-			add(tiles, deli(tiles))
+			add(removed_tiles, deli(tiles))
 		end
 		_ENV:update()
 		return removed_tiles
-	end,
-
-	get_values = function(_ENV)
-		local values = empty_values()
-		foreach(tiles, function(tile)
-			values[tile.value] += 1
-		end)
-		return values
-	end,
-
-	get_tile_state = function(_ENV, i)
-		return {0,0,rotation,1}
 	end,
 
 	apply_tile_states = function(_ENV)
