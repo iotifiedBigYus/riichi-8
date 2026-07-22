@@ -7,6 +7,7 @@
 		1. [ ] hand navigation
 		2. [ ] pulling and discarding
 	2. [ ] basic cpu actions
+	3. [ ] turn indicators
 2. [ ] game loop with calls
 	1. [ ] call checking
 3. [ ] tenpai calculation with available tiles

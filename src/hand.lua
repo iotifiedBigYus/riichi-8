@@ -8,14 +8,12 @@ assert(tile_stack)
 
 
 hand = tile_stack:subclass{
-	status = 1,
 	--[[
 		~ status ~
 		1: revealed
 		2: discarded
 		3: standing
 	--]]
-	size = 1,
 	--[[
 		~ size ~
 		1: small
@@ -41,53 +39,6 @@ hand = tile_stack:subclass{
 		previous_tiles = new_previous_tiles
 		pulled_tile = new_pulled_tile
 		return _ENV:update()
-	end,
-
-	set_status = function(_ENV, new_status)
-		--trim
-		status = new_status
-		return _ENV:update()
-	end,
-
-	set_size = function(_ENV, new_size)
-		size = new_size
-		return _ENV:update()
-	end,
-
-	set_state = function(_ENV, state)
-		x, y, rotation, status, size = unpack(state)
-		rotation = fit_in(rotation)
-		status = fit_in(status,3)
-		size = fit_in(size,2)
-		return _ENV:update()
-	end,
-
-	get_pulled_tile_state = function(_ENV)
-		local tile_x, tile_y = _ENV:get_rotated_pos(
-			2+previous_length*split"3,4"[size],
-			split"4,4,2, 6,0,0"[size*3 - 3 +status]
-		)
-		return {
-			tile_x,
-			tile_y,
-			rotation,
-			status,
-			size,
-		} 
-	end,
-
-	get_previous_tile_state = function(_ENV, i)
-		local tile_x, tile_y = _ENV:get_rotated_pos(
-			(i-.5*previous_length-1)*split"6,8"[size],
-			split"4,4,2, 6,0,0"[size*3 - 3 +status]
-		)
-		return {
-			tile_x,
-			tile_y,
-			rotation,
-			status,
-			size,
-		}
 	end,
 
 	add_tile = function(_ENV, tile)
@@ -146,9 +97,21 @@ hand = tile_stack:subclass{
 		for tile in all(tiles) do
 			local state
 			if tile == pulled_tile then
-				state = _ENV:get_pulled_tile_state()
+				state = _ENV:get_rotated_state(
+					2+previous_length*split"3,4"[size],
+					split"4,4,2, 6,0,0"[size*3 - 3 +status],
+					rotation,
+					status,
+					size
+				)
 			else
-				state = _ENV:get_previous_tile_state(i)
+				state = _ENV:get_rotated_state(
+					(i-.5*previous_length-1)*split"6,8"[size],
+					split"4,4,2, 6,0,0"[size*3 - 3 +status],
+					rotation,
+					status,
+					size
+				)
 				i+=1
 			end
 			add(tile_states, state)

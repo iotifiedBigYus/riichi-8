@@ -7,14 +7,13 @@ assert(entity)
 
 tile = entity:subclass{
 	value = 32,
-	status = 1, --[[
+	--[[
 		~ status ~ 
 		1: face up
 		2: face down
 		3: standing face towards
 		4: on edge face towards
-	]]
-	size = 1,
+	--]]
 	--[[
 		~ size ~
 		1: small (6x8)
@@ -93,25 +92,7 @@ tile = entity:subclass{
 	]],
 	
 	set_value = function(_ENV, new_value)
-		value = new_value or 32
-		return _ENV:update()
-	end,
-
-	set_size = function(_ENV, new_size)
-		size = new_size or 1
-		return _ENV:update()
-	end,
-
-	set_status = function(_ENV, new_status)
-		status = fit_in(new_status)
-		return _ENV:update()
-	end,
-
-	set_state = function(_ENV, state)
-		x, y, rotation, status, size = unpack(state)
-		rotation = fit_in(rotation)
-		status = fit_in(status)
-		size = fit_in(size, 2)
+		value = new_value
 		return _ENV:update()
 	end,
 

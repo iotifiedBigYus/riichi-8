@@ -29,9 +29,8 @@ end
 
 
 function fit_in(x,n)
-	assert(x)
 	n = n or 4
-	return (x-1)%n+1
+	return x and (x-1)%n+1 or nil
 end
 
 

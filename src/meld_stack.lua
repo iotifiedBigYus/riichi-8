@@ -71,7 +71,11 @@ meld_stack = entity:subclass{
 
 		meld_states = {}
 		for i = 1,length do
-			add(meld_states, _ENV:get_meld_state(i))
+			add(meld_states, _ENV:get_rotated_state(
+				0,
+				8-8*i,
+				rotation
+			))
 		end
 
 		return _ENV
