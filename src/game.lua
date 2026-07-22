@@ -7,9 +7,16 @@
 assert(entity)
 assert(wall)
 assert(dora_stack)
+assert(player)
 
 
 game = entity:subclass{
+	x = 63,
+	y = 56,
+	dora_x = -15,
+	dora_y = -4,
+
+
 	new = function(self)
 		local _ENV = entity.new(self)
 
@@ -26,58 +33,38 @@ game = entity:subclass{
 		assert(live_wall.length == 122)
 		assert(dead_wall.length == 14)
 
-		dora_stack = dora_stack:new()
-		uradora_stack = dora_stack:new()
-		dora_stack:add_tile(dead_wall:remove_latest_tile())
-		uradora_stack:add_tile(dead_wall:remove_latest_tile())
+		dora_stack = dora_stack:new():add_tile(dead_wall:remove_latest_tile())
+		uradora_stack = dora_stack:new():add_tile(dead_wall:remove_latest_tile())
 
 		assert(dora_stack.length == 1)
 		assert(uradora_stack.length == 1)
 		assert(dead_wall.length == 12)
 
 		-- init players
-		players = {
-		}
+		players = {}
 
-		init_game = function()
-			init_walls()
-			init_dora()
-			init_cpus()
-			init_user()
-		
-			game = new_game()
-			player = game.players[game.turn]
-		
-			for i,p in ipairs(game.players) do
-				get_starting_hand(p,i)
-			end
-		
-			pick_up_tile(player)
-			update_user_tile_object_positions()
-		
-			if player != user then
-				perform_cpu_turn(player)
-			end
+		for i = 1,4 do
+			local player = global.player:new()
+			player.hand:set_tiles(live_wall:remove_latest_tiles(13)):set_status(3)
+			add(players, player)
+			assert(live_wall.length == 122 - i*13)
 		end
 
+		players[turn].hand:add_tiles(live_wall:remove_latest_tile())
+		assert(live_wall.length == 69)
 
-		return _ENV
+
+		
+
+		return _ENV:update()
 	end,
 
-	get_starting_hand = function(player, i_player)
-		assert(wall)
-		for _ = 1,13 do
-			local t = get_tile()
-			player.hand.tiles[t] += 1
+	apply_tile_states = function(_ENV)
+		dora_stack:set_pos(_ENV:get_rotated_pos(dora_x, dora_y)):apply_tile_states()
+		for i,p in ipairs(players) do
+			p:set_state({x, y, i}):apply_tile_states()
 		end
-	
-		if i_player == 1 then
-			for t,n in ipairs(player.hand.tiles) do
-				for _ = 1,n do
-					add(player.tile_objs, new_tile_object(t))
-				end
-			end
-		end
+		return _ENV
 	end,
 
 	update = function(_ENV)
@@ -85,6 +72,13 @@ game = entity:subclass{
 	end,
 
 	draw = function(_ENV)
+		dora_stack:draw()
+		foreach(players, function(p)
+			p:draw()
+		end)
+		color()
+		?dora_stack.length
+		?"game drawn"
 		return _ENV
 	end,
 }

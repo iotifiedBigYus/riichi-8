@@ -1,10 +1,8 @@
--- the players the computer controls
+-- cpu, the players the computer controls
 
-function init_cpus()
-	cpu1 = test_cpu()
-	cpu2 = test_cpu()
-	cpu3 = test_cpu()
-end
+
+-- TODO: inherit from player
+
 
 
 function test_cpu()
