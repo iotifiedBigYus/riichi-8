@@ -28,6 +28,10 @@ tile_stack = stack:subclass{
 		return {x+i*6-6, y, 1, 1, 1}
 	end,
 
+	get_tile_i = function(_ENV, i)
+		return tiles[(i-1)%length+1]
+	end,
+
 	update_tile_states = function(_ENV)
 		tile_states = {}
 		for i = 1,length do

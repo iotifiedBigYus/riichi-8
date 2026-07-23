@@ -37,12 +37,7 @@ h:set_tiles(tiles)
 
 h:set_rotation(2):set_status(1):apply_tile_states():draw()
 
-h:set_pos(64,50):set_rotation(1):set_size(2):apply_tile_states():draw()
-h:add(test_tile()):apply_tile_states():draw()
-
-
-
-h:set_pos(64,60):set_size(1):apply_tile_states():draw()
+h:set_pos(64,60):set_rotation(1):set_size(1):apply_tile_states():draw()
 color()?h.length
 
 h:set_pos(64,70):add(t):apply_tile_states():draw()
@@ -65,7 +60,7 @@ color()?h.length..h.previous_length
 
 h:set_pos(64,120):set_status(2):apply_tile_states():draw()
 
---h:set_pos(64,104):set_status(2):apply_tile_states():draw()
+h:set_pos(64,20):set_status(1):set_size(2):apply_tile_states():draw()
 
 color()
 
@@ -73,6 +68,41 @@ pset(64,64,11)
 
 
 flip()
+-->8
+selected_i = 1
+
+function _draw()
+	cls(2)
+
+	
+	local di = 0
+	if btnp(➡️) then
+		di += 1
+	end
+	if btnp(⬅️) then
+		di -= 1
+	end
+	if btn(🅾️) then
+		di *= 3
+	end
+	
+	if btnp(❎) then
+		discarded_v = h:get_tile_i(selected_i).value
+	end
+	selected_i += di
+	
+	-- user hand
+	h:set_size(2):set_pos(64,116):set_status(1):set_rotation(1):set_selected_tile_i(selected_i):apply_tile_states():draw()
+	
+	-- cpu hand
+	h:set_size(1):set_pos(116,64):set_status(3):set_rotation(2):set_selected_tile_i(selected_i):apply_tile_states():draw()
+	
+
+	color()
+	if discarded_v then
+		?"discarded value: "..discarded_v
+	end	
+end
 __gfx__
 000000000e999e0000000000000000000f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f0000000000000000000000000000000000
 00000000099999000000000000000000075557000775570007575700075577000777770007777700077777000777770000000000000000000000000000000000

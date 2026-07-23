@@ -35,8 +35,7 @@ meld_stack = stack:subclass{
 		for i = 1,length do
 			add(meld_states, _ENV:get_rotated_state(
 				0,
-				8-8*i,
-				rotation
+				8-8*i
 			))
 		end
 

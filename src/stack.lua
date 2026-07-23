@@ -1,6 +1,9 @@
 -- stack
 
 
+assert(entity)
+
+
 stack = entity:subclass{
 	--length = 0,
 

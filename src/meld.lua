@@ -54,25 +54,7 @@ meld = tile_stack:subclass{
 		return _ENV
 	end,
 
-	update = function(_ENV)
-		tiles = {unpack(own_tiles)}
-		add(tiles, taken_tile)
-		add(tiles, added_tile)
-
-		length = #tiles
-
-		assert(length <= 4)
-
-		if length <= 3 then
-			type = 1 -- chii / pon
-		elseif added_tile then
-			type = 2 -- added kan
-		elseif taken_tile then
-			type = 3 -- open kan
-		else
-			type = 4 -- closed kan
-		end
-		
+	update_tile_states = function(_ENV)
 		tile_states = {}
 		local i = 1
 		for tile in all(tiles) do
@@ -139,5 +121,27 @@ meld = tile_stack:subclass{
 		end
 
 		return _ENV
+	end,
+
+	update = function(_ENV)
+		tiles = {unpack(own_tiles)}
+		add(tiles, taken_tile)
+		add(tiles, added_tile)
+
+		length = #tiles
+
+		assert(length <= 4)
+
+		if length <= 3 then
+			type = 1 -- chii / pon
+		elseif added_tile then
+			type = 2 -- added kan
+		elseif taken_tile then
+			type = 3 -- open kan
+		else
+			type = 4 -- closed kan
+		end
+
+		return _ENV:update_tile_states()
 	end,
 }

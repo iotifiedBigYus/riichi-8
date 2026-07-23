@@ -72,13 +72,13 @@ entity = class:subclass{
 	end,
 
 	get_rotated_state = function(_ENV, dx, dy, new_rotation, new_status, new_size)
-		local new_x, new_y = _ENV:get_rotated_pos(dx,dy)
+		local new_x, new_y = _ENV:get_rotated_pos(dx or 0,dy or 0)
 		return {
 			new_x,
 			new_y,
-			new_rotation,
-			new_status,
-			new_size,
+			new_rotation or rotation,
+			new_status or status,
+			new_size or size,
 		} 
 	end,
 

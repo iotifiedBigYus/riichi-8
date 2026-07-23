@@ -19,6 +19,7 @@ hand = tile_stack:subclass{
 		1: small
 		2: large
 	--]]
+	--selected_tile = nil,
 	--pulled_tile = nil,
 	--length = 0,
 	--previous_length = 0,
@@ -38,6 +39,11 @@ hand = tile_stack:subclass{
 	set_tiles = function(_ENV, new_previous_tiles, new_pulled_tile)
 		previous_tiles = new_previous_tiles
 		pulled_tile = new_pulled_tile
+		return _ENV:update()
+	end,
+
+	set_selected_tile_i = function(_ENV, i)
+		selected_tile = tiles[(i-1)%length+1]
 		return _ENV:update()
 	end,
 
@@ -66,6 +72,31 @@ hand = tile_stack:subclass{
 		return removed_tile
 	end,
 
+	update_tile_states = function(_ENV)
+		tile_states = {}
+		local i = 1
+		for tile in all(tiles) do
+			local state
+			local dy = tile == selected_tile and -2 or 0
+
+			if tile == pulled_tile then
+				state = _ENV:get_rotated_state(
+					2+previous_length*split"3,4"[size],
+					split"4,4,2, 6,0,0"[size*3 - 3 +status]+dy
+				)
+			else
+				state = _ENV:get_rotated_state(
+					(i-.5*previous_length-1)*split"6,8"[size],
+					split"4,4,2, 6,0,0"[size*3 - 3 +status]+dy
+				)
+				i+=1
+			end
+
+			add(tile_states, state)
+		end
+		return _ENV
+	end,
+
 	update = function(_ENV)
 		previous_length = #previous_tiles
 
@@ -83,31 +114,6 @@ hand = tile_stack:subclass{
 
 		length = #tiles
 
-		tile_states = {} --TODO: shorten
-		local i = 1
-		for tile in all(tiles) do
-			local state
-			if tile == pulled_tile then
-				state = _ENV:get_rotated_state(
-					2+previous_length*split"3,4"[size],
-					split"4,4,2, 6,0,0"[size*3 - 3 +status],
-					rotation,
-					status,
-					size
-				)
-			else
-				state = _ENV:get_rotated_state(
-					(i-.5*previous_length-1)*split"6,8"[size],
-					split"4,4,2, 6,0,0"[size*3 - 3 +status],
-					rotation,
-					status,
-					size
-				)
-				i+=1
-			end
-			add(tile_states, state)
-		end
-
-		return _ENV
+		return _ENV:update_tile_states()
 	end,
 }
