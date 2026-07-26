@@ -43,7 +43,9 @@ hand = tile_stack:subclass{
 	end,
 
 	set_selected_tile_i = function(_ENV, i)
-		selected_tile = tiles[(i-1)%length+1]
+		if i then
+			selected_tile = tiles[(i-1)%length+1]
+		end
 		return _ENV:update()
 	end,
 

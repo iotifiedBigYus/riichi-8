@@ -5,9 +5,6 @@ assert(fit_in)
 assert(class)
 
 
--- TODO: rename status to orientation
-
-
 function new_instance(parent, table)
 	return parent:subclass(table):update()
 end

@@ -1,7 +1,7 @@
 -- user, a player the user controls
 
 
---TODO: inherit from player
+--TODO: fix methods
 
 
 assert(player)
@@ -10,73 +10,33 @@ assert(entity)
 
 user = player:subclass{
 	is_user = true,
+	--selected_i = nil,
 
-	function new(self)
-		return entity.new(self, {
+	update = function(_ENV)
+		-- moving
+		local di = 0
+		if btnp(➡️) then
+			di += 1
+		end
+		if btnp(⬅️) then
+			di -= 1
+		end
+		
+		if btnp(❎) then
+			--discarded_v = hand:get_tile_i(selected_i).value
+		end
 
-		})
-	end,
+		if selected_i then
+			selected_i += di
+		elseif di != 0 then
+			selected_i = .5 - .5*di
+		end
+		hand:set_selected_tile_i(selected_i)
 
-	function update(_ENV)
 		return _ENV
 	end,
-
-	function update_user_tile_object_positions()
-		assert(user)
 	
-		local ox = 63 - #user.tile_objs*4
-		for i,to in ipairs(user.tile_objs) do
-			local x = to == user.pick_up_tile_obj and ox + (i-1)*8+2 or ox + (i-1)*8
-			set_tile_object_position(to, x)
-		end
-	end,
-
-	function update_user_tile_object_positions()
-		assert(user)
-	
-		local ox = 63 - #user.tile_objs*4
-		for i,to in ipairs(user.tile_objs) do
-			local x = to == user.pick_up_tile_obj and ox + (i-1)*8+2 or ox + (i-1)*8
-			set_tile_object_position(to, x)
-		end
-	end,
-
-	function set_tile_object_position(tile_obj, x, y)
-		assert(tile_obj)
-		tile_obj.x = x
-		tile_obj.y = tile_obj.is_selected and Y_P1_SELECTED_TILE or Y_P1_TILE
-	end,
-
-	function switch_selected_horz(dx)
-		if not user.selected_obj then
-			select_tile_object(dx < 0 and #user.tile_objs or 1)
-		elseif user.selected_obj.is_tile then
-			deselect_object()
-			select_tile_object((user.i_selected_tile_obj-1+dx)%#user.tile_objs+1)
-		end
-		update_user_tile_object_positions()
-	end,
-	
-	function select_object(obj)
-		assert(user)
-		assert(obj)
-		user.selected_obj = obj
-		obj.is_selected = true
-	end,
-	
-	function select_tile_object(i_tile_obj)
-		assert(user)
-		assert(i_tile_obj)
-		select_object(user.tile_objs[i_tile_obj])
-		user.i_selected_tile_obj = i_tile_obj
-	end,
-	
-	function deselect_object()
-		user.selected_obj.is_selected = false
-		user.selected_obj = nil
-	end,
-	
-	function discard_selected_tile()
+	discard_selected_tile = function()
 		assert(user)
 	
 		discard_tile(user, user.selected_obj.tile)
@@ -88,7 +48,7 @@ user = player:subclass{
 		sort_tile_objects()
 	end,
 	
-	function sort_tile_objects()
+	sort_tile_objects = function()
 		assert(user)
 	
 		local objs = user.tile_objs
@@ -106,18 +66,18 @@ user = player:subclass{
 		end
 	end,
 	
-	function draw_user()
+	draw_user = function()
 		assert(user)
 		draw_user_tile_objects(user.tile_objs)
 		draw_melds(user.meld_objs,1)
 	end,
 	
-	function draw_user_tile_objects(tile_objs)
+	draw_user_tile_objects = function(tile_objs)
 		assert(tile_objs)
 		for to in all(tile_objs) do
 			draw_large_tile(to.tile, to.x, to.y)
 		end
-	end
+	end,
 }
 
 
