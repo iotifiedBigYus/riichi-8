@@ -4,6 +4,7 @@ __lua__
 -- test hand
 
 
+#include ../src/config.lua
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/entity.lua
@@ -70,6 +71,9 @@ pset(64,64,11)
 flip()
 -->8
 selected_i = 1
+
+function _update60()
+end
 
 function _draw()
 	cls(2)
