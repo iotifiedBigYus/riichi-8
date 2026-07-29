@@ -17,19 +17,19 @@ tile_stack = stack:subclass{
 		return values
 	end,
 
-	apply_tile_states = function(_ENV)
-		for i,tile in ipairs(tiles) do
-			tile:set_state(tile_states[i])
-		end
-		return _ENV
-	end,
-
 	get_tile_state = function(_ENV, i)
 		return {x+i*6-6, y, 1, 1, 1}
 	end,
 
 	get_tile_i = function(_ENV, i)
 		return tiles[(i-1)%length+1]
+	end,
+
+	apply_tile_states = function(_ENV)
+		for i,tile in ipairs(tiles) do
+			tile:set_state(tile_states[i])
+		end
+		return _ENV
 	end,
 
 	update_tile_states = function(_ENV)

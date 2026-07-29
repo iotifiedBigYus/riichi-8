@@ -18,11 +18,13 @@ __lua__
 #include ../src/discard_pile.lua
 #include ../src/player.lua
 #include ../src/user.lua
+#include ../src/cpu.lua
 #include ../src/dora_stack.lua
 #include ../src/async.lua
 #include ../src/game.lua
 
 #include test_async.p8:1
+#include test_cpu.p8:1
 #include test_discard_pile.p8:1
 #include test_dora_stack.p8:1
 #include test_game.p8:1

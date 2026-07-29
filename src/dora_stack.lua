@@ -12,8 +12,6 @@ assert(tile_stack)
 
 
 dora_stack = tile_stack:subclass{
-	x = 48,
-	y = 52,
 	mapping = split[[
 		2,3,4,5,6,7,8,9,1, 
 		11,12,13,14,15,16,17,18,10,

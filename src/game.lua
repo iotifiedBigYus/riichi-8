@@ -1,7 +1,7 @@
 -- game
 
 
---TODO: clean up methods
+--TODO: make positions global instead of relative to game xy
 
 
 assert(entity)
@@ -9,20 +9,24 @@ assert(new_instance)
 assert(wall)
 assert(dora_stack)
 assert(player)
+assert(cpu)
+assert(user)
 
 
 game = entity:subclass{
 	x = 63,
 	y = 56,
-	dora_x = -15,
-	dora_y = -4,
-
+	round = 1,
+	hand = 1,
+	repetition = 0,
+	dora_x = -12,
+	dora_y = 0,
 
 	new = function(self)
-		local _ENV = new_instance(self)
+		local _ENV = self:subclass()
 
 		east = rnd(split"1,2,3,4")
-		turn = east
+		seat = east
 
 		-- init walls
 		dead_wall = wall:new()
@@ -44,25 +48,29 @@ game = entity:subclass{
 		assert(dead_wall.length == 12)
 
 		-- init players
-		players = {}
+		players = {
+			global.user:new(),
+			global.cpu:new(),
+			global.cpu:new(),
+			global.cpu:new()
+		}
 
-		for i = 1,4 do
-			local player = global.player:new()
+		for i,p in ipairs(players) do
 			for _ = 1,13 do
-				player.hand:add(live_wall:pop())
+				p.hand:add(live_wall:pop())
 			end
-			player.hand:set_status(3)
+			p.hand:set_tiles(p.hand.tiles)
 
-			assert(player.hand.length == 13)
-			add(players, player)
-			assert(live_wall.length == 122 - i*13)
+			assert(p.hand.length == 13)
 		end
 
-		players[turn].hand:add(live_wall:pop())
+		players[1].hand:set_size(2):set_status(1)
+
+		-- starting player
+		players[seat].is_my_turn = true
+		players[seat].hand:add(live_wall:pop())
 		assert(live_wall.length == 69)
-
-
-		
+		assert(#players == 4)
 
 		return _ENV:update()
 	end,
@@ -76,51 +84,46 @@ game = entity:subclass{
 	end,
 
 	update = function(_ENV)
-		return _ENV
+		assert(players)
+
+		foreach(players, function(p) p:update_input() end)
+
+		--next turn
+		if not players[seat].is_my_turn then
+			seat = fit_in(seat +1)
+			players[seat].is_my_turn = true
+
+			players[seat].hand:add(live_wall:pop())
+		end
+
+		return _ENV:apply_tile_states()
 	end,
 
 	draw = function(_ENV)
+		camera(-63,-56)
+		rectfill(-20,-20,20,20,0)
+		rectfill(
+			split"-12, 19,-12,-19"[seat],
+			split" 19,-12,-19,-12"[seat],
+			split" 12, 17, 12,-17"[seat],
+			split" 17, 12,-17, 12"[seat],
+			9
+		)
+		for i = -9,10,6 do
+			spr(1,i,-3)
+		end
+		print(split"e,s,w,n"[round]..hand, -3,-11,7)
+		print(live_wall.length, -3,7,7)
+
+		camera(0,0)
 		dora_stack:draw()
+
 		foreach(players, function(p)
 			p:draw()
 		end)
-		color()
-		?dora_stack.length
-		?"game drawn"
 		return _ENV
 	end,
 }
-
-
-function update_game()
-	update_user()
-
-end
-
-
-function end_turn()
-	assert(game)
-	assert(user)
-	if check_calls() then
-
-	else
-		game.turn = game.turn%4+1
-		player = game.players[game.turn]
-
-		pick_up_tile(player)
-		debug(player)
-		if player != user then
-			perform_cpu_turn(player)
-		end
-	end
-end
-
-
-function check_calls()
-	-- ron > kan/pon > chi
-
-	return false
-end
 
 
 function draw_game()
@@ -150,7 +153,7 @@ function draw_turn_indicator()
 			dy,
 			dx+w,
 			dy+h,
-			game.turn == i and 10 or 0
+			game.seat == i and 10 or 0
 		)
 		dx,dy,w,h = dy,-dx,h,-w
 	end

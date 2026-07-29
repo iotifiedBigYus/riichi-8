@@ -9,6 +9,7 @@ assert(tile_stack)
 
 
 hand = tile_stack:subclass{
+	status = 3,
 	--[[
 		~ status ~
 		1: revealed
@@ -67,6 +68,8 @@ hand = tile_stack:subclass{
 	end,
 
 	deli = function(_ENV, i)
+		assert(i)
+		assert(i > 0)
 		-- assimilates the pulled tile before removing
 		add(previous_tiles, pulled_tile)
 		pulled_tile = nil

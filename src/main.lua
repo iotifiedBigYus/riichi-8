@@ -21,5 +21,5 @@ function _draw()
 	color(6)
 
 	print(game0.east)
-	print(game0.turn)
+	print(game0.seat)
 end

@@ -1,22 +1,19 @@
 -- user, a player the user controls
 
 
---TODO: fix methods
-
-
 assert(player)
 assert(entity)
 
 
 user = player:subclass{
 	is_user = true,
+	hand_y = 60,
 	--selected_i = nil,
 
-	update = function(_ENV)
+	update_input = function(_ENV)
 		-- discarding
 		if btnp(❎) and is_my_turn and selected_i then
 			local removed_tile = _ENV:discard_selected_tile()
-			is_my_turn = false
 		end
 
 		-- moving
@@ -32,7 +29,7 @@ user = player:subclass{
 			selected_i = mid(1, selected_i+di, hand.length)
 		elseif di < 0 then
 			selected_i = 1
-		elseif di > 0 or hand.selected_tile then
+		elseif di > 0 or hand.pulled_tile then
 			selected_i = hand.length
 		end
 		hand:set_selected_tile_i(selected_i)
@@ -40,8 +37,3 @@ user = player:subclass{
 		return _ENV
 	end,
 }
-
-
-
-
-

@@ -16,10 +16,10 @@ __lua__
 #include ../src/meld_stack.lua
 #include ../src/hand.lua
 #include ../src/player.lua
-#include ../src/user.lua
+#include ../src/cpu.lua
 -->8
 assert(discard_pile)
-assert(user)
+assert(cpu)
 assert(meld)
 assert(meld_stack)
 assert(hand)
@@ -37,11 +37,10 @@ function mn(p,o,t,a)
 	:set_tiles(o or {tn(), tn()},t or tn(),a)
 end
 
-u = user:new():set_pos(63,56)
-u.hand:set_size(2)
-u.hand:set_status(1)
+c = cpu:new():set_pos(63,56)
+c.hand:set_status(1)
 
-assert(u.is_user)
+assert(c.is_cpu)
 
 --hand
 
@@ -52,13 +51,12 @@ for i = 1,n do
 	add(tiles, tn(i))
 end
 
-u.hand:set_tiles(tiles)
-
-u.hand:add(tn())
+c.hand:set_tiles(tiles)
+c.hand:add(tn())
 
 -- meld stack
 
-u.meld_stack:set_melds(
+c.meld_stack:set_melds(
 	{mn(),mn()}
 )
 
@@ -71,26 +69,26 @@ for i = 1,m do
 	add(tiles2, tn(i))
 end
 
-u.discard_pile
+c.discard_pile
 :set_tiles(tiles2)
 :set_riichi_i(2)
-
-u.is_my_turn = true
-
 -->8
 function _update60()
-	u:update_input()
+	if btnp(❎) then
+		c.is_my_turn = true
+	end
+	c:update_input()
 end
 
 function _draw()
 	cls(1)
 	
-	u:apply_tile_states()
+	c:apply_tile_states()
 	 :draw()
 	color()
-	?u.selected_i
-	?"is my turn: "..tostr(u.is_my_turn)
-	?"# discard 1: "..u.discard_values[1]
+	--?u.selected_i
+	--?"is my turn: "..tostr(u.is_my_turn)
+	--?"# discard 1: "..u.discard_values[1]
 end
 
 __gfx__
