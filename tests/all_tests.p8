@@ -17,6 +17,7 @@ __lua__
 #include ../src/meld_stack.lua
 #include ../src/discard_pile.lua
 #include ../src/player.lua
+#include ../src/user.lua
 #include ../src/dora_stack.lua
 #include ../src/async.lua
 #include ../src/game.lua
@@ -30,6 +31,7 @@ __lua__
 #include test_meld.p8:1
 #include test_player.p8:1
 #include test_tile.p8:1
+#include test_user.p8:1
 #include test_wall.p8:1
 -->8
 cls(3)

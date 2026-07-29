@@ -23,7 +23,7 @@ player = entity:subclass{
 	discard_pile_y = 20,
 	--in_tenpai = false,
 	--in_riichi = false,
-	--drawn_tile = nil,
+	--is_my_turn = false,
 
 	new = function(self)
 		return new_instance(self,{
@@ -39,17 +39,15 @@ player = entity:subclass{
 		return _ENV
 	end,
 
-	discard_tile = function(_ENV, tile)
-		--TODO:
-		assert(player)
-		assert(tile)
+	discard_selected_tile = function(_ENV)
+		local removed_tile = hand:deli(selected_i)
+		discard_pile:push(removed_tile)
 
-		add(player.discard_pile.tiles, tile)
-
-		player.hand.tiles[tile] -= 1
-		assert(player.hand.tiles[tile] >= 0)
-
-		return _ENV:update()
+		discard_values[removed_tile.value] += 1
+		hand.selected_tile = nil
+		selected_i = nil
+		-- do not _ENV:update()
+		return removed_tile
 	end,
 
 	apply_tile_states = function(_ENV)
@@ -62,10 +60,6 @@ player = entity:subclass{
 		hand:set_rotation(rotation)
 		:set_pos(_ENV:get_rotated_pos(hand_x,hand_y))
 		:apply_tile_states()
-		return _ENV
-	end,
-
-	update = function(_ENV)
 		return _ENV
 	end,
 

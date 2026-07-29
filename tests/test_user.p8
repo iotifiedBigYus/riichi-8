@@ -74,6 +74,8 @@ u.discard_pile
 :set_tiles(tiles2)
 :set_riichi_i(2)
 
+u.is_my_turn = true
+
 -->8
 function _update60()
 	u:update()
@@ -86,6 +88,8 @@ function _draw()
 	 :draw()
 	color()
 	?u.selected_i
+	?"is my turn: "..tostr(u.is_my_turn)
+	?"# discard 1: "..u.discard_values[1]
 end
 
 __gfx__
