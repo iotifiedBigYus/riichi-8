@@ -6,7 +6,8 @@
 
 assert(empty_values)
 assert(sum_values)
-assert(class)
+assert(entity)
+assert(new_instance)
 assert(hand)
 assert(discard_pile)
 assert(meld_stack)
@@ -25,7 +26,7 @@ player = entity:subclass{
 	--drawn_tile = nil,
 
 	new = function(self)
-		return entity.new(self,{
+		return new_instance(self,{
 			hand = global.hand:new(),
 			meld_stack = global.meld_stack:new(),
 			discard_pile = global.discard_pile:new(),

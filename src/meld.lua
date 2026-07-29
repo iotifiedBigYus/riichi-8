@@ -4,6 +4,7 @@
 assert(empty_values)
 assert(fit_in)
 assert(entity)
+assert(new_instance)
 assert(tile)
 assert(tile_stack)
 
@@ -19,7 +20,7 @@ meld = tile_stack:subclass{
 	-- type = nil,
 	
 	new = function(self)
-		return entity.new(self, {
+		return new_instance(self, {
 			tiles = {},
 			own_tiles = {},
 			--tile_states = {},

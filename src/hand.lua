@@ -4,6 +4,7 @@
 -- TODO: inherit from meld, which should inherit form something else than tile stack
 
 
+assert(new_instance)
 assert(tile_stack)
 
 
@@ -25,7 +26,7 @@ hand = tile_stack:subclass{
 	--previous_length = 0,
 
 	new = function(self)
-		return entity.new(self, {
+		return new_instance(self, {
 			tiles = {},
 			previous_tiles = {},
 			--tile_states = {},

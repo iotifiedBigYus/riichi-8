@@ -5,6 +5,7 @@
 
 
 assert(entity)
+assert(new_instance)
 assert(wall)
 assert(dora_stack)
 assert(player)
@@ -18,7 +19,7 @@ game = entity:subclass{
 
 
 	new = function(self)
-		local _ENV = entity.new(self)
+		local _ENV = new_instance(self)
 
 		east = rnd(split"1,2,3,4")
 		turn = east

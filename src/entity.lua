@@ -24,9 +24,7 @@ entity = class:subclass{
 	status = 1, -- used by some subclasses
 	size = 1, -- used by some subclasses
 
-	new = function(parent, table)
-		return parent:subclass(table):update()
-	end,
+	new = new_instance,
 
 	set_pos = function(_ENV, new_x, new_y)
 		x, y = new_x, new_y

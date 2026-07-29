@@ -2,13 +2,14 @@
 
 
 assert(entity)
+assert(new_instance)
 
 
 stack = entity:subclass{
 	--length = 0,
 
 	new = function(self)
-		return entity.new(self, {
+		return new_instance(self, {
 			elements = {},
 		})
 	end,
