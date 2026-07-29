@@ -1,204 +1,145 @@
+-- tile
 
 
-function empty_tiles()
-	local tiles = {}
-	for _ = 1,37 do add(tiles,0) end
-	return tiles
-end
+assert(class)
+assert(entity)
 
 
-function parse_tiles(line)
-	local indices = {}
-	local tiles = empty_tiles()
+tile = entity:subclass{
+	value = 32,
+	--[[
+		~ status ~ 
+		1: face up
+		2: face down
+		3: standing face towards
+		4: on edge face towards
+	--]]
+	--[[
+		~ size ~
+		1: small (6x8)
+		2: large (8x12)
+	--]]
+	--value_color = 0,
+	--relative_value = 41,
+	--sprite = nil,
+	--spr_flip = false,
+	--spr_x = 3,
+	--spr_y = 3,
+	--spr_w = 0.875,
+	--spr_h = 0.875,
+	--w = 6,
+	--h = 8,
+
+	value_colors = split[[
+		8,8,8,8,8,8,8,8,8,
+		12,12,12,12,12,12,12,12,12,
+		11,11,11,11,11,11,11,11,11,
+		0,0,0,0,
+		0,0,0,
+		8,12,11
+	]],
+	relative_values = split[[
+		1,2,3,4,5,6,7,8,9,
+		11,12,13,14,15,16,17,18,19,
+		21,22,23,24,25,26,27,28,29,
+		31,32,33,34,
+		41,42,43,
+		4.5,14.5,24.5
+	]],
+	--[[
+		relative value is used to sort tiles.
+		the absolute values used can be chosen arbitrarily.
+	--]]
+	face_sprites = split[[
+		0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,
+		0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,
+		0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,
+		0x04,0x05,0x06,0x07,
+		0x08,0x09,0x0a,
+		0x20,0x20,0x20,
+
+		0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,
+		0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,
+		0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,
+		0x14,0x15,0x16,0x17,
+		0x18,0x19,0x1a,
+		0x30,0x30,0x30,
+
+		0x61,0x62,0x63,0x64,0x65,0x66,0x67,0x68,0x69,
+		0x61,0x62,0x63,0x64,0x65,0x66,0x67,0x68,0x69,
+		0x61,0x62,0x63,0x64,0x65,0x66,0x67,0x68,0x69,
+		0x40,0x41,0x42,0x43,
+		0x44,0x45,0x46,
+		0x60,0x60,0x60,
+	]],
+	misc_sprites = split[[
+		0x00,0x01,0x02,0x03,
+		0x00,0x11,0x12,0x13,
+	]],
+	misc_sprites_vert = split"0x00,0x01,0x02,0x03",
+	misc_sprites_horz = split"0x00,0x11,0x12,0x13",
+	spr_xs = split"3,3",
+	spr_ys = split"3,7",
+	spr_ws = split"0.875,0.875",
+	spr_hs = split"0.875,1.875",
+	ws = split[[
+		6,6,6,8,
+		8,0,0,0,
+	]], --based on status
+	hs = split[[
+		8,8,4,4,
+		12,0,0,0,
+	]],
 	
-	for i = 1,#line do
-		local offset = 0;
-		local is_number = false;
-		local s = sub( line, i,i )
-		if s == 'm' then
-			--
-		elseif s == 'p' then
-			offset = 1
-		elseif s == 's' then
-			offset = 2
-		elseif s == 'z' then
-			offset = 3
+	set_value = function(_ENV, new_value)
+		value = new_value
+		return _ENV:update()
+	end,
+
+	update = function(_ENV)
+		local turn = (rotation-1)%2+1
+
+		w,h = ws[size*4 - 4 + status], hs[size*4 - 4 + status]
+		if turn == 2 then w,h = h,w end
+
+		value_color = value_colors[value]
+		relative_value = relative_values[value]
+
+		spr_x = spr_xs[size]
+		spr_y = spr_ys[size]
+		spr_w = spr_ws[size]
+		spr_h = spr_hs[size]
+
+		spr_flip = rotation > 2
+		if status == 1 then
+			-- 1: face visible
+			sprite = face_sprites[(size*2 + turn - 3)*37 + value]
 		else
-			is_number = true
+			-- 2: flipped
+			-- 3: standing
+			-- 4: on edge
+			sprite = misc_sprites[turn*4 - 4 + status]
 		end
 
-		if is_number then
-			add(indices, tonum(s));
-		else
-			foreach(indices, function(i)
-				if i > 0 then
-					tiles[i + offset*9] += 1
-				else
-					tiles[35 + offset] += 1
-				end
-			end)
-			indices = {}
-		end
-	end
+		return _ENV
+	end,
+	
+	draw = function(_ENV)
+		-- backfill
+		rectfill(
+			x-.5*w, y-.5*h, x+.5*w, y+.5*h,
+			value_color
+		)
+		-- sprite
+		spr(
+			sprite,
+			x-spr_x, y-spr_y,
+			spr_w, spr_h,
+			spr_flip, spr_flip
+		)
+		-- outline
+		rect(x-.5*w, y-.5*h, x+.5*w, y+.5*h,0)
 
-	return tiles;
-end
-
-
-function encode_tiles(tiles, in_color)
-	local code = in_color and "\#0" or ""
-	local suffix = { "m", "p", "s", "z" }
-
-	for i = 1,4 do
-		local had_tile = false
-
-		code ..= in_color and ({"\f8", "\fc", "\fb", "\f6" })[i] or ""
-
-		-- red fives
-		if i <= 3 do
-			local n = tiles[34 + i];
-			for _ = 1,n do
-				had_tile = true;
-				code ..= 0
-			end
-		end
-		-- number tiles
-		for j = 1,9 do
-			local t = (i-1) * 9 + j
-			if (t > 34) break
-			local n = tiles[t];
-			for _ = 1,n do
-				had_tile = true;
-				code ..= j
-			end
-		end
-		if (had_tile) code ..= suffix[i]
-	end
-	return code
-end
-
-
-function draw_tile(tile, x, y, horz)
-	local w,h = 6,8
-	if (horz) w,h = h,w
-
-	-- backfill
-	rectfill(
-		x, y, x+w, y+h,
-		get_tile_color(tile)
-	)
-	local n
-	if tile <= 27 then
-		local i = horz and SPR_TILE_NUMBERS_HORZ or SPR_TILE_NUMBERS_VERT
-		n = i+(tile-1)%9+1
-	elseif tile <= 34 then
-		local i = horz and SPR_TILE_HONORS_HORZ or SPR_TILE_HONORS_VERT
-		n = i+tile-27
-	else
-		n = horz and SPR_TILE_NUMBERS_HORZ or SPR_TILE_NUMBERS_VERT
-	end
-	spr(n, x+1, y+1)
-	rect(x,y,x+w,y+h,0) -- outline
-end
-
-
-function get_tile_color(tile)
-	if tile <= 9 or tile == 35 then return COLOR_MAN end
-	if tile <= 18 or tile == 36 then return COLOR_PIN end
-	if tile <= 27 or tile == 37 then return COLOR_SOU end
-	return 0
-end
-
-
-function draw_tile_flipped(x, y, horz)
-	local w,h = 6,8
-	if (horz) w,h = h,w
-
-	local i = horz and SPR_TILE_BACK_HORZ or SPR_TILE_BACK_VERT
-	spr(i, x+1, y+1)
-	rect(x,y,x+w,y+h,0) -- outlines
-end
-
-
-function draw_quad_stack(x, y, horz)
-	local i = horz and SPR_TILE_SIDE_HORZ or SPR_TILE_SIDE_VERT
-	rectfill(x,y,x+8,y+8,0) -- fill/outline
-	spr(i, x+1, y+1)
-end
-
-
-function draw_all_tiles()
-	for i = 1,37 do
-		draw_tile(i,(i-1)%21*6,flr((i-1)/21)*8)
-	end
-end
-
-
-function draw_n_tiles(n_tiles, w)
-	local ox,oy,c = peek(0x5f26),peek(0x5f27),peek(0x5f25)
-	local m = 0
-	for t,n in ipairs(n_tiles) do
-		for _ = 1,n do
-			local y = oy+flr(m/w)*8
-			draw_tile(t,ox+m%w*6,y)
-			poke(0x5f27, y+10)
-			m += 1
-		end
-	end
-	poke(0x5f25,c)
-end
-
-
-function draw_i_tiles(i_tiles, w)
-	local ox,oy,c = peek(0x5f26),peek(0x5f27),peek(0x5f25)
-	for i,t in ipairs(i_tiles) do
-		local y = oy+flr((i-1)/w)*8
-		draw_tile(t,ox+(i-1)%w*6,y)
-		poke(0x5f27, y+10)
-	end
-	poke(0x5f25,c)
-end
-
-
-function draw_large_tile(tile, x, y)
-	assert(tile)
-	assert(x)
-	assert(y)
-	local w,h = 8,12
-
-	-- backfill
-	rectfill(
-		x, y, x+w, y+h,
-		get_tile_color(tile)
-	)
-	local n
-	if tile <= 27 then
-		n = SPR_TILE_LARGE_NUMBERS+1+(tile-1)%9
-	elseif tile <= 34 then
-		n = SPR_TILE_LARGE_HONORS-27+tile
-	else
-		n = SPR_TILE_LARGE_NUMBERS
-	end
-	spr(n, x+1, y+1, 1, 1.5)
-	rect(x,y,x+w,y+h,0) -- outline
-end
-
-
-function draw_all_large_tiles()
-	for i = 1,37 do
-		draw_large_tile(i,(i-1)%16*8,flr((i-1)/16)*12)
-	end
-end
-
-
-function new_tile_object(tile, x, y, i)
-	return {
-		tile = tile,
-		x = x,
-		y = y,
-		is_tile = true,
-		is_selected = false,
-		prev_x = 0,
-		prev_y = 0
-	}
-end
+		return _ENV
+	end,
+}

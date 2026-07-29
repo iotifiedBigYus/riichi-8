@@ -1,38 +1,62 @@
 pico-8 cartridge // http://www.pico-8.com
 version 43
 __lua__
--- riichi-8
--- sam westerlund
--- 29.5.2026
+-- test game
 
 
-#include src/shanten_calculator/shanten.lua
-#include src/shanten_calculator/analysis.lua
-#include src/shanten_calculator/meld_finder.lua
-#include src/shanten_calculator/hand.lua
+#include ../src/config.lua
 
-#include src/config.lua
-#include src/constants.lua
-#include src/debug.lua
+#include ../src/util.lua
+#include ../src/class.lua
+#include ../src/entity.lua
+#include ../src/stack.lua
+#include ../src/tile.lua
+#include ../src/tile_stack.lua
+#include ../src/meld.lua
+#include ../src/meld_stack.lua
+#include ../src/wall.lua
+#include ../src/dora_stack.lua
+#include ../src/hand.lua
+#include ../src/discard_pile.lua
+#include ../src/player.lua
+#include ../src/user.lua
+#include ../src/cpu.lua
+#include ../src/game.lua
+-->8
+assert(game)
 
-#include src/util.lua
-#include src/class.lua
-#include src/entity.lua
-#include src/stack.lua
-#include src/tile.lua
-#include src/tile_stack.lua
-#include src/dora_stack.lua
-#include src/wall.lua
-#include src/meld.lua
-#include src/meld_stack.lua
-#include src/discard_pile.lua
-#include src/hand.lua
-#include src/player.lua
-#include src/cpu.lua
-#include src/user.lua
-#include src/player.lua
-#include src/game.lua
-#include src/main.lua
+srand()
+
+cls(1)
+
+g = game:new()
+
+?g.seat
+?g.live_wall.length
+?g.players[1].hand.length
+
+?g.players[1].x
+?g.players[1].x
+
+
+g:apply_tile_states():draw()
+
+
+flip()
+-->8
+function _update60()
+	g:update()
+end
+
+
+function _draw()
+	cls(1)
+	g:draw()
+	cursor()color()
+	?g.players[1].selected_i
+	?"seat: "..g.seat
+	?"1 status: "..g.players[1].hand.status
+end
 __gfx__
 000000000e999e0000000000000000000f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f0000000000000000000000000000000000
 00000000099999000000000000000000075557000775570007575700075577000777770007777700077777000777770000000000000000000000000000000000
@@ -95,9 +119,3 @@ f77777f0f77777f0f77777f0f77777f0f77777f0f77777f0f77777f0f77777f0f77777f0f77777f0
 77777770777777707777777077777770777777707777777077777770777777707777777077777770000000000000000000000000000000000000000000000000
 77777770777777707777777077777770777777707777777077777770777777707777777077777770000000000000000000000000000000000000000000000000
 f77777f0f77777f0f77777f0f77777f0f77777f0f77777f0f77777f0f77777f0f77777f0f77777f0000000000000000000000000000000000000000000000000
-__sfx__
-0001000012000130001500019000000001d000210002300027000000002a0002c0002e00031000320003300034000340003400033000300002e00028000250001f0001a00018000150000f0000d0000a00008000
-01100000110000c0000e00010000110000c0000e00010000110000c0000e00010000110000c0000e00010000110000c0000e00010000110000c0000e00010000110000c0000e0001000011000000000000000000
-__music__
-00 01424344
-

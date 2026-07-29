@@ -1,80 +1,35 @@
+-- wall
 
 
-function new_wall()
-	local n_tiles, i_tiles = {}, {}
+assert(empty_values)
+assert(tile_stack)
+assert(tile)
 
-	for i = 1,34 do
-		add(n_tiles,4)
-		for _ = 1,4 do
-			add(i_tiles,i)
+
+wall = tile_stack:subclass{
+	populate = function(_ENV, seed)
+		tiles = {}
+		for i = 1,34 do
+			for _ = 1,4 do
+				add(tiles,tile:new():set_value(i))
+			end
 		end
-	end
+	
+		-- make red fives
+		for i = 0,2 do
+			tiles[4*(5+i*9)]:set_value(35+i)
+		end
+	
+		-- shuffle
+		if seed then srand(seed) end
+		local shuffled_tiles = {}
+		for i = 1,136 do
+				add(shuffled_tiles, del(tiles,rnd(tiles)))
+		end
+		tiles = shuffled_tiles
 
-	-- make red fives
-	for i = 0,2 do
-		n_tiles[5+i*9] -= 1
-		add(n_tiles,1)
-		del(i_tiles,5+i*9)
-		add(i_tiles,35+i)
-	end
-
-	-- shuffle i_tiles
-	for i = 136,1,-1 do
-		add(i_tiles, del(i_tiles, i_tiles[flr(rnd(i))]))
-	end
-
-	return {
-		length = 136,
-		n_tiles = n_tiles,
-		i_tiles = i_tiles
-	}
-end
-
-
-function new_dead_wall()
-	local n_tiles, i_tiles = empty_tiles(), {}
-	for _ = 1,14 do
-		local t = get_tile()
-		n_tiles[t] += 1
-		add(i_tiles,t)
-	end
-	return {
-		length = 14,
-		n_tiles = n_tiles,
-		i_tiles = i_tiles
-	}
-end
-
-
-function init_walls()
-	wall = new_wall()
-	dead_wall = new_dead_wall()
-end
-
-
-function get_tile()
-	assert(wall)
-	assert(#wall.i_tiles > 0)
-	local t = wall.i_tiles[1]
-	del(wall.i_tiles, t)
-	wall.n_tiles[t] -= 1
-	wall.length -= 1
-	return t
-end
-
-
-function get_dead_tile()
-	assert(dead_wall)
-	assert(#dead_wall.i_tiles > 0)
-	local t = dead_wall.i_tiles[1]
-	del(dead_wall.i_tiles, t)
-	dead_wall.n_tiles[t] -= 1
-	dead_wall.length -= 1
-	return t
-end
-
-
-function draw_wall()
-	assert(wall)
-	print(wall.length, X_WALL, Y_WALL, 7)
-end
+		elements = tiles --> important
+		
+		return _ENV:update()
+	end,
+}
