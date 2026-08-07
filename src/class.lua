@@ -4,15 +4,12 @@
 
 global = _ENV
 
-class = {
+class = setmetatable({
 	subclass = function(self, table)
 		assert(self)
-		table = table or {}
-		setmetatable(table, {
-			__index = self
-		})
-		return table
+		return setmetatable(
+			table or {},
+			{__index = self}
+		)
 	end,
-}
-
-setmetatable(class, {__index = _ENV})
+}, {__index = _ENV})
