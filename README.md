@@ -15,10 +15,30 @@
 3. [ ] tenpai calculation with available tiles
 4. [ ] ron / tsumo implementation
 5. [ ] exhaustive draw
-6. [ ] yaku calculation
-	1. [ ] han calculation
-	2. [ ] fu calculation
-	3. [x] point calculation
+6. [ ] point calculation
+	1. [ ] yaku calculation
+		1. [ ] hand attributes
+			- riichi
+			- pinfu
+			- under the sea / river
+			...
+		2. [ ] collection attributes
+			- [ ] simple
+			- [ ] terminal
+			- [ ] honor
+			- [ ] outside
+			- [ ] triplet
+			- [ ] quad
+			- [ ] dragon
+			- [ ] seat wind
+			- [ ] prevalent wind
+			- [ ] green
+			...
+		3. [ ] yaku
+		4. [ ] yakuman
+	2. [ ] han calculation
+	3. [ ] fu calculation
+	4. [x] point exchange calculation
 7. [ ] cpu decision logic
 8. [ ] sfx
 9. [ ] animations

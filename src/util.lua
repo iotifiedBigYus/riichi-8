@@ -23,6 +23,11 @@ function sum_values(values1, values2)
 end
 
 
+function is_terminal_or_honor(value)
+	return value % 9 <= 1 or value > 27 and value <= 34
+end
+
+
 function ease_in_out_quad(x)
 	return x < 0.5 and 2 * x * x or 1 - (-2 * x + 2)^2 / 2
 end

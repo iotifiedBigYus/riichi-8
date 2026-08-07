@@ -1,6 +1,9 @@
 -- stack
 
 
+-- TODO: make inherit from class. make tile_stack composed of stack, not inherited from.
+
+
 assert(entity)
 assert(new_instance)
 
