@@ -16,6 +16,9 @@
 4. [ ] ron / tsumo implementation
 5. [ ] exhaustive draw
 6. [ ] yaku calculation
+	1. [ ] han calculation
+	2. [ ] fu calculation
+	3. [x] point calculation
 7. [ ] cpu decision logic
 8. [ ] sfx
 9. [ ] animations

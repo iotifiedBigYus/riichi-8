@@ -1,47 +1,21 @@
 pico-8 cartridge // http://www.pico-8.com
 version 43
 __lua__
--- all tests back-to-back
+-- test points
 
 
-#include ../src/util.lua
-#include ../src/class.lua
-#include ../src/entity.lua
-#include ../src/stack.lua
-#include ../src/tile.lua
-#include ../src/debug_tile.lua
-#include ../src/tile_stack.lua
-#include ../src/wall.lua
-#include ../src/hand.lua
-#include ../src/meld.lua
-#include ../src/meld_stack.lua
-#include ../src/discard_pile.lua
-#include ../src/player.lua
-#include ../src/user.lua
-#include ../src/cpu.lua
-#include ../src/dora_stack.lua
-#include ../src/async.lua
 #include ../src/points.lua
-#include ../src/game.lua
-
-#include test_async.p8:1
-#include test_cpu.p8:1
-#include test_discard_pile.p8:1
-#include test_dora_stack.p8:1
-#include test_game.p8:1
-#include test_hand.p8:1
-#include test_meld_stack.p8:1
-#include test_meld.p8:1
-#include test_player.p8:1
-#include test_tile.p8:1
-#include test_user.p8:1
-#include test_wall.p8:1
-#include test_points.p8:1
+#include ../src/test_points_asserts.lua
 -->8
-cls(3)
+assert(calculate_points)
 
-color(11)
-?"passed"
+
+cp = calculate_points
+
+assert(cp(3, 40, 2) == 2600 )
+assert(cp(9, 20, 1) == 4000 )
+
+flip()
 __gfx__
 000000000e999e0000000000000000000f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f0000000000000000000000000000000000
 00000000099999000000000000000000075557000775570007575700075577000777770007777700077777000777770000000000000000000000000000000000
