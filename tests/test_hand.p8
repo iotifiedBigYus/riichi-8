@@ -7,6 +7,7 @@ __lua__
 #include ../src/config.lua
 #include ../src/util.lua
 #include ../src/class.lua
+#include ../src/collection.lua
 #include ../src/entity.lua
 #include ../src/stack.lua
 #include ../src/tile.lua
@@ -103,9 +104,8 @@ function _draw()
 	
 
 	color()
-	if discarded_v then
-		?"discarded value: "..discarded_v
-	end	
+	?"discarded value: "..tostr(discarded_v)
+	?"values: \n"..h.collection:tostr()
 end
 __gfx__
 000000000e999e0000000000000000000f777f000f777f000f777f000f777f000f777f000f777f000f777f000f777f0000000000000000000000000000000000

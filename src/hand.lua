@@ -6,6 +6,7 @@
 
 assert(new_instance)
 assert(tile_stack)
+assert(collection)
 
 
 hand = tile_stack:subclass{
@@ -30,6 +31,7 @@ hand = tile_stack:subclass{
 		return new_instance(self, {
 			tiles = {},
 			previous_tiles = {},
+			--collection = collection:new(),
 			--tile_states = {},
 			--[[
 				state: desired {x, y, rotation, status}
@@ -119,6 +121,11 @@ hand = tile_stack:subclass{
 		add(tiles, pulled_tile)
 
 		length = #tiles
+
+		collection = global.collection:new() --> global needs to be there
+		foreach(tiles, function(t)
+			collection:add_value(t.value)
+		end)
 
 		return _ENV:update_tile_states()
 	end,
