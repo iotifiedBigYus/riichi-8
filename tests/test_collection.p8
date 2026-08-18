@@ -7,17 +7,25 @@ __lua__
 #include ../src/util.lua
 #include ../src/class.lua
 #include ../src/collection.lua
+
+#include test_collection_asserts.lua
 -->8
 assert(collection)
 
 c1 = collection:new():add_value(1)
-c2 = collection:new():add_value(2)
+c2 = collection:new():add_value(2,2)
 c1:add_collection(c2)
 
+local sum = [[120000000
+000000000
+000000000
+0000
+000
+000
+]]
 
 cls(1)
-?c1:is_terminal_or_honor()
-
+?c1:tostr()
 
 flip()
 __gfx__
