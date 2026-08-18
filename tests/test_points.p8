@@ -5,7 +5,8 @@ __lua__
 
 
 #include ../src/points.lua
-#include ../src/test_points_asserts.lua
+
+#include test_points_asserts.lua
 -->8
 assert(calculate_points)
 
