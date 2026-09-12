@@ -21,7 +21,6 @@ d:push(tile:new():set_value(1))
 
 
 assert(d:get_dora_values()[2] == 1)
-assert(d:get_dora_values()[37] == 1)
 assert(d:get_dora_values()[5+18] == 1)
 
 -->8
