@@ -13,7 +13,7 @@ user = player:subclass{
 	update_input = function(_ENV)
 		-- discarding
 		if btnp(❎) and is_my_turn and selected_i then
-			local removed_tile = _ENV:discard_selected_tile()
+			discarded_tile = _ENV:discard_selected_tile()
 		end
 
 		-- moving

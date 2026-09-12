@@ -18,10 +18,11 @@ player = entity:subclass{
 	meld_stack_y = 52,
 	discard_pile_x = -18,
 	discard_pile_y = 20,
-	--selected_i = nil
+	--selected_i = nil,
 	--in_tenpai = false,
 	--in_riichi = false,
 	--is_my_turn = false,
+	--discarded_tile = nil,
 
 	new = function(_ENV)
 		return new_instance(_ENV,{
@@ -38,16 +39,16 @@ player = entity:subclass{
 	end,
 
 	discard_selected_tile = function(_ENV)
-		local removed_tile = hand:deli(selected_i)
-		discard_pile:push(removed_tile)
+		discarded_tile = hand:deli(selected_i)
+		discard_pile:push(discarded_tile)
 
-		discard_values[removed_tile.value] += 1
+		discard_values[discarded_tile.value] += 1
 
 		hand.selected_tile = nil
 		selected_i = nil
 		is_my_turn = false
 		-- do not _ENV:update()
-		return removed_tile
+		return discarded_tile
 	end,
 
 	apply_tile_states = function(_ENV)
