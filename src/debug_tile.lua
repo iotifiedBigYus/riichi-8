@@ -7,7 +7,7 @@ assert(tile)
 function draw_all_tiles()
 	--debug
 	for i = 1,4 do
-		for j = 1,37 do
+		for j = 1,34 do
 			tile:new()
 			:set_value(j)
 			:set_pos(
@@ -33,7 +33,7 @@ end
 
 draw_all_large_tiles = function()
 	--debug
-	for j = 1,37 do
+	for j = 1,34 do
 		tile:new()
 		:set_value(j)
 		:set_size(2)

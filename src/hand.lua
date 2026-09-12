@@ -111,7 +111,7 @@ hand = tile_stack:subclass{
 		for i = 1,previous_length do
 			local j = i
 			while j > 1
-			and previous_tiles[j-1].relative_value > previous_tiles[j].relative_value do
+			and previous_tiles[j-1].value > previous_tiles[j].value do
 				previous_tiles[j],previous_tiles[j-1] = previous_tiles[j-1],previous_tiles[j]
 				j -= 1
 			end
