@@ -52,6 +52,8 @@ collection = class:subclass{
 		-- num is the length of the meld being checked for
 		-- pon: num = 3
 		-- quad: num = 4
+		-- TODO: should return meld or partial meld,
+		-- not collection since it does not distinguish the discarded tile
 		local collections = {}
 
 		local sibling = sibling_mapping[value]
@@ -77,6 +79,73 @@ collection = class:subclass{
 						:add_value(sibling, s)
 				)
 			end
+		end
+
+		return collections
+	end,
+
+	divide = function(_ENV)
+		local suits = {}
+		for s = 0,2 do
+			local suit = global.collection:new()
+			for i = 1,9 do
+				local v = i + s*9
+				suit:add_value(v, values[v])
+			end
+			suit:add_value(35+s, values[35+s])
+			add(suits, suit)
+		end
+
+		local honors = global.collection:new()
+		for v = 28,34 do
+			suit:add_value(v, values[v])
+		end
+		add(suits, honors)
+
+		return suits
+	end,
+
+	check_sequence = function(_ENV, value)
+		local collections = {}
+
+		local check = split[[
+			0b001,0b011,0b111,0b111,0b111,0b111,0b111,0b110,0b100,
+			0b001,0b011,0b111,0b111,0b111,0b111,0b111,0b110,0b100,
+			0b001,0b011,0b111,0b111,0b111,0b111,0b111,0b110,0b100,
+			0b000,0b000,0b000,0b000,
+			0b000,0b000,0b000,
+			0b000,0b000,0b000,
+		]][value]
+
+		local siblings = sibling_mapping[value]
+		local check_values = {
+
+		}
+
+		-- vv. v.v .vv
+		-- vs. v.s .vs
+		-- sv. s.v .sv
+		-- ss. s.s .ss
+
+		if check & 1 > 0 then -- check to the right
+			if (values[value+1] or sibling[value+1] > 0 and values[sibling[value+1]]) * values[value+2] > 0 then
+				add(collections,
+					global.collection:new()
+						:add_sequence(value)
+				)
+			end
+		end
+		if check & 2 > 0 and values[value-1] * values[value+1] > 0 then
+			add(collections,
+				global.collection:new()
+					:add_sequence(value-1)
+			)
+		end
+		if check & 4 > 0 and values[value-2] * values[value-1] > 0 then
+			add(collections,
+				global.collection:new()
+					:add_sequence(value-2)
+			)
 		end
 
 		return collections
