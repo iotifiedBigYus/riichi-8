@@ -16,14 +16,6 @@ c1 = collection:new():add_value(1)
 c2 = collection:new():add_value(2,2)
 c1:add_collection(c2)
 
-local sum = [[120000000
-000000000
-000000000
-0000
-000
-000
-]]
-
 cls(1)
 ?c1:tostr()
 
